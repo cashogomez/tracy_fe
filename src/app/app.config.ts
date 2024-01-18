@@ -22,6 +22,7 @@ import {
 } from '@angular/fire/analytics';
 
 import { environment } from '@src/environments/environment';
+import { NotificationModule } from './services';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -38,6 +39,7 @@ export const appConfig: ApplicationConfig = {
       provideFunctions(() => getFunctions()),
       provideMessaging(() => getMessaging()),
       providePerformance(() => getPerformance()),
+      NotificationModule.forRoot(),
       
     ]),
     provideClientHydration(), 

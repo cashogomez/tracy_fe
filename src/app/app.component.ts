@@ -4,6 +4,7 @@ import { RouterOutlet } from '@angular/router';
 import { IndicatorsModule } from './shared/indicators';
 import { PopupsModule } from './shared/popups';
 import { AngularFirestore} from '@angular/fire/compat/firestore';
+import { NotificationService } from '@app/services';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +21,10 @@ import { AngularFirestore} from '@angular/fire/compat/firestore';
 export class AppComponent implements OnInit {
   title = 'tracy_fe';
   showSpinner = false;
-  constructor(private fs:AngularFirestore) {}
+  constructor(
+    private fs:AngularFirestore,
+    private notification: NotificationService
+    ) {}
 
   ngOnInit() {
     this.fs.collection('test').stateChanges().subscribe(personas => {
@@ -34,5 +38,13 @@ export class AppComponent implements OnInit {
 
   onFilesChanged(urls: string | string[]): void {
     console.log('url', urls);
+  }
+
+  onSuccess() : void {
+    this.notification.sucess("El procedimiento fue exitoso");
+  }
+
+  onError() : void {
+    this.notification.error("Se encontraron errores en el proceso");
   }
 }
