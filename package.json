@@ -3,10 +3,14 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "npm run start:dev",
+    "build": "npm run build:dev",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "start:dev": "ng serve --c=dev",
+    "build:dev": "ng build --c=dev",
+    "start:prod": "ng serve --c=prod",
+    "build:prod": "ng build --c=prod",
     "serve:ssr:tracy_fe": "node dist/tracy_fe/server/server.mjs"
   },
   "private": true,
@@ -16,6 +20,7 @@
     "@angular/common": "^17.0.0",
     "@angular/compiler": "^17.0.0",
     "@angular/core": "^17.0.0",
+    "@angular/fire": "^17.0.1",
     "@angular/forms": "^17.0.0",
     "@angular/material": "^17.0.5",
     "@angular/platform-browser": "^17.0.0",
@@ -24,6 +29,7 @@
     "@angular/router": "^17.0.0",
     "@angular/ssr": "^17.0.10",
     "express": "^4.18.2",
+    "firebase": "^10.7.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"

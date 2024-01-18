@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { IndicatorsModule } from './shared/indicators';
 import { PopupsModule } from './shared/popups';
+import { AngularFirestore} from '@angular/fire/compat/firestore';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,7 @@ import { PopupsModule } from './shared/popups';
     CommonModule, 
     RouterOutlet,
     IndicatorsModule,
-    PopupsModule,
+    PopupsModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
@@ -19,13 +20,19 @@ import { PopupsModule } from './shared/popups';
 export class AppComponent implements OnInit {
   title = 'tracy_fe';
   showSpinner = false;
-  constructor() {}
+  constructor(private fs:AngularFirestore) {}
 
   ngOnInit() {
-
+    this.fs.collection('test').stateChanges().subscribe(personas => {
+      console.log(personas.map(x => x.payload.doc.data()))
+    })
   }
 
   onToggleSpinner(): void {
     this.showSpinner = !this.showSpinner;
+  }
+
+  onFilesChanged(urls: string | string[]): void {
+    console.log('url', urls);
   }
 }

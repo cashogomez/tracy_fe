@@ -56,5 +56,14 @@ ngOnInit(): void {
     console.log(files);
 
   }
-
+  onUploadComplete(url: string): void {
+    this.fileURLs.push(url);
+  }
+  onComplete(): void {
+    const res = this.data.multiple ? this.fileURLs : this.fileURLs[0];
+    this.dialogRef.close(res);
+  }
+  onClose(): void {
+    this.dialogRef.close();
+  }
 }
