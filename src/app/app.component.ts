@@ -5,6 +5,12 @@ import { IndicatorsModule } from './shared/indicators';
 import { PopupsModule } from './shared/popups';
 import { AngularFirestore} from '@angular/fire/compat/firestore';
 import { NotificationService } from '@app/services';
+import { MatSidenavModule} from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule} from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { HeaderComponent } from './components/header/header.component';
+
 
 @Component({
   selector: 'app-root',
@@ -13,7 +19,12 @@ import { NotificationService } from '@app/services';
     CommonModule, 
     RouterOutlet,
     IndicatorsModule,
-    PopupsModule
+    PopupsModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonModule,
+    HeaderComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
@@ -41,7 +52,7 @@ export class AppComponent implements OnInit {
   }
 
   onSuccess() : void {
-    this.notification.sucess("El procedimiento fue exitoso");
+    this.notification.success("El procedimiento fue exitoso");
   }
 
   onError() : void {

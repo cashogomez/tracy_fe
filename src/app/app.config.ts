@@ -15,8 +15,6 @@ import {getFirestore, provideFirestore} from '@angular/fire/firestore';
 import { getAuth, provideAuth} from '@angular/fire/auth';
 import {getStorage, provideStorage} from '@angular/fire/storage';
 import {
-  ScreenTrackingService,
-  UserTrackingService,
   getAnalytics,
   provideAnalytics,
 } from '@angular/fire/analytics';

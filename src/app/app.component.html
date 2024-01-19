@@ -1,7 +1,14 @@
- <button (click)="onToggleSpinner()">Toggle Spinner</button>
- <app-spinner *ngIf="showSpinner"></app-spinner>
+<mat-sidenav-container>
+    <mat-sidenav #menu>
+        <p>Elementos Sidenav</p>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        
+        <app-header></app-header>
 
- <button appFilesUpload [multiple] = "true" (changed) = "onFilesChanged($event)"> Subir imagenes al servidor</button>
+        <main>
+            <router-outlet></router-outlet>
+        </main>
 
-<button (click)="onSuccess()" >Mensaje de Éxito</button>
-<button (click)="onError()" >Mensaje de Error</button>
+    </mat-sidenav-content>
+</mat-sidenav-container>

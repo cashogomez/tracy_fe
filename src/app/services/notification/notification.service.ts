@@ -5,21 +5,21 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Injectable()
 export class NotificationService {
 
-  constructor(private snackBar: MatSnackBar) { }
+constructor(private snackBar: MatSnackBar) { }
 
 error(message: string): void {
   this.snackBar.openFromComponent(NotificationComponent, {
     duration: 4000,
     data: { message },
-    panelClass: ['mat-snackbar_error']
+    panelClass: ['error-snackbar']
   });
 }
 
-sucess(message: string): void {
+success(message: string): void {
   this.snackBar.openFromComponent(NotificationComponent, {
     duration: 4000,
     data: { message },
-    panelClass: ['mat-snackbar_success']
+    panelClass: ['success-snackbar']
   });
 }
 
