@@ -21,27 +21,25 @@ import {
 
 import { environment } from '@src/environments/environment';
 import { NotificationModule } from './services';
+import { provideStore } from '@ngrx/store';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes), 
+    provideRouter(routes),
     importProvidersFrom([
-      provideFirebaseApp(() => initializeApp(environment.firebase.config)),
-      provideFirestore(() => getFirestore()),
-      provideStorage(() => getStorage()),
-      provideAuth(() => getAuth()),
-
-      AngularFireModule.initializeApp(environment.firebase.config),
-
-      provideAnalytics(() => getAnalytics()),
-      provideFunctions(() => getFunctions()),
-      provideMessaging(() => getMessaging()),
-      providePerformance(() => getPerformance()),
-      NotificationModule.forRoot(),
-      
+        provideFirebaseApp(() => initializeApp(environment.firebase.config)),
+        provideFirestore(() => getFirestore()),
+        provideStorage(() => getStorage()),
+        provideAuth(() => getAuth()),
+        AngularFireModule.initializeApp(environment.firebase.config),
+        provideAnalytics(() => getAnalytics()),
+        provideFunctions(() => getFunctions()),
+        provideMessaging(() => getMessaging()),
+        providePerformance(() => getPerformance()),
+        NotificationModule.forRoot(),
     ]),
-    provideClientHydration(), 
+    provideClientHydration(),
     provideAnimations(),
-
-  ]
+    provideStore()
+]
 };
