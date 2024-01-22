@@ -13,7 +13,6 @@ import { HeaderComponent } from './components/header/header.component';
 import { MenuListaComponent } from './components/menu-lista/menu-lista.component';
 
 
-
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -29,7 +28,7 @@ import { MenuListaComponent } from './components/menu-lista/menu-lista.component
     MenuListaComponent,
     RouterOutlet,
     RouterLink, 
-    RouterLinkActive
+    RouterLinkActive,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

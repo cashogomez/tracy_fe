@@ -22,6 +22,14 @@ import {
 import { environment } from '@src/environments/environment';
 import { NotificationModule } from './services';
 import { provideStore } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { reducers, effects} from './store';
+import { HttpClientModule } from '@angular/common/http';
+
+const StoreDevTools = !environment.production ? StoreDevtoolsModule.instrument({maxAge: 50}) : [];
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -37,6 +45,15 @@ export const appConfig: ApplicationConfig = {
         provideMessaging(() => getMessaging()),
         providePerformance(() => getPerformance()),
         NotificationModule.forRoot(),
+        StoreDevTools,
+        StoreModule.forRoot(reducers, {
+          runtimeChecks: {
+            strictActionImmutability: true,
+            strictStateImmutability: true, //
+          }
+        }),
+        EffectsModule.forRoot(effects),
+        HttpClientModule
     ]),
     provideClientHydration(),
     provideAnimations(),
