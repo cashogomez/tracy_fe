@@ -1,28 +1,29 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatListModule} from '@angular/material/list';
 
 @Component({
-  selector: 'app-header',
+  selector: 'app-menu-lista',
   standalone: true,
   imports: [
-    MatToolbarModule,
+    MatListModule,
     MatIconModule,
     MatButtonModule,
   ],
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+  templateUrl: './menu-lista.component.html',
+  styleUrl: './menu-lista.component.scss'
 })
-export class HeaderComponent implements OnInit {
+export class MenuListaComponent implements OnInit{
   @Output() menuToggle = new EventEmitter<void>();
+
   constructor() {}
 
   ngOnInit(): void {
-      
+
   }
 
-  onMenuToggleDispatch(): void {
+  closeMenu(): void {
     this.menuToggle.emit();
   }
 }

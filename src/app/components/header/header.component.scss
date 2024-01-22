@@ -1,15 +1,30 @@
+
 .box {
     display: flex;
     align-items: center;
   }
   
-
   .push {
     margin-left: auto;
+  }
+
+  .navegacion{
     display: flex;
     flex-wrap: wrap;
     column-gap: 10px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
   }
-  .push > * {
-    flex: 1;
+  a{
+    text-decoration: none;
+    color: on-primary;
+    cursor: pointer;
   }
+  a:hover,
+  a:active {
+    color: primary-dark;
+  }
+
+ 

@@ -1,16 +1,19 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" >
     <mat-toolbar-row>
         <div class="box">
-            <button mat-icon-button>
+            <button mat-icon-button (click)="onMenuToggleDispatch()">
                 <mat-icon>menu</mat-icon>
             </button>
             <span>TRACY</span>
         </div>
 
         <div class="push">
-            <div>Registrar</div>
-            <div>Login</div>
-            <div>Home</div>
+            <ul class="navegacion">
+                <li><a>Registrar</a></li>
+                <li><a>Login</a></li>
+                <li><a>Home</a></li>
+            </ul>
+
         </div>
     </mat-toolbar-row>
 </mat-toolbar>

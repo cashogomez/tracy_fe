@@ -1,3 +1,4 @@
+@use '@angular/material' as mat;
 @import "colors";
 @import "fonts";
 @import "vendor";
@@ -10,3 +11,11 @@ html, body {
     line-height: $base-line-height;
     background-color: white;
 }
+.mat-toolbar.mat-primary {
+    background: $primary;
+    color: $on-primary;
+  }
+.mat-raised-button.mat-toolbar.mat-primary {
+    background: $primary;
+    color: $on-primary;
+  }

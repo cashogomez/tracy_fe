@@ -10,6 +10,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule} from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { HeaderComponent } from './components/header/header.component';
+import { MenuListaComponent } from './components/menu-lista/menu-lista.component';
+
 
 
 @Component({
@@ -25,6 +27,7 @@ import { HeaderComponent } from './components/header/header.component';
     MatIconModule,
     MatButtonModule,
     HeaderComponent,
+    MenuListaComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

@@ -1,4 +1,4 @@
-@import '../../../../styles/colors';
+@import '@src/styles.scss';
 
 .files-upload {
     display: flex;
@@ -23,12 +23,12 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        border: 2px dashed $primary-light;
+        border: 2px dashed primary-light;
         border-radius: 4px;
         padding: 20px;
 
         &__hovered {
-            border: 2px solid $primary;
+            border: 2px solid primary;
             .dropzone__label, .dropzone__file {
                 opacity: 0.3;
             }
@@ -41,9 +41,9 @@
         }
 
         &__label {
-            color: $primary;
+            color: primary;
             &:hover {
-                color: $primary-dark;
+                color: primary-dark;
                 cursor: pointer;
             }
         }
@@ -51,7 +51,7 @@
 }
 
 .error {
-    color: $error;
+    color: error;
     text-align: center;
     padding: 12px;
 }

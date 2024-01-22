@@ -1,10 +1,10 @@
 <mat-sidenav-container>
     <mat-sidenav #menu>
-        <p>Elementos Sidenav</p>
+        <app-menu-lista (menuToggle)="menu.toggle()"></app-menu-lista>
     </mat-sidenav>
     <mat-sidenav-content>
         
-        <app-header></app-header>
+        <app-header (menuToggle)="menu.toggle()"></app-header>
 
         <main>
             <router-outlet></router-outlet>
