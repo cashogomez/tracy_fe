@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-registration',
@@ -6,6 +7,13 @@ import { Component } from '@angular/core';
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.scss'
 })
-export class RegistrationComponent {
+export class RegistrationComponent implements OnInit {
+  constructor() {}
 
+  ngOnInit(): void {
+  }
+
+  registrarUsuario(forms: NgForm){
+
+  }
 }

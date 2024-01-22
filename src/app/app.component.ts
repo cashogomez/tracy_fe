@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { IndicatorsModule } from './shared/indicators';
 import { PopupsModule } from './shared/popups';
 import { AngularFirestore} from '@angular/fire/compat/firestore';
@@ -19,7 +19,6 @@ import { MenuListaComponent } from './components/menu-lista/menu-lista.component
   standalone: true,
   imports: [
     CommonModule, 
-    RouterOutlet,
     IndicatorsModule,
     PopupsModule,
     MatSidenavModule,
@@ -27,7 +26,10 @@ import { MenuListaComponent } from './components/menu-lista/menu-lista.component
     MatIconModule,
     MatButtonModule,
     HeaderComponent,
-    MenuListaComponent
+    MenuListaComponent,
+    RouterOutlet,
+    RouterLink, 
+    RouterLinkActive
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
