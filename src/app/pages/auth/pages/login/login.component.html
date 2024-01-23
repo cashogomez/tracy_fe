@@ -1,3 +1,5 @@
+<app-spinner *ngIf="loading$ | async"></app-spinner>
+
 <section class="flex-container">
     <mat-card>
         <form #f="ngForm" (ngSubmit)="loginUsuario(f)">

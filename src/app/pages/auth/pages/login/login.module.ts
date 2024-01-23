@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { LoginComponent } from './login.component';
 import { MatInputModule } from '@angular/material/input';
+import { SpinnerModule } from '@app/shared/indicators';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { MatInputModule } from '@angular/material/input';
     MatIconModule,
     FormsModule,
     MatCardModule,
-    MatInputModule
+    MatInputModule,
+    SpinnerModule
   ]
 })
 export class LoginModule { }
