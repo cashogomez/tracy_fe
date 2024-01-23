@@ -27,7 +27,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { reducers, effects} from './store';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 
 const StoreDevTools = !environment.production ? StoreDevtoolsModule.instrument({maxAge: 50}) : [];
 
@@ -53,10 +53,11 @@ export const appConfig: ApplicationConfig = {
           }
         }),
         EffectsModule.forRoot(effects),
-        HttpClientModule
+        HttpClientModule,
     ]),
     provideClientHydration(),
     provideAnimations(),
-    provideStore()
+    provideStore(),
+    provideHttpClient(withFetch())
 ]
 };
