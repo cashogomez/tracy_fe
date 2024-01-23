@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
       email: form.value.email,
       password: form.value.password
     }
-this.store.dispatch(new fromUser.SignInEmail(userLoginRequest));
+  this.store.dispatch(new fromUser.SignInEmail(userLoginRequest));
 
   }
 
