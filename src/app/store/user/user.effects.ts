@@ -25,7 +25,7 @@ export class UserEffects {
             ofType(fromActions.Types.SIGIN_UP_EMAIL),
             map((action: fromActions.SignUpEmail) => action.user),
             switchMap(userData =>
-                this.httpClient.post<UserResponse>('${environment.url}cuenta/registrar/', userData)
+                this.httpClient.post<UserResponse>(`${environment.url}cuenta/registrar/`, userData)
                     .pipe(
                         tap((response: UserResponse) => {
                             localStorage.setItem('token', response.token.access);
@@ -46,8 +46,8 @@ export class UserEffects {
             ofType(fromActions.Types.SIGIN_IN_EMAIL),
             map((action: fromActions.SignInEmail) => action.credentials),
             switchMap(userData =>
-                this.httpClient.post<UserResponse>('${environment.url}cuenta/api/token/', userData)
-                    .pipe(
+                this.httpClient.post<UserResponse>(`${environment.url}cuenta/login-app/`, userData)
+                    .pipe(               
                         tap((response: UserResponse) => {
                             localStorage.setItem('token', response.token.access);
                             this.router.navigate(['/']);
@@ -55,6 +55,9 @@ export class UserEffects {
                         map((response: UserResponse) => new fromActions.SignInEmailSuccess(response.email, response || null)),
                         catchError(err => {
                             this.notification.error("Las credenciales son incorrectas");
+                            console.log(userData);
+                            console.log(`${environment.url}cuenta/api/token/`)
+                            console.log(err.message)
                             return of(new fromActions.SignInEmailError(err.message));
                         })
                     )
@@ -69,7 +72,7 @@ export class UserEffects {
             switchMap(token => {
                 if(token)
                 {
-                    return this.httpClient.get<UserResponse>('${environment.url}cuenta/api/token/')
+                    return this.httpClient.get<UserResponse>(`${environment.url}cuenta/session/`)
                     .pipe(
                         tap((response: UserResponse) => {
                             console.log('Data del usuario en sesión que viene del servidor', response);

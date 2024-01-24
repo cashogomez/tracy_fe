@@ -42,9 +42,9 @@ export class AppComponent implements OnInit {
     ) {}
 
   ngOnInit() {
-    this.fs.collection('test').stateChanges().subscribe(personas => {
-      console.log(personas.map(x => x.payload.doc.data()))
-    })
+    // this.fs.collection('test').stateChanges().subscribe(personas => {
+    //   console.log(personas.map(x => x.payload.doc.data()))
+    // })
   }
 
   onToggleSpinner(): void {

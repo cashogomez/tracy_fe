@@ -14,7 +14,7 @@ import { Store } from '@ngrx/store';
 export class LoginComponent implements OnInit {
   loading$ !: Observable<boolean | null>;
   constructor( private store: Store<fromRoot.State>) {
-   
+    
   }
 
   ngOnInit(): void {
@@ -24,9 +24,10 @@ export class LoginComponent implements OnInit {
     const userLoginRequest: fromUser.EmailPasswordCredentials = {
       email: form.value.email,
       password: form.value.password
-    }
-  this.store.dispatch(new fromUser.SignInEmail(userLoginRequest));
-
+    };
+    
+    this.store.dispatch(new fromUser.SignInEmail(userLoginRequest));
+    
   }
 
 }

@@ -6,11 +6,9 @@ export interface EmailPasswordCredentials{
     email: string;
     password: string;
 }
-
 export interface UserRequest extends User {
 
 }
-
 export interface UserRequest extends User {
     password: string;
     password2: string;

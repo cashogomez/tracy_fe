@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '@app/store';
+import * as fromUser from '@app/store/user';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-registration',
@@ -8,12 +12,25 @@ import { NgForm } from '@angular/forms';
   styleUrl: './registration.component.scss'
 })
 export class RegistrationComponent implements OnInit {
-  constructor() {}
+  loading$ !: Observable<boolean | null>;
 
+  constructor(private store: Store<fromRoot.State>) {
+    
+  }
   ngOnInit(): void {
   }
 
-  registrarUsuario(forms: NgForm){
-
+  registrarUsuario(form: NgForm){
+    const userRegistrationRequest: fromUser.UserCreateRequest = {
+      nombre: form.value.nombre,
+      paterno: form.value.paterno,
+      materno: form.value.materno,
+      email: form.value.email,
+      username: form.value.username,
+      telefono: form.value.telefono,
+      password: form.value.password,
+      password2: form.value.passwordConfirme
+    };
+    this.store.dispatch(new fromUser.SignUpEmail(userRegistrationRequest));
   }
 }
