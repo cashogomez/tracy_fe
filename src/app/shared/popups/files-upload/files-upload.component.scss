@@ -10,13 +10,16 @@
     }
 
     &__content {
-        flex-grow: 1;
+        display: flex;
+        background-color: grey;
+        flex-direction: column;
     }
 
     &__footer {
         display: inline-flex;
         flex-direction: row-reverse;
         margin-top: 12px;
+        margin-right: 10px;
     }
 
     .dropzone {

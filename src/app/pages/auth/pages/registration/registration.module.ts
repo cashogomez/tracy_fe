@@ -9,6 +9,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { RegistrationComponent } from './registration.component';
+import { PopupsModule } from '@app/shared/popups';
+import { NgOptimizedImage } from '@angular/common'
+
 
 
 @NgModule({
@@ -23,7 +26,9 @@ import { RegistrationComponent } from './registration.component';
     FormsModule,
     MatIconModule,
     MatCardModule,
-    MatInputModule
+    MatInputModule,
+    PopupsModule,
+    NgOptimizedImage
   ]
 })
 export class RegistrationModule { }

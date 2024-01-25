@@ -6,6 +6,7 @@ export interface User {
     paterno: string;
     materno: string;
     telefono: string;
+    foto: string;
 }
 
 interface Token {

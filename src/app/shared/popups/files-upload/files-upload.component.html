@@ -2,16 +2,17 @@
     <div class="files-upload__header">
         <h3>Subiendo Archivos</h3>
     </div>
+
     <div class="files-upload__content">
 
         <ng-container *ngIf="!files.length">
             <div class="dropzone" appDropZone (hovered)="toggleHover($event)" [class.dropzone__hovered]="isHovering"
                 (dropped)="onDrop($event)">
-                <div class="dropzone__label">Deja tus archivos aqui </div>
+                <div class="dropzone__label"> Deja tus archivos aqui ... </div>
                 <div class="dropzone__file">
                     <label class="file">
                         <input class="file__input" [multiple]="data.multiple" type="file" (change)="onDropFile($event)">
-                        <span class="file__label">seleccionar</span>
+                        <span class="file__label"> Seleccionar </span>
                     </label>
                 </div>
             </div>

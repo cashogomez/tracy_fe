@@ -51,9 +51,7 @@ export class AppComponent implements OnInit {
     this.showSpinner = !this.showSpinner;
   }
 
-  onFilesChanged(urls: string | string[]): void {
-    console.log('url', urls);
-  }
+
 
   onSuccess() : void {
     this.notification.success("El procedimiento fue exitoso");
@@ -61,5 +59,8 @@ export class AppComponent implements OnInit {
 
   onError() : void {
     this.notification.error("Se encontraron errores en el proceso");
+  }
+  onFilesChanged(urls: string | string[]): void {
+    console.log('url', urls);
   }
 }

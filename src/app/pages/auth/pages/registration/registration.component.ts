@@ -13,6 +13,7 @@ import { Observable } from 'rxjs';
 })
 export class RegistrationComponent implements OnInit {
   loading$ !: Observable<boolean | null>;
+  foto : string ="/assets/generales/silueta.jpg";
 
   constructor(private store: Store<fromRoot.State>) {
     
@@ -29,8 +30,13 @@ export class RegistrationComponent implements OnInit {
       username: form.value.username,
       telefono: form.value.telefono,
       password: form.value.password,
-      password2: form.value.passwordConfirme
+      password2: form.value.passwordConfirme,
+      foto: this.foto
     };
     this.store.dispatch(new fromUser.SignUpEmail(userRegistrationRequest));
+  }
+  onFilesChanged(urls: string | string[]): void {
+    console.log('url', urls);
+    this.foto = urls[0];
   }
 }

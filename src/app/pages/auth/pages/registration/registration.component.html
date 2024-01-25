@@ -1,7 +1,16 @@
 <section class="flex-container">
     <mat-card>
-        <form #f="ngForm" (ngSubmit)="registrarUsuario(f)">
+        <mat-card-header>
+            <mat-card-title>Registrar nuevo usuario</mat-card-title>
+        </mat-card-header>
+        <div >
+            <img mat-card-image ngSrc={{foto}} width="200" height="200" alt="Imagen Foto">
+        </div>
+        
+        <button mat-button appFilesUpload [multiple]="true" (changed)="onFilesChanged($event)">Subir Imagen</button>
+        <mat-card-content>
 
+        <form #f="ngForm" (ngSubmit)="registrarUsuario(f)">
             <mat-form-field>
                 <mat-label>Ingrese Nombre</mat-label>
                 <input type="tex" matInput placeholder="Ingrese Nombre" name="nombre" ngModel required>
@@ -52,5 +61,6 @@
 
             <button mat-raised-button color="primary" type="submit">Enviar</button>
         </form>
+    </mat-card-content>
     </mat-card>
 </section>
