@@ -33,10 +33,11 @@ export class RegistrationComponent implements OnInit {
       password2: form.value.passwordConfirme,
       foto: this.foto
     };
+    console.log(userRegistrationRequest.nombre);
+    console.log(userRegistrationRequest.foto);
     this.store.dispatch(new fromUser.SignUpEmail(userRegistrationRequest));
   }
   onFilesChanged(urls: string | string[]): void {
-    console.log('url', urls);
-    this.foto = urls[0];
+    this.foto=urls[0];
   }
 }
