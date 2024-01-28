@@ -7,6 +7,7 @@ export interface User {
     materno: string;
     telefono: string;
     foto: string;
+    response: string;
 }
 
 interface Token {

@@ -9,9 +9,27 @@
 
         <div class="push">
             <ul class="navegacion">
-                <li><a routerLink="/auth/registration"  routerLinkActive="active" >Registrar</a></li>
-                <li><a routerLink="/auth/login" routerLinkActive="active" >Login</a></li>
-                <li><a routerLink="/" routerLinkActive="active" >Home</a></li>
+                <li><a routerLink="/" *ngIf="usuario!=null" (click) = "logout()">Logout</a></li>
+                <li><a routerLink="/auth/login" *ngIf="usuario==null">Login </a></li>
+                <li><a routerLink="/"  >Home</a></li>
+                <li>
+
+                    <div class="contenedor">
+                        <mat-card class="mat-card" *ngIf="usuario!=null">
+                          <mat-card-header class="mat-card-header">
+                            <div mat-card-avatar class="mat-card-avatar">
+                                <img mat-card-image src="{{usuario!.foto}}" class="mat-card-image circular">
+                            </div>
+                            <div class="mat-card-header-text">
+                                <mat-card-title class="mat-card-title">{{usuario!.nombre}} {{usuario!.paterno}}</mat-card-title>
+                                <mat-card-subtitle class="mat-card-subtitle">{{usuario!.email}}</mat-card-subtitle>
+                            </div>
+                          </mat-card-header>
+                        </mat-card>
+                      </div>
+
+
+                </li>
             </ul>
 
         </div>

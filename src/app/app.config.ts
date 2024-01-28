@@ -21,13 +21,18 @@ import {
 
 import { environment } from '@src/environments/environment';
 import { NotificationModule } from './services';
-import { provideStore } from '@ngrx/store';
+import { State, provideStore } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { reducers, effects} from './store';
 import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
+import { AuthService } from '@app/services/auth/auth.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import {
+  TokenInterceptor, ErrorInterceptor
+} from './services/token/token.interceptor';
 
 const StoreDevTools = !environment.production ? StoreDevtoolsModule.instrument({maxAge: 50}) : [];
 
@@ -45,19 +50,31 @@ export const appConfig: ApplicationConfig = {
         provideMessaging(() => getMessaging()),
         providePerformance(() => getPerformance()),
         NotificationModule.forRoot(),
-        StoreDevTools,
+        StoreDevtoolsModule.instrument({}),
         StoreModule.forRoot(reducers, {
           runtimeChecks: {
             strictActionImmutability: true,
             strictStateImmutability: true, //
           }
         }),
+        StoreModule.forFeature('user', reducers),
         EffectsModule.forRoot(effects),
         HttpClientModule,
     ]),
     provideClientHydration(),
     provideAnimations(),
     provideStore(),
-    provideHttpClient(withFetch())
+    provideHttpClient(withFetch()),
+    AuthService,
+  // {
+  //   provide: HTTP_INTERCEPTORS,
+  //   useClass: TokenInterceptor,
+  //   multi: true
+  // },
+  // {
+  //   provide: HTTP_INTERCEPTORS,
+  //   useClass: ErrorInterceptor,
+  //   multi: true
+  // }
 ]
 };

@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as fromActions from './user.actions';
 import { Injectable, effect } from '@angular/core';
-import { NotificationService } from '@app/services';
+import { AuthService, NotificationService } from '@app/services';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Observable, of } from 'rxjs';
@@ -17,20 +17,24 @@ export class UserEffects {
         private httpClient: HttpClient,
         private actions: Actions,
         private notification: NotificationService,
-        private router: Router
+        private router: Router,
+        private authService : AuthService
     ) { }
+    
 
     signUpEmail: Observable<Action> = createEffect(() =>
         this.actions.pipe(
             ofType(fromActions.Types.SIGIN_UP_EMAIL),
             map((action: fromActions.SignUpEmail) => action.user),
             switchMap(userData =>
-                this.httpClient.post<UserResponse>(`${environment.url}cuenta/registrar/`, userData)
+                this.authService.signUp(userData)
                     .pipe(
                         tap((response: UserResponse) => {
                             localStorage.setItem('token', response.token.access);
                             this.router.navigate(['/']);
+                            this.notification.success("¡El usuario se registró correctamente!");
                         }),
+ 
                         map((response: UserResponse) => new fromActions.SignUpEmailSuccess(response.email, response || null)),
                         catchError(err => {
                             this.notification.error("Errores al registrar un nuevo usuario");
@@ -46,18 +50,16 @@ export class UserEffects {
             ofType(fromActions.Types.SIGIN_IN_EMAIL),
             map((action: fromActions.SignInEmail) => action.credentials),
             switchMap(userData =>
-                this.httpClient.post<UserResponse>(`${environment.url}cuenta/login-app/`, userData)
+                this.authService.logIn(userData)
                     .pipe(               
                         tap((response: UserResponse) => {
                             localStorage.setItem('token', response.token.access);
                             this.router.navigate(['/']);
+                            this.notification.success("El usuario ingresó correctamente");
                         }),
                         map((response: UserResponse) => new fromActions.SignInEmailSuccess(response.email, response || null)),
                         catchError(err => {
                             this.notification.error("Las credenciales son incorrectas");
-                            console.log(userData);
-                            console.log(`${environment.url}cuenta/api/token/`)
-                            console.log(err.message)
                             return of(new fromActions.SignInEmailError(err.message));
                         })
                     )
@@ -92,5 +94,29 @@ export class UserEffects {
             )
         )
     );
+
+    SignOut: Observable<Action> = createEffect(() =>
+        this.actions.pipe(
+            ofType(fromActions.Types.SIGIN_OUT_EMAIL),
+            switchMap(async () => localStorage.getItem('token')),
+            switchMap(token =>
+                this.authService.logout(token!)
+                    .pipe(               
+                        tap((response: any) => {
+                            localStorage.removeItem('token');
+                            this.router.navigate(['/']);
+                            this.notification.success("Salida del usuario exitosa");
+                        }),
+                        map((response: any) => new fromActions.SignOutSuccess()),
+                        catchError(err => {
+                            this.notification.error("Las credenciales son incorrectas");
+                            return of(new fromActions.SignOutError(err.message));
+                        })
+                    )
+            )
+        )
+    );
+
+
 
 }

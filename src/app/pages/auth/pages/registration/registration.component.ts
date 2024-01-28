@@ -31,7 +31,8 @@ export class RegistrationComponent implements OnInit {
       telefono: form.value.telefono,
       password: form.value.password,
       password2: form.value.passwordConfirme,
-      foto: this.foto
+      foto: this.foto,
+      response: '',
     };
     console.log(userRegistrationRequest.nombre);
     console.log(userRegistrationRequest.foto);

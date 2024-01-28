@@ -28,7 +28,7 @@ import { MenuListaComponent } from './components/menu-lista/menu-lista.component
     MenuListaComponent,
     RouterOutlet,
     RouterLink, 
-    RouterLinkActive,
+    RouterLinkActive
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
