@@ -11,20 +11,31 @@ import * as fromRoot from '@app/store';
 import * as fromUser from '@app/store/user';
 import { concatAll } from 'rxjs';
 
-
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatMenuModule } from '@angular/material/menu';
+import { RouterModule, Routes }   from '@angular/router';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatListModule } from '@angular/material/list';
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [
     CommonModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatButtonModule,
     RouterOutlet,
     RouterLink, 
     RouterLinkActive,
+
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonModule,
     MatCardModule,
+    MatMenuModule,
+    MatSidenavModule,
+    MatTooltipModule,
+    MatExpansionModule,
+    MatListModule,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'

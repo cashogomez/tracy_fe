@@ -1,5 +1,26 @@
-.navegacion-lista-label{
-    display: inline-block;
-    padding-left: 5px;
+.app-container {
+    height: 95%;
+    margin: 0;
+}  
+.app-sidenav {
+    width: 250px;
+}
+.app-sidenav-content {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+.smartest {
+    text-align: center;
+}
 
+.smartest a {
+    text-decoration: none;
+    color: grey;
+}
+
+/* Hover */
+.smartest a:hover {
+    color: cyan;
 }

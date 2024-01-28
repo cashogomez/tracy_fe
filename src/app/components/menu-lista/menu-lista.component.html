@@ -1,28 +1,118 @@
-<mat-nav-list>
-    <a mat-list-item (click)="closeMenu()" routerLink="/">
-        <mat-icon>home</mat-icon>
-        <span class="navegacion-lista-label">Home</span>
-    </a>
-    <a mat-list-item (click)="closeMenu()" routerLink="auth/login">
-        <mat-icon>login</mat-icon>
-        <span class="navegacion-lista-label">Inicio Sesión</span>
-    </a>
-    <a mat-list-item (click)="closeMenu()" routerLink="auth/registration">
-        <mat-icon>how_to_register</mat-icon>
-        <span class="navegacion-lista-label">Registrar</span>
-    </a>
+<mat-sidenav-container class="app-container">
+    <mat-nav-list>
 
-    <a mat-list-item (click)="closeMenu()">
-        <mat-icon>contact_support</mat-icon>
-        <span class="navegacion-lista-label">Contacto</span>
-    </a>
-    <a mat-list-item (click)="closeMenu()">
-        <mat-icon>add</mat-icon>
-        <span class="navegacion-lista-label">Nuevo Producto</span>
-    </a>
+        <mat-list-item routerLink="#">
+            <span></span><img class="images" src="./assets/generales/Logo_nutricion.png" width="45px" />
+        </mat-list-item>
 
-    <a mat-list-item (click)="closeMenu()">
-        <mat-icon>logout</mat-icon>
-        <span class="navegacion-lista-label">Salir sesión</span>
-    </a>
-</mat-nav-list>
+        <mat-expansion-panel [class.mat-elevation-z0]="true" *ngIf="usuario!=null"> 
+            <mat-expansion-panel-header>
+                <mat-icon>receipt</mat-icon> Recepción de Material
+            </mat-expansion-panel-header>
+            <mat-nav-list>
+                <a mat-list-item routerLink="#">
+                    <span>Quirófano</span>
+                </a>
+                <a mat-list-item routerLink="#">
+                    <span>Otras Áreas</span>
+                </a>
+                <a mat-list-item routerLink="#">
+                    <span>Proveedor Externo</span>
+                </a>
+            </mat-nav-list>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [class.mat-elevation-z0]="true" *ngIf="usuario!=null">
+            <mat-expansion-panel-header>
+                <mat-icon> local_drink</mat-icon> Lavado
+            </mat-expansion-panel-header>
+            <mat-nav-list>
+                <a mat-list-item routerLink="#">
+                    <span>Manual</span>
+                </a>
+                <a mat-list-item routerLink="#">
+                    <span>Máquinas</span>
+                </a>
+            </mat-nav-list>
+        </mat-expansion-panel>
+
+
+        <mat-expansion-panel [class.mat-elevation-z0]="true" *ngIf="usuario!=null">
+            <mat-expansion-panel-header>
+                <mat-icon>inbox</mat-icon> Empaque
+            </mat-expansion-panel-header>
+            <mat-nav-list>
+                <a mat-list-item routerLink="#">Quirófano y CEYE</a>
+                <a mat-list-item routerLink="#">Otras Áreas o proveedor</a>
+            </mat-nav-list>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [class.mat-elevation-z0]="true"  *ngIf="usuario!=null">
+            <mat-expansion-panel-header>
+                <mat-icon> border_clear</mat-icon> Esterilización
+            </mat-expansion-panel-header>
+            <mat-nav-list>
+                <a mat-list-item routerLink="#">Esterilización</a>
+            </mat-nav-list>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [class.mat-elevation-z0]="true" *ngIf="usuario!=null">
+            <mat-expansion-panel-header>
+                <mat-icon>storage</mat-icon> Almacenamiento
+            </mat-expansion-panel-header>
+            <mat-nav-list>
+                <a mat-list-item routerLink="#">Almacén General</a>
+            </mat-nav-list>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [class.mat-elevation-z0]="true" *ngIf="usuario!=null">
+            <mat-expansion-panel-header>
+                <mat-icon> zoom_out_map</mat-icon> Distribución de Material
+            </mat-expansion-panel-header>
+            <mat-nav-list>
+                <a mat-list-item routerLink="#">Quirófano y CEYE</a>
+            </mat-nav-list>
+            <mat-nav-list>
+                <a mat-list-item routerLink="#">Otras Áreas o proveedor</a>
+            </mat-nav-list>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [class.mat-elevation-z0]="true" *ngIf="usuario!=null">
+            <mat-expansion-panel-header>
+                <mat-icon>blur_on</mat-icon> Código QR
+            </mat-expansion-panel-header>
+            <mat-nav-list>
+                <a mat-list-item routerLink="#">Búsqueda</a>
+            </mat-nav-list>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [class.mat-elevation-z0]="true" *ngIf="usuario!=null">
+            <mat-expansion-panel-header>
+                <mat-icon>gps_fixed</mat-icon> Administrador
+            </mat-expansion-panel-header>
+            <mat-nav-list>
+                <a mat-list-item routerLink="#">Admon. Usuarios</a>
+            </mat-nav-list>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [class.mat-elevation-z0]="true">
+            <mat-expansion-panel-header>
+                <mat-icon>gps_fixed</mat-icon> Acerca de TRACY
+            </mat-expansion-panel-header>
+            <mat-nav-list>
+                <a mat-list-item routerLink="#">Información General</a>
+            </mat-nav-list>
+        </mat-expansion-panel>
+
+    </mat-nav-list>
+
+    <div class="smartest">
+
+        <h5>Powered by</h5>
+        <a target="_blank" href="https://www.smartest.mx/">
+            SMARTEST
+        </a>
+
+    </div>
+
+</mat-sidenav-container>

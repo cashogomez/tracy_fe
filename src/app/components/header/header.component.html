@@ -1,37 +1,32 @@
-<mat-toolbar color="primary" >
-    <mat-toolbar-row>
-        <div class="box">
-            <button mat-icon-button (click)="onMenuToggleDispatch()">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <span>TRACY</span>
-        </div>
-
-        <div class="push">
-            <ul class="navegacion">
-                <li><a routerLink="/" *ngIf="usuario!=null" (click) = "logout()">Logout</a></li>
-                <li><a routerLink="/auth/login" *ngIf="usuario==null">Login </a></li>
-                <li><a routerLink="/"  >Home</a></li>
-                <li>
-
-                    <div class="contenedor">
-                        <mat-card class="mat-card" *ngIf="usuario!=null">
-                          <mat-card-header class="mat-card-header">
-                            <div mat-card-avatar class="mat-card-avatar">
-                                <img mat-card-image src="{{usuario!.foto}}" class="mat-card-image circular">
-                            </div>
-                            <div class="mat-card-header-text">
-                                <mat-card-title class="mat-card-title">{{usuario!.nombre}} {{usuario!.paterno}}</mat-card-title>
-                                <mat-card-subtitle class="mat-card-subtitle">{{usuario!.email}}</mat-card-subtitle>
-                            </div>
-                          </mat-card-header>
-                        </mat-card>
-                      </div>
-
-
-                </li>
-            </ul>
-
-        </div>
-    </mat-toolbar-row>
+<mat-toolbar color="primary">
+    <button mat-icon-button  matTooltip="Menu" (click)="onMenuToggleDispatch()">
+        <mat-icon>menu</mat-icon>
+    </button>
+    <span>TRACY</span>
+    <span class="toolbar-item-spacer"></span>
+    <button mat-icon-button matTooltip="Ingresar" routerLink="/auth/login" *ngIf="usuario==null" >
+        <mat-icon>login</mat-icon>
+    </button>
+    <button mat-icon-button matTooltip="Salir" routerLink="/" *ngIf="usuario!=null" (click) = "logout()">
+        <mat-icon>logout</mat-icon>
+    </button>
+ 
+    <button mat-icon-button matTooltip="Mi cuenta" [matMenuTriggerFor]="userAccountMenu" *ngIf="usuario!=null">
+        <img  class="images" src="{{usuario!.foto}}" width="40px" class="circular" />
+    </button>
+    <mat-menu #userAccountMenu [overlapTrigger]="false" yPosition="below">
+        <button mat-menu-item routerLink="#">
+            <mat-icon>person</mat-icon><span>Mis datos</span>
+        </button>
+        <button mat-menu-item routerLink="#">
+            <mat-icon>settings</mat-icon><span>Ajustes</span>
+        </button>
+        <button mat-menu-item routerLink="#">
+            <mat-icon>help</mat-icon><span>Ayuda</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item routerLink="/" (click) = "logout()" >
+            <mat-icon>exit_to_app</mat-icon>Salir
+        </button>
+    </mat-menu>
 </mat-toolbar>

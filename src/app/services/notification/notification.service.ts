@@ -9,7 +9,7 @@ constructor(private snackBar: MatSnackBar) { }
 
 error(message: string): void {
   this.snackBar.openFromComponent(NotificationComponent, {
-    duration: 4000,
+    duration: 3000,
     data: { message },
     panelClass: ['error-snackbar']
   });
