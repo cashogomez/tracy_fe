@@ -5,6 +5,7 @@ import { WelcomeRoutingModule } from './welcome-routing.module';
 import { WelcomeComponent } from './welcome.component';
 
 import { MatCardModule} from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import { MatCardModule} from '@angular/material/card';
   imports: [
     CommonModule,
     WelcomeRoutingModule,
-    MatCardModule
+    MatCardModule,
+    MatDividerModule, 
   ]
 })
 export class WelcomeModule { }

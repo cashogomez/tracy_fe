@@ -13,43 +13,49 @@
         <form #f="ngForm" (ngSubmit)="registrarUsuario(f)">
 
             <mat-form-field>
-                <mat-label>Ingrese Nombre</mat-label>
-                <input type="tex" matInput placeholder="Ingrese Nombre" name="nombre" ngModel required>
+                <mat-label>Nombre</mat-label>
+                <input type="tex" matInput placeholder="Nombre" name="nombre" ngModel required>
                 <mat-error>Debe ingresar un nombre</mat-error>
             </mat-form-field>
 
             <mat-form-field>
-                <mat-label>Ingrese Apellido Paterno</mat-label>
-                <input type="tex" matInput placeholder="Ingrese Apellido Paterno" name="paterno" ngModel required>
+                <mat-label>Apellido Paterno</mat-label>
+                <input type="tex" matInput placeholder="Apellido Paterno" name="paterno" ngModel required>
                 <mat-error>Debe ingresar apellido paterno</mat-error>
             </mat-form-field>
 
             <mat-form-field>
-                <mat-label>Ingrese Apellido Materno</mat-label>
-                <input type="tex" matInput placeholder="Ingrese Apellido Materno" name="materno" ngModel required>
+                <mat-label>Apellido Materno</mat-label>
+                <input type="tex" matInput placeholder="Apellido Materno" name="materno" ngModel required>
                 <mat-error>Debe ingresar un apellido materno</mat-error>
             </mat-form-field>
 
             <mat-form-field>
-                <mat-label>Ingrese username</mat-label>
-                <input type="tex" matInput placeholder="Ingrese Username" name="username" ngModel required>
+                <mat-label>Username</mat-label>
+                <input type="tex" matInput placeholder="Username" name="username" ngModel required>
                 <mat-error>Debe ingresar un username</mat-error>
             </mat-form-field>
 
             <mat-form-field>
-                <mat-label>Ingrese número telefónico</mat-label>
-                <input type="tex" matInput placeholder="Ingrese teléfono" name="telefono" ngModel required>
+                <mat-label>Número telefónico</mat-label>
+                <input type="tex" matInput placeholder="Teléfono" name="telefono" ngModel required>
                 <mat-error>Debe ingresar un número telefónico</mat-error>
             </mat-form-field>
 
             <mat-form-field>
-                <mat-label>Ingrese E-Mail</mat-label>
+                <mat-label>E-Mail</mat-label>
                 <input type="email" matInput placeholder="E-Mail" name="email" ngModel required>
                 <mat-error>Debe ingresar un E-Mail</mat-error>
             </mat-form-field>
 
             <mat-form-field>
-                <mat-label>Ingrese Password</mat-label>
+                <mat-label>Empresa</mat-label>
+                <input type="tex" matInput placeholder="Empresa" name="empresa" ngModel required>
+                <mat-error>Debe ingresar la empresa a la que pertenece</mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Password</mat-label>
                 <input type="password" matInput placeholder="Password" name="password" ngModel required minlength="7">
                 <mat-error>El password debe tener más de 7 caracteres</mat-error>
             </mat-form-field>
@@ -60,8 +66,38 @@
                 <mat-error>El password debe tener más de 7 caracteres</mat-error>
             </mat-form-field>
 
+            <mat-form-field>
+                <mat-label>Puesto</mat-label>
+                <mat-select (selectionChange)="changePuesto($event.value)">
+                  <mat-option *ngFor="let x of puesto; let i = index" [value]="puesto[i].name">{{puesto[i].name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Área de trabajo</mat-label>
+                <mat-select (selectionChange)="changeArea($event.value)">
+                  <mat-option *ngFor="let x of area; let i = index" [value]="area[i].name">{{area[i].name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+
+            <mat-divider vertical style="height:20px"></mat-divider>
+
+            <mat-chip-listbox aria-label="Nivel de usuario">
+                <mat-chip-option color="primary-ligth">Activo</mat-chip-option>
+                <mat-chip-option color="primary">Staff</mat-chip-option>
+                <mat-chip-option color="accent" selected>Administrador</mat-chip-option>
+                <mat-chip-option color="warn">Super Usuario</mat-chip-option>
+            </mat-chip-listbox>
+
+            <mat-divider vertical style="height:30px"></mat-divider>
+
             <button mat-raised-button color="primary" type="submit">Enviar</button>
         </form>
     </mat-card-content>
     </mat-card>
 </section>
+
+
+
+  

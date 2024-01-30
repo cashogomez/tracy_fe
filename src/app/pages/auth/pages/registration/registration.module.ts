@@ -11,7 +11,9 @@ import { MatInputModule } from '@angular/material/input';
 import { RegistrationComponent } from './registration.component';
 import { PopupsModule } from '@app/shared/popups';
 import { NgOptimizedImage } from '@angular/common'
-
+import {MatSelectModule} from '@angular/material/select';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDividerModule } from '@angular/material/divider';
 
 
 @NgModule({
@@ -28,7 +30,10 @@ import { NgOptimizedImage } from '@angular/common'
     MatCardModule,
     MatInputModule,
     PopupsModule,
-    NgOptimizedImage
+    NgOptimizedImage,
+    MatSelectModule,
+    MatChipsModule,
+    MatDividerModule, 
   ]
 })
 export class RegistrationModule { }
