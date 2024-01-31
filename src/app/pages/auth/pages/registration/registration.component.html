@@ -90,10 +90,9 @@
             <mat-divider vertical style="height:20px"></mat-divider>
 
             <section class="example-section" >
-                <label class="example-margin">Nivel de acceso:</label>
-                <mat-radio-group [(ngModel)]="labelPosition" name="something" >
-                  <mat-radio-button class="example-margin" *ngFor="let x of labelPosition; let i = index"  [value]="x">{{x}}</mat-radio-button>
-                  
+                <label >Nivel de acceso:</label>
+                <mat-radio-group [(ngModel)]="selectedRadio" name="radioOpt1" (change)="radioButtonChange($event)" >
+                  <mat-radio-button  *ngFor="let permiso of permisos"  [value]="permiso"  >{{permiso}}</mat-radio-button>
                 </mat-radio-group>
               </section>
 
