@@ -11,6 +11,7 @@ export interface User {
     telefono: string;
     foto: string;
     response: string;
+    numeroEmpledo: string,
     puesto : Puesto,
     area : AreaTrabajo,
     empresa_id : string,

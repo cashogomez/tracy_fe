@@ -12,8 +12,10 @@ import { RegistrationComponent } from './registration.component';
 import { PopupsModule } from '@app/shared/popups';
 import { NgOptimizedImage } from '@angular/common'
 import {MatSelectModule} from '@angular/material/select';
-import { MatChipsModule } from '@angular/material/chips';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
+import {MatRadioModule} from '@angular/material/radio';
+
 
 
 @NgModule({
@@ -32,8 +34,9 @@ import { MatDividerModule } from '@angular/material/divider';
     PopupsModule,
     NgOptimizedImage,
     MatSelectModule,
-    MatChipsModule,
+    MatCheckboxModule,
     MatDividerModule, 
+    MatRadioModule,
   ]
 })
 export class RegistrationModule { }

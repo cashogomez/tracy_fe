@@ -10,7 +10,7 @@
         <button mat-button appFilesUpload [multiple]="true" (changed)="onFilesChanged($event)">Subir Imagen</button>
         <mat-card-content>
 
-        <form #f="ngForm" (ngSubmit)="registrarUsuario(f)">
+        <form #f="ngForm" (ngSubmit)="registrarUsuario(f)" >
 
             <mat-form-field>
                 <mat-label>Nombre</mat-label>
@@ -55,6 +55,12 @@
             </mat-form-field>
 
             <mat-form-field>
+                <mat-label>Número de Empleado</mat-label>
+                <input type="tex" matInput placeholder="Numero de Empleado" name="noempleado" ngModel required>
+                <mat-error>Debe ingresar la empresa a la que pertenece</mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
                 <mat-label>Password</mat-label>
                 <input type="password" matInput placeholder="Password" name="password" ngModel required minlength="7">
                 <mat-error>El password debe tener más de 7 caracteres</mat-error>
@@ -83,12 +89,13 @@
 
             <mat-divider vertical style="height:20px"></mat-divider>
 
-            <mat-chip-listbox aria-label="Nivel de usuario">
-                <mat-chip-option color="primary-ligth">Activo</mat-chip-option>
-                <mat-chip-option color="primary">Staff</mat-chip-option>
-                <mat-chip-option color="accent" selected>Administrador</mat-chip-option>
-                <mat-chip-option color="warn">Super Usuario</mat-chip-option>
-            </mat-chip-listbox>
+            <section class="example-section" >
+                <label class="example-margin">Nivel de acceso:</label>
+                <mat-radio-group [(ngModel)]="labelPosition" name="something" >
+                  <mat-radio-button class="example-margin" *ngFor="let x of labelPosition; let i = index"  [value]="x">{{x}}</mat-radio-button>
+                  
+                </mat-radio-group>
+              </section>
 
             <mat-divider vertical style="height:30px"></mat-divider>
 

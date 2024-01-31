@@ -6,6 +6,8 @@ import * as fromUser from '@app/store/user';
 import { Observable } from 'rxjs';
 import { Puesto } from '@app/models/backend/puesto';
 import { AreaTrabajo } from '@app/models/backend/area';
+import { ThemePalette } from '@angular/material/core';
+
 
 @Component({
   selector: 'app-registration',
@@ -26,7 +28,10 @@ export class RegistrationComponent implements OnInit {
     {name:"Cirujano"},
     {name:"Anestesiologo"},
   ];
-
+  labelPosition = ['usuario' , 'staff' , 'administrador' , 'superusuario'];
+  checked = false;
+  indeterminate = false;
+  disabled = false;
   puestoElegido !: Puesto;
   areaElegida !: AreaTrabajo;
 
@@ -69,6 +74,7 @@ export class RegistrationComponent implements OnInit {
       puesto : this.puestoElegido,
       area : this.areaElegida,
       empresa_id : form.value.empresa,
+      numeroEmpledo: form.value.noempleado,
       is_admin : false,
       is_active : true,
       is_staff : true,
