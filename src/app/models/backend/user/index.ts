@@ -12,8 +12,8 @@ export interface User {
     foto: string;
     response: string;
     numeroEmpledo: string,
-    puesto : Puesto,
-    area : AreaTrabajo,
+    puesto : number,
+    area : number,
     empresa_id : string,
     is_admin : boolean,
     is_active : boolean,

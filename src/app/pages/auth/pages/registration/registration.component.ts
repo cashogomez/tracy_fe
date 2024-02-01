@@ -8,7 +8,8 @@ import { Puesto } from '@app/models/backend/puesto';
 import { AreaTrabajo } from '@app/models/backend/area';
 import { ThemePalette } from '@angular/material/core';
 import { MatRadioChange } from '@angular/material/radio';
-
+import { PuestoService } from '@app/services/puesto/puesto.service';
+import { AreatrabajoService  } from '@app/services/AreaTrabajo/areatrabajo.service';
 
 @Component({
   selector: 'app-registration',
@@ -19,16 +20,8 @@ import { MatRadioChange } from '@angular/material/radio';
 export class RegistrationComponent implements OnInit {
   loading$ !: Observable<boolean | null>;
   foto : string ="/assets/generales/silueta.jpg";
-  area = [
-    {name:"Ceye"},
-    {name:"Quirófano"},
-    {name:"Urgencias"},
-  ];
-  puesto= [
-    {name:"Enfermero"},
-    {name:"Cirujano"},
-    {name:"Anestesiologo"},
-  ];
+  area: AreaTrabajo[]=[];
+  puesto: Puesto[] = [];
   permisos = [
     'usuario' , 
     'staff', 
@@ -43,30 +36,39 @@ export class RegistrationComponent implements OnInit {
   is_staff : boolean = false;
   is_admin : boolean = false;
   is_superuser : boolean = false;
+  puesto_id : number = 0;
+  area_id : number = 0;
 
 
-  constructor(private store: Store<fromRoot.State>) {
+  constructor(
+      private store: Store<fromRoot.State>, 
+      private puestoService : PuestoService, 
+      private areatrabajoService: AreatrabajoService 
+    ) 
+    {
     
   }
   ngOnInit(): void {
+    this.puestoService.listaPuestos().subscribe(data => {
+      this.puesto = data;
+    });
+    this.areatrabajoService.listaAreasTrabajo().subscribe(data => {
+      this.area = data;
+    })
   }
-  changePuesto(valor: string){
-    this.puestoElegido = {
-      tipo: valor,
+  changePuesto(valor: Puesto){
+    this.puestoElegido = valor;
+    if (this.puestoElegido != null) {
+      this.puesto_id = this.puestoElegido.id;
     }
-    console.log(valor);
+    //console.log(this.puestoElegido);
       //this.puestoElegido =  valor;
       //console.log(this.puestoElegido);
   }
-  changeArea(valor: string){
-    this.areaElegida = {
-      tipo: 'interna',
-      nombre: valor
-
-    }
-    
-    console.log(valor);
-    //this.areaElegida = valor;
+  
+changeArea(valor: AreaTrabajo) { 
+    this.areaElegida = valor;
+    this.area_id = this.areaElegida.id;
 }
 radioButtonChange(data: MatRadioChange) {
   switch (this.selectedRadio)
@@ -99,7 +101,7 @@ radioButtonChange(data: MatRadioChange) {
         alert('Default case');
         break;
   }
-  console.log(this.selectedRadio)
+  //console.log(this.selectedRadio)
 }
   registrarUsuario(form: NgForm){
     const userRegistrationRequest: fromUser.UserCreateRequest = {
@@ -113,8 +115,8 @@ radioButtonChange(data: MatRadioChange) {
       password2: form.value.passwordConfirme,
       foto: this.foto,
       response: '',
-      puesto : this.puestoElegido,
-      area : this.areaElegida,
+      puesto : this.puesto_id,
+      area : this.area_id,
       empresa_id : form.value.empresa,
       numeroEmpledo: form.value.noempleado,
       is_admin : this.is_admin,

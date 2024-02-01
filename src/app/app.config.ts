@@ -20,7 +20,7 @@ import {
 } from '@angular/fire/analytics';
 
 import { environment } from '@src/environments/environment';
-import { NotificationModule } from './services';
+import { NotificationModule, PuestoService } from './services';
 import { State, provideStore } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
@@ -29,10 +29,6 @@ import { EffectsModule } from '@ngrx/effects';
 import { reducers, effects} from './store';
 import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 import { AuthService } from '@app/services/auth/auth.service';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import {
-  TokenInterceptor, ErrorInterceptor
-} from './services/token/token.interceptor';
 
 const StoreDevTools = !environment.production ? StoreDevtoolsModule.instrument({maxAge: 50}) : [];
 
@@ -66,15 +62,6 @@ export const appConfig: ApplicationConfig = {
     provideStore(),
     provideHttpClient(withFetch()),
     AuthService,
-  // {
-  //   provide: HTTP_INTERCEPTORS,
-  //   useClass: TokenInterceptor,
-  //   multi: true
-  // },
-  // {
-  //   provide: HTTP_INTERCEPTORS,
-  //   useClass: ErrorInterceptor,
-  //   multi: true
-  // }
+    PuestoService
 ]
 };

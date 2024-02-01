@@ -75,14 +75,14 @@
             <mat-form-field>
                 <mat-label>Puesto</mat-label>
                 <mat-select (selectionChange)="changePuesto($event.value)">
-                  <mat-option *ngFor="let x of puesto; let i = index" [value]="puesto[i].name">{{puesto[i].name}}</mat-option>
+                  <mat-option *ngFor="let x of puesto; let i = index" [value]="puesto[i]">{{puesto[i].tipo}}</mat-option>
                 </mat-select>
             </mat-form-field>
 
             <mat-form-field>
                 <mat-label>Área de trabajo</mat-label>
                 <mat-select (selectionChange)="changeArea($event.value)">
-                  <mat-option *ngFor="let x of area; let i = index" [value]="area[i].name">{{area[i].name}}</mat-option>
+                  <mat-option *ngFor="let x of area; let i = index" [value]="area[i]">{{area[i].tipo}}</mat-option>
                 </mat-select>
             </mat-form-field>
 
