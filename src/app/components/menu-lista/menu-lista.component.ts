@@ -63,5 +63,8 @@ export class MenuListaComponent implements OnInit{
         this.usuario = JSON.parse(JSON.stringify(s.entity));   
     });
   }
+  onMenuToggleDispatch(): void {
+    this.menuToggle.emit();
+  }
 
 }

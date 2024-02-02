@@ -13,8 +13,57 @@ const routes: Routes = [
   {
     path: 'about',
     loadChildren: () => import('./pages/about/about.module').then(m => m.AboutModule)
-  }
+  },
+  {
+    path: 'recepcionquirofano',
+    loadChildren: () => import('./pages/recepcionquirofano/recepcionquirofano.module').then(m => m.RecepcionquirofanoModule)
+  },
+  {
+    path: 'recepcionotrasareas',
+    loadChildren: () => import('./pages/recepcionotrasareas/recepcionotrasareas.module').then(m => m.RecepcionotrasareasModule)
+  },
+  {
+    path: 'recepcionproveedorexterno',
+    loadChildren: () => import('./pages/recepcionproveedorexterno/recepcionproveedorexterno.module').then(m => m.RecepcionproveedorexternoModule)
+  },
+  {
+    path: 'lavadomanual',
+    loadChildren: () => import('./pages/lavadomanual/lavadomanual.module').then(m => m.LavadomanualModule)
+  },
+  {
+    path: 'lavadomaquina',
+    loadChildren: () => import('./pages/lavadomaquina/lavadomaquina.module').then(m => m.LavadomaquinaModule)
+  },
+  {
+    path: 'empaquequirofano',
+    loadChildren: () => import('./pages/empaquequirofano/empaquequirofano.module').then(m => m.EmpaquequirofanoModule)
+  },
+  {
+    path: 'empaqueotrasareas',
+    loadChildren: () => import('./pages/empaqueotrasareas/empaqueotrasareas.module').then(m => m.EmpaqueotrasareasModule)
+  },
+  {
+    path: 'esterilizacion',
+    loadChildren: () => import('./pages/esterilizacion/esterilizacion.module').then(m => m.EsterilizacionModule)
+  },
+  {
+    path: 'almacengeneral',
+    loadChildren: () => import('./pages/almacengeneral/almacengeneral.module').then(m => m.AlmacengeneralModule)
+  },
+  {
+    path: 'distribucionquirofano',
+    loadChildren: () => import('./pages/distribucionquirofano/distribucionquirofano.module').then(m => m.DistribucionquirofanoModule)
+  },
+  {
+    path: 'distribucionotrasareas',
+    loadChildren: () => import('./pages/distribucionotrasareas/distribucionotrasareas.module').then(m => m.DistribucionotrasareasModule)
+  },
+  {
+    path: 'qrbusqueda',
+    loadChildren: () => import('./pages/qrbusqueda/qrbusqueda.module').then(m => m.QRbusquedaModule)
+  },
 ];
+
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

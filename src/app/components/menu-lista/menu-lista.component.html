@@ -1,4 +1,4 @@
-<mat-sidenav-container class="app-container">
+<mat-sidenav-container class="app-container" >
     <mat-nav-list>
 
         <mat-list-item routerLink="#">
@@ -10,13 +10,13 @@
                 <mat-icon>receipt</mat-icon> Recepción de Material
             </mat-expansion-panel-header>
             <mat-nav-list>
-                <a mat-list-item routerLink="#">
+                <a mat-list-item routerLink="static/recepcionquirofano" (click)="onMenuToggleDispatch()" >
                     <span>Quirófano</span>
                 </a>
-                <a mat-list-item routerLink="#">
+                <a mat-list-item routerLink="static/recepcionotrasareas" (click)="onMenuToggleDispatch()">
                     <span>Otras Áreas</span>
                 </a>
-                <a mat-list-item routerLink="#">
+                <a mat-list-item routerLink="static/recepcionproveedorexterno" (click)="onMenuToggleDispatch()" >
                     <span>Proveedor Externo</span>
                 </a>
             </mat-nav-list>
@@ -27,10 +27,10 @@
                 <mat-icon> local_drink</mat-icon> Lavado
             </mat-expansion-panel-header>
             <mat-nav-list>
-                <a mat-list-item routerLink="#">
+                <a mat-list-item routerLink="static/lavadomanual" (click)="onMenuToggleDispatch()">
                     <span>Manual</span>
                 </a>
-                <a mat-list-item routerLink="#">
+                <a mat-list-item routerLink="static/lavadomaquina"  (click)="onMenuToggleDispatch()">
                     <span>Máquinas</span>
                 </a>
             </mat-nav-list>
@@ -42,8 +42,8 @@
                 <mat-icon>inbox</mat-icon> Empaque
             </mat-expansion-panel-header>
             <mat-nav-list>
-                <a mat-list-item routerLink="#">Quirófano y CEYE</a>
-                <a mat-list-item routerLink="#">Otras Áreas o proveedor</a>
+                <a mat-list-item routerLink="static/empaquequirofano" (click)="onMenuToggleDispatch()" >Quirófano y CEYE</a>
+                <a mat-list-item routerLink="static/empaqueotrasareas"  (click)="onMenuToggleDispatch()" >Otras Áreas o proveedor</a>
             </mat-nav-list>
         </mat-expansion-panel>
 
@@ -52,7 +52,7 @@
                 <mat-icon> border_clear</mat-icon> Esterilización
             </mat-expansion-panel-header>
             <mat-nav-list>
-                <a mat-list-item routerLink="#">Esterilización</a>
+                <a mat-list-item routerLink="static/esterilizacion" (click)="onMenuToggleDispatch()" >Esterilización</a>
             </mat-nav-list>
         </mat-expansion-panel>
 
@@ -61,7 +61,7 @@
                 <mat-icon>storage</mat-icon> Almacenamiento
             </mat-expansion-panel-header>
             <mat-nav-list>
-                <a mat-list-item routerLink="#">Almacén General</a>
+                <a mat-list-item routerLink="static/almacengeneral" (click)="onMenuToggleDispatch()" >Almacén General</a>
             </mat-nav-list>
         </mat-expansion-panel>
 
@@ -70,10 +70,10 @@
                 <mat-icon> zoom_out_map</mat-icon> Distribución de Material
             </mat-expansion-panel-header>
             <mat-nav-list>
-                <a mat-list-item routerLink="#">Quirófano y CEYE</a>
+                <a mat-list-item routerLink="static/distribucionquirofano" (click)="onMenuToggleDispatch()" >Quirófano y CEYE</a>
             </mat-nav-list>
             <mat-nav-list>
-                <a mat-list-item routerLink="#">Otras Áreas o proveedor</a>
+                <a mat-list-item routerLink="static/distribucionotrasareas" (click)="onMenuToggleDispatch()" >Otras Áreas o proveedor</a>
             </mat-nav-list>
         </mat-expansion-panel>
 
@@ -82,7 +82,7 @@
                 <mat-icon>blur_on</mat-icon> Código QR
             </mat-expansion-panel-header>
             <mat-nav-list>
-                <a mat-list-item routerLink="#">Búsqueda</a>
+                <a mat-list-item routerLink="static/qrbusqueda" (click)="onMenuToggleDispatch()" >Búsqueda</a>
             </mat-nav-list>
         </mat-expansion-panel>
 
@@ -100,7 +100,7 @@
                 <mat-icon>gps_fixed</mat-icon> Acerca de TRACY
             </mat-expansion-panel-header>
             <mat-nav-list>
-                <a mat-list-item routerLink="static/about">Información General</a>
+                <a mat-list-item routerLink="static/about" (click)="onMenuToggleDispatch()" >Información General</a>
             </mat-nav-list>
         </mat-expansion-panel>
 
