@@ -30,6 +30,9 @@ export class UserEffects {
                 this.authService.signUp(userData)
                     .pipe(
                         tap((response: UserResponse) => {
+                            console.log('+++++++++++++++');
+                            console.log(userData)
+                            console.log('+++++++++++++++');
                             localStorage.setItem('token', response.token.access);
                             this.router.navigate(['/']);
                             this.notification.success("¡El usuario se registró correctamente!");

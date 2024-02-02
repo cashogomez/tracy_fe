@@ -46,7 +46,6 @@ export class RegistrationComponent implements OnInit {
       private areatrabajoService: AreatrabajoService 
     ) 
     {
-    
   }
   ngOnInit(): void {
     this.puestoService.listaPuestos().subscribe(data => {
@@ -115,18 +114,19 @@ radioButtonChange(data: MatRadioChange) {
       password2: form.value.passwordConfirme,
       foto: this.foto,
       response: '',
-      puesto : this.puesto_id,
-      area : this.area_id,
+      puesto : this.puesto_id.toString(),
+      area : this.area_id.toString(),
       empresa_id : form.value.empresa,
-      numeroEmpledo: form.value.noempleado,
-      is_admin : this.is_admin,
-      is_active : this.is_active,
-      is_staff : this.is_staff,
-      is_superadmin : this.is_superuser,
+      numeroEmpleado: form.value.noempleado,
+      is_admin : this.is_admin.toString(),
+      is_active : this.is_active.toString(),
+      is_staff : this.is_staff.toString(),
+      is_superadmin : this.is_superuser.toString(),
 
     };
+    console.log('***********************');
     console.log(userRegistrationRequest);
-    console.log(userRegistrationRequest.foto);
+    console.log('****************************');
     this.store.dispatch(new fromUser.SignUpEmail(userRegistrationRequest));
   }
   onFilesChanged(urls: string | string[]): void {
