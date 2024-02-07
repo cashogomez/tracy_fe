@@ -16,7 +16,7 @@ const routes: Routes = [
   },
   {
     path: 'recepcionquirofano',
-    loadChildren: () => import('./pages/recepcionquirofano/recepcionquirofano.module').then(m => m.RecepcionquirofanoModule)
+    loadComponent: () => import('./pages/recepcionquirofano/recepcionquirofano.component').then((m) => m.RecepcionquirofanoComponent),
   },
   {
     path: 'recepcionotrasareas',
@@ -61,6 +61,14 @@ const routes: Routes = [
   {
     path: 'qrbusqueda',
     loadChildren: () => import('./pages/qrbusqueda/qrbusqueda.module').then(m => m.QRbusquedaModule)
+  },
+  {
+    path: 'quirofanoinformacion',
+    loadChildren: () => import('./pages/quirofanoinformacion/quirofanoinformacion.module').then(m => m.QuirofanoinformacionModule)
+  },
+  {
+    path: 'quirofanocreacion',
+    loadChildren: () => import('./pages/quirofanocreacion/quirofanocreacion.module').then(m => m.QuirofanocreacionModule)
   },
 ];
 

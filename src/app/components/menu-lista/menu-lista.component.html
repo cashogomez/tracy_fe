@@ -1,8 +1,8 @@
 <mat-sidenav-container class="app-container" >
     <mat-nav-list>
 
-        <mat-list-item routerLink="#">
-            <span></span><img class="images" src="./assets/generales/Logo_nutricion.png" width="45px" />
+        <mat-list-item routerLink="/">
+            <span></span><img class="images" src="./assets/generales/Logo_nutricion.png" width="45px"  (click)="onMenuToggleDispatch()"  />
         </mat-list-item>
 
         <mat-expansion-panel [class.mat-elevation-z0]="true" *ngIf="usuario!=null"> 
@@ -88,16 +88,28 @@
 
         <mat-expansion-panel [class.mat-elevation-z0]="true" *ngIf="usuario!=null">
             <mat-expansion-panel-header>
-                <mat-icon>gps_fixed</mat-icon> Administrador
+                <mat-icon>health_and_safety</mat-icon> Quirófano
             </mat-expansion-panel-header>
             <mat-nav-list>
-                <a mat-list-item routerLink="auth/registration">Nuevo Usuario</a>
+                <a mat-list-item routerLink="static/quirofanoinformacion" (click)="onMenuToggleDispatch()" > <mat-icon> medical_information</mat-icon> Programación de Cirugía </a>
+            </mat-nav-list>
+            <mat-nav-list>
+                <a mat-list-item routerLink="static/quirofanocreacion" (click)="onMenuToggleDispatch()" > <mat-icon>  dataset </mat-icon> Creación de Set's</a>
+            </mat-nav-list>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [class.mat-elevation-z0]="true" *ngIf="usuario!=null">
+            <mat-expansion-panel-header>
+                <mat-icon>settings</mat-icon> Administrador
+            </mat-expansion-panel-header>
+            <mat-nav-list>
+                <a mat-list-item routerLink="auth/registration" (click)="onMenuToggleDispatch()" >Nuevo Usuario</a>
             </mat-nav-list>
         </mat-expansion-panel>
 
         <mat-expansion-panel [class.mat-elevation-z0]="true">
             <mat-expansion-panel-header>
-                <mat-icon>gps_fixed</mat-icon> Acerca de TRACY
+                <mat-icon>info</mat-icon> Acerca de TRACY
             </mat-expansion-panel-header>
             <mat-nav-list>
                 <a mat-list-item routerLink="static/about" (click)="onMenuToggleDispatch()" >Información General</a>

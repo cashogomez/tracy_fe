@@ -11,12 +11,13 @@ import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
 import 'moment/locale/ja';
 import 'moment/locale/fr';
 import 'moment/locale/es';
+
 import { from } from 'rxjs';
 import { DynamicDialogService } from '@app/services/emergente/emergente.service';
-import { MatDividerModule } from '@angular/material/divider';
+import { MatDivider } from '@angular/material/divider';
 
 @Component({
-  selector: 'app-recepcionquirofano',
+  selector: 'app-quirofanoinformacion',
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'es-ES'},
     provideMomentDateAdapter(),
@@ -29,12 +30,12 @@ import { MatDividerModule } from '@angular/material/divider';
     MatSortModule, 
     MatPaginatorModule,
     MatDatepickerModule,
-    MatDividerModule
+    MatDivider
   ],
-  templateUrl: './recepcionquirofano.component.html',
-  styleUrl: './recepcionquirofano.component.scss'
+  templateUrl: './quirofanoinformacion.component.html',
+  styleUrl: './quirofanoinformacion.component.scss'
 })
-export class RecepcionquirofanoComponent implements AfterViewInit, OnInit {
+export class QuirofanoinformacionComponent {
 
   private lazyLoadBeta$ = from(
     import('@app/services/emergente/components/mensajecontinuar/mensajecontinuar.component').then(
@@ -102,7 +103,6 @@ export class RecepcionquirofanoComponent implements AfterViewInit, OnInit {
   }
 
 }
-
 
 
 /** Constants used to fill up our data base. */

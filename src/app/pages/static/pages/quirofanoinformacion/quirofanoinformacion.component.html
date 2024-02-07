@@ -1,12 +1,12 @@
-<H2 align="center">Título de la página</H2>
+ <!------------------------------ INICIO DE ENCABEZADO -------------------------------->
+<h2 align="center">PROGRAMACIÓN DE CIRUGÍA</h2>
 
 <div class="container">
   <div class="line"><mat-divider></mat-divider></div>
   <div class="text mat-typography">Visualización de datos</div>
   <div class="line"><mat-divider></mat-divider></div>
 </div>
-
-<H4 align="start">Tema del módulo</H4> 
+<H4 align="start">Tema del módulo</H4>
 <p align="end"> 
   <mat-form-field >
     <mat-label>Elige la fecha</mat-label>
@@ -19,7 +19,9 @@
   <button mat-raised-button  color="primary">Generar Reporte</button>
   <button mat-raised-button  color="accent">Nueva Recepción</button>
 </p>
-<mat-form-field>
+
+ <!------------------------------ FIN DE ENCABEZADO -------------------------------->
+ <mat-form-field>
     <mat-label>Filter</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input> 
   </mat-form-field>
@@ -60,9 +62,7 @@
         </button>
       </td>
     </ng-container>
-    
-   
-  
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   
