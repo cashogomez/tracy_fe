@@ -15,13 +15,13 @@
         <img  class="images" src="{{usuario!.foto}}" width="40px" class="circular" />
     </button>
     <mat-menu #userAccountMenu [overlapTrigger]="false" yPosition="below">
-        <button mat-menu-item routerLink="#">
+        <button mat-menu-item routerLink="auth/edition">
             <mat-icon>person</mat-icon><span>Mis datos</span>
         </button>
-        <button mat-menu-item routerLink="#">
+        <button mat-menu-item routerLink="auth/edition">
             <mat-icon>settings</mat-icon><span>Ajustes</span>
         </button>
-        <button mat-menu-item routerLink="#">
+        <button mat-menu-item routerLink="static/about">
             <mat-icon>help</mat-icon><span>Ayuda</span>
         </button>
         <mat-divider></mat-divider>

@@ -1,7 +1,7 @@
-<div mat-dialog-title>Mensaje</div>
+<div mat-dialog-title>Advertencia</div>
 
 <div mat-dialog-content>
-  This dialog allows other components to be injected into this space:
+ <!-- This dialog allows other components to be injected into this space: -->
 
   <div class="injection-space" *ngIf="!!dynamicComponents$">
     <ng-container
@@ -10,11 +10,11 @@
   </div>
 </div>
 
-<div mat-dialog-actions>
-  <button mat-flat-button color="accent" [mat-dialog-close]>
-    Rechazar!
+<div mat-dialog-actions align="center" >
+  <button mat-flat-button color="accent" [mat-dialog-close]="false" class="button-text">
+    Cancelar
   </button>
-  <button mat-flat-button color="accent" [mat-dialog-close]>
-    Aceptar!
+  <button mat-flat-button color="accent" [mat-dialog-close]="true" class="button-text">
+    Aceptar
   </button>
 </div>

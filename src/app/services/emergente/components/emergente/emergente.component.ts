@@ -20,5 +20,9 @@ export class EmergenteComponent {
   constructor(
     public dialogRef: MatDialogRef<EmergenteComponent>,
     @Inject(MAT_DIALOG_DATA) public dynamicComponents$: Observable<any>
-  ) {}
+  ) {
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
 }

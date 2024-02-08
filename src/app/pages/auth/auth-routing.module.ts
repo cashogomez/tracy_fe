@@ -11,6 +11,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/registration/registration.module').then(m=>m.RegistrationModule)
   },
   {
+    path: 'edition',
+    loadChildren: () => import('./pages/edition/edition.module').then(m=>m.EditionModule)
+  },
+  {
     path: '**',
     pathMatch: 'full',
     redirectTo: 'login'
