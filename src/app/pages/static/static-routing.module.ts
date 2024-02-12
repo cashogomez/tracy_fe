@@ -64,11 +64,15 @@ const routes: Routes = [
   },
   {
     path: 'quirofanoinformacion',
-    loadChildren: () => import('./pages/quirofanoinformacion/quirofanoinformacion.module').then(m => m.QuirofanoinformacionModule)
+    loadComponent: () => import('./pages/quirofanoinformacion/quirofanoinformacion.component').then(m => m.QuirofanoinformacionComponent)
   },
   {
     path: 'quirofanocreacion',
     loadChildren: () => import('./pages/quirofanocreacion/quirofanocreacion.module').then(m => m.QuirofanocreacionModule)
+  },
+  {
+    path: 'programacioncirugia',
+    loadComponent: () => import('./pages/programacioncirugia/programacioncirugia.component').then((m) => m.ProgramacioncirugiaComponent),
   },
 ];
 

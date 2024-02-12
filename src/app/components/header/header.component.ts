@@ -9,14 +9,20 @@ import { UserResponse } from '@app/store/user';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '@app/store';
 import * as fromUser from '@app/store/user';
-import { concatAll } from 'rxjs';
-
+import { Observable, map} from 'rxjs';
+import { interval, takeUntil, timer } from 'rxjs';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterModule, Routes }   from '@angular/router';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatListModule } from '@angular/material/list';
+import { DATE_PIPE_DEFAULT_OPTIONS } from "@angular/common";
+import localeEs from '@angular/common/locales/es';
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localeEs, 'es');
+import { LOCALE_ID } from '@angular/core';
+import { IntervalRunner, IntervalRunnerOptions } from '@app/services/tiempo/tiempo.service';
 
 @Component({
   selector: 'app-header',
@@ -37,9 +43,18 @@ import { MatListModule } from '@angular/material/list';
     MatExpansionModule,
     MatListModule,
   ],
+  providers: [
+    {provide: LOCALE_ID, useValue: 'es-MX' },
+    {
+      provide: DATE_PIPE_DEFAULT_OPTIONS,
+      useValue: { dateFormat: "longDate" },
+    },
+    IntervalRunner
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
+
 export class HeaderComponent implements OnInit {
   @Output() menuToggle = new EventEmitter<void>();
   // usuario: UserResponse | null ={
@@ -56,17 +71,19 @@ export class HeaderComponent implements OnInit {
   //   }
   // };
   usuario: UserResponse | null = null;
-
-  constructor(private store: Store<fromRoot.State>, private router: Router) {
-    
-  }
+  fechaActual !: Observable<any>
+  fecha : Date = new Date();
+  message: Date = new Date;
+  constructor(private store: Store<fromRoot.State>, private router: Router, private runner: IntervalRunner ) {
+ 
+}
 
   ngOnInit(): void {
     this.router.events.subscribe((ev) => {
       if (ev instanceof NavigationEnd) { 
         this.recargar();
       }
-    });
+    })
   }
 
   onMenuToggleDispatch(): void {
@@ -82,5 +99,14 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.store.dispatch(new fromUser.SignOut());
+  }
+  start() {
+    this.runner.start(
+      new IntervalRunnerOptions(e => (this.message = new Date()), 1000, 0, 5)
+    );
+  }
+
+  stop() {
+    this.runner.stop();
   }
 }

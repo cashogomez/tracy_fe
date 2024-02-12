@@ -17,7 +17,7 @@
   </mat-form-field>
 
   <button mat-raised-button color="primary" class="button-text" >Generar Reporte</button>
-  <button mat-raised-button color="accent" class="button-text">Nueva Solicitud</button>
+  <button mat-raised-button color="accent" class="button-text" routerLink="/static/programacioncirugia">Nueva Solicitud</button>
 </p>
 <!------------------------------ FILTRO -------------------------------->
 <mat-form-field>
@@ -96,8 +96,8 @@
     <!-- Symbol Column -->
     <ng-container matColumnDef="id">
       <mat-header-cell *matHeaderCellDef> </mat-header-cell>
-      <mat-cell *matCellDef="let element"> <button mat-button  ><mat-icon (click)="editarFila(element)">edit</mat-icon>Editar</button> 
-                                           <button mat-button (click)="onBetaClicked()" ><mat-icon (click)="eliminarFila(element)">close</mat-icon>Eliminar</button> </mat-cell>
+      <mat-cell *matCellDef="let element"> <mat-icon class="botoneditar" (click)="editarFila(element)" fontIcon="edit" style="color: blue" matTooltip="Editar Registro"></mat-icon>
+                                           <mat-icon class="botoneliminar" (click)="onBetaClicked(); eliminarFila(element) " fontIcon="cancel" style="color: red" matTooltip="Eliminar Registro" ></mat-icon> </mat-cell>
     </ng-container>
 
 

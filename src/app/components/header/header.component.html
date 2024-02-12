@@ -4,10 +4,13 @@
     </button>
     <span>TRACY</span>
     <span class="toolbar-item-spacer"></span>
-    <button mat-icon-button matTooltip="Ingresar" routerLink="/auth/login" *ngIf="usuario==null" >
+    <p *ngIf="usuario!=null" class="temaHora">
+      {{ message | date: "EEE d 'de' MMM, YYY. hh:mm:ss a"}}
+    </p>
+    <button mat-icon-button matTooltip="Ingresar" routerLink="/auth/login" *ngIf="usuario==null" (click)="start()" >
         <mat-icon>login</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Salir" routerLink="/" *ngIf="usuario!=null" (click) = "logout()">
+    <button mat-icon-button matTooltip="Salir" routerLink="/" *ngIf="usuario!=null" (click) = "logout(); stop()">
         <mat-icon>logout</mat-icon>
     </button>
  

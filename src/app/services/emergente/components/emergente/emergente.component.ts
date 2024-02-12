@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
+import { DynamicDialogService } from '../../emergente.service';
 
 
 
@@ -18,11 +19,13 @@ import { CommonModule } from '@angular/common';
 })
 export class EmergenteComponent {
   constructor(
+    private dataService: DynamicDialogService,
     public dialogRef: MatDialogRef<EmergenteComponent>,
-    @Inject(MAT_DIALOG_DATA) public dynamicComponents$: Observable<any>
-  ) {
+    @Inject(MAT_DIALOG_DATA) public dynamicComponents$: Observable<any>  ) {
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
+      this.dataService.sendData(result);
     });
   }
+  
 }

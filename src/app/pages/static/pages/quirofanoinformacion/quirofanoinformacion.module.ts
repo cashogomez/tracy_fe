@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { QuirofanoinformacionRoutingModule } from './quirofanoinformacion-routing.module';
 import { QuirofanoinformacionComponent } from './quirofanoinformacion.component';
+import { RouterLink, RouterLinkActive, RouterModule, RouterOutlet } from '@angular/router';
 
 
 @NgModule({
@@ -10,7 +11,10 @@ import { QuirofanoinformacionComponent } from './quirofanoinformacion.component'
   imports: [
     CommonModule,
     QuirofanoinformacionRoutingModule,
-    QuirofanoinformacionComponent
+    QuirofanoinformacionComponent,
+    RouterOutlet,
+    RouterLink, 
+    RouterLinkActive,
   ]
 })
 export class QuirofanoinformacionModule { }

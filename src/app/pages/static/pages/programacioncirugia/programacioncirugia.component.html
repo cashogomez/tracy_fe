@@ -1,0 +1,320 @@
+<!------------------------------ INICIO DE ENCABEZADO -------------------------------->
+<h2 align="center"> Información de programación de cirugía</h2>
+
+<div class="container">
+  <div class="line"><mat-divider></mat-divider></div>
+  <div class="text mat-typography">Solicitudes de Instrumentos</div>
+  <div class="line"><mat-divider></mat-divider></div>
+</div>
+
+<p align="end">
+  <mat-form-field>
+    <mat-label>Fecha de cirugía</mat-label>
+    <input matInput [matDatepicker]="dp">
+    <mat-hint>{{getDateFormatString()}}</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+    <mat-datepicker #dp></mat-datepicker>
+  </mat-form-field>
+
+<!--  ------------------------------FIN DE ENCABEZADO ---------------------------------->
+
+<div class="alinear" >
+  
+    <section class="example-section">
+      <label class="example-margin">Prioridad de la Cirugía:</label>
+      <mat-radio-group [(ngModel)]="labelPosition">
+        <mat-radio-button class="example-margin" value="alta">Alta</mat-radio-button>
+        <mat-radio-button class="example-margin" value="media">Media</mat-radio-button>
+        <mat-radio-button class="example-margin" value="baja">Baja</mat-radio-button>
+      </mat-radio-group>
+    </section>
+  </div>
+  
+  
+  
+  <table class="alinear-input" align="center">
+
+  <!------------------------------------------------------------              fila 1                                ----------------------------------------------------------------->
+    <tr>
+      <td>
+        <mat-label>Paciente: &nbsp;</mat-label>
+      </td>
+  
+      <td>
+        <mat-form-field class="input1">
+          <input matInput type="text" placeholder="Hugo Rodriguez" >
+          </mat-form-field>
+      </td>
+  
+      <td>
+        <mat-label>Cirugía Programada: &nbsp;</mat-label>
+      </td>
+  
+      <td>
+        <mat-form-field class="input2">
+          <input matInput type="text" placeholder="Hernioplastía Inguinal Laparoscópica" >
+        </mat-form-field>
+      </td>
+    </tr>
+  
+  <!------------------------------------------------------------              fila 2                                ----------------------------------------------------------------->
+  
+    <tr>
+      <td>
+        <mat-label>Registro: &nbsp;</mat-label>
+      </td>
+  
+      <td>
+        <mat-form-field class="input1">
+          <input matInput type="text" placeholder="112233" >
+          </mat-form-field>
+      </td>
+  
+      <td>
+        <mat-label>Solicita: &nbsp;</mat-label>
+      </td>
+  
+      <td>
+        <mat-form-field class="input2">
+          <input matInput type="text" placeholder="Dr. Pablo" >
+        </mat-form-field>
+      </td>
+    </tr>
+  
+  <!------------------------------------------------------------              fila 3                                ----------------------------------------------------------------->
+  
+    <tr>
+      <td>
+        <mat-label>Edad: &nbsp;</mat-label>
+      </td>
+  
+      <td>
+        <mat-form-field class="input1">
+          <input matInput type="text" placeholder="35 años" >
+          </mat-form-field>
+      </td>
+
+
+  
+      <td>
+        <mat-label>Médico cirujano: &nbsp;</mat-label>
+      </td>
+  
+      <td>
+        <mat-form-field class="input2">
+          <input matInput type="text" placeholder="Dra. Yazmin" >
+        </mat-form-field>
+      </td>
+    </tr>
+  
+  <!------------------------------------------------------------              fila 4                                ----------------------------------------------------------------->
+  
+    <tr>
+      <td>
+        <mat-label>Fecha de Nacimiento: &nbsp;</mat-label>
+      </td>
+  
+      <td>
+        <mat-form-field class="input1">
+          <input matInput type="text" placeholder="7/01/1981" >
+          </mat-form-field>
+      </td>
+  
+      <td>
+        <mat-label>Med. Anestesiólogo: &nbsp;</mat-label>
+      </td>
+  
+      <td>
+        <mat-form-field class="input2">
+          <input matInput type="text" placeholder="Dr. Casimiro " >
+        </mat-form-field>
+      </td>
+    </tr>
+  
+  <!------------------------------------------------------------              fila 5                                ----------------------------------------------------------------->
+  <tr>
+    <td>
+      <mat-label>Número de habitación: &nbsp;</mat-label>
+    </td>
+  
+    <td>
+      <mat-form-field class="input1">
+        <input matInput type="text" placeholder="204" >
+        </mat-form-field>
+    </td>
+  
+    <td>
+      <mat-label>Tipo de Anestesia: &nbsp;</mat-label>
+    </td>
+  
+    <td>
+      <mat-form-field class="input2">
+        <input matInput type="text" placeholder="Epidural" >
+      </mat-form-field>
+    </td>
+  </tr>
+  
+  <!------------------------------------------------------------              fila 6                                ----------------------------------------------------------------->
+  
+  <tr>
+    <td>
+      <mat-label>Sala: &nbsp;</mat-label>
+    </td>
+  
+    <td>
+      <mat-form-field class="input1">
+        <input matInput type="text" placeholder="Quirófano 2" >
+        </mat-form-field>
+    </td>
+  
+    <td>
+      <mat-label>Ayudante / Residente: &nbsp;</mat-label>
+    </td>
+  
+    <td>
+      <mat-form-field class="input2">
+        <input matInput type="text" placeholder="Enf. Juanita" >
+      </mat-form-field>
+    </td>
+  </tr>
+  
+  <!------------------------------------------------------------              fila 7                                ----------------------------------------------------------------->
+  
+  <tr>
+    <td>
+      <mat-label>Turno: &nbsp;</mat-label>
+    </td>
+  
+    <td>
+      <mat-form-field class="input1">
+        <input matInput type="text" placeholder="1" >
+        </mat-form-field>
+    </td>
+  
+    <td>
+      <mat-label>Área de registro: &nbsp;</mat-label>
+    </td>
+  
+    <td>
+      <mat-form-field class="input2">
+        <input matInput type="text" placeholder="Jefatura de Quirófano" >
+      </mat-form-field>
+    </td>
+  </tr>
+  
+  <!------------------------------------------------------------              fila 8                                ----------------------------------------------------------------->
+  
+  <tr>
+    <td>
+      <mat-label>Diagnóstico: &nbsp;</mat-label>
+    </td>
+  
+    <td>
+      <mat-form-field class="input1">
+        <input matInput type="text" placeholder="Hernia Inguinal Bilateral" >
+        </mat-form-field>
+    </td>
+  
+    <td>
+      <mat-label>Enfermera(o): &nbsp;</mat-label>
+    </td>
+  
+    <td>
+      <mat-form-field class="input2">
+        <input matInput type="text" placeholder="Susana García" >
+      </mat-form-field>
+    </td>
+  </tr> 
+  </table>
+  
+  
+  <table class="alinear-input" align="center"> 
+    <tr style="width: 100%;">
+      <td style="width: 14%;">
+        <mat-label>Notas Adicionales:</mat-label>
+      </td>
+      <td style="width: 86%;">
+        <mat-form-field class="textarea">
+          <textarea matInput placeholder="3 Pinzas H. extras para la cirugía "></textarea>
+        </mat-form-field>
+      </td>
+    </tr>
+  </table>
+  
+  <h2 align="center"> Ingresa la información del equipamiento para la cirugía</h2>
+
+<div class="container">
+  <div class="line"><mat-divider></mat-divider></div>
+  <div class="text mat-typography"> Requisición de Instrumental e Insumos</div>
+  <div class="line"><mat-divider></mat-divider></div>
+</div>
+
+  
+  <div  style="display: flex;">
+    <div style=" width: 70%; margin-left:5%;">
+  <label>Elemento:</label><br>
+  <mat-form-field  style=" width: 100%">
+      <mat-select disableRipple>
+        <mat-option value="1">Kit 1</mat-option>
+        <mat-option value="2">Pinza Forester</mat-option>
+        <mat-option value="3">Bisturí Quirúrgico</mat-option>
+        <mat-option value="4">Pinzas Estándar</mat-option>
+        <mat-option value="5">Kit 2</mat-option>
+      </mat-select>
+    </mat-form-field></div>
+  
+    <div style=" width: 10%; margin-left:1%; margin-right: 5%;">
+    <label >Cantidad:</label><br>
+    <mat-form-field style=" width: 100%">
+      <input matInput type="number" min="1"  step="1" value="1">
+    </mat-form-field>
+    <button mat-raised-button  style="margin-right: 5%;">Agregar</button>
+  </div>
+    
+  </div>
+  
+  <h2 align="center"> Equipamiento Cirugía</h2>
+
+  <div class="container">
+    <div class="line"><mat-divider></mat-divider></div>
+    <div class="text mat-typography">Solicitudes de Instrumentos</div>
+    <div class="line"><mat-divider></mat-divider></div>
+  </div>
+
+  
+  
+  <div class="alinear-input" style="width:80%; margin-left: 10%; margin-right: 10px;">
+      <table mat-table [dataSource]="dataSource" class="listabicolor">
+  
+   
+      <ng-container matColumnDef="Elemento">
+        <th mat-header-cell *matHeaderCellDef style="background-color: white;"> Elemento </th>
+        <td mat-cell *matCellDef="let element"> {{element.Elemento}} </td>
+      </ng-container>
+    
+  
+      <ng-container matColumnDef="Cantidad">
+        <th mat-header-cell *matHeaderCellDef style="background-color: white;"> Cantidad </th>
+        <td mat-cell *matCellDef="let element" > {{element.Cantidad}} </td>
+      </ng-container>
+    
+  
+      <ng-container matColumnDef="Descripcion">
+        <th mat-header-cell *matHeaderCellDef style="background-color: white;"> Descripción </th>
+        <td mat-cell *matCellDef="let element"> {{element.Descripcion}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="icon">
+        <th mat-header-cell *matHeaderCellDef style="background-color: white;"> </th>
+        <td mat-cell *matCellDef="let element"> <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="cancel" style="color: red" matTooltip="Eliminar Registro" (click)="eliminarRegistro(element)"></mat-icon> </td>
+      </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <div align="center">
+        <button mat-raised-button  style="margin-right: 5%;" (click)="aceptar()">Aceptar</button>
+        <button mat-raised-button  style="margin-right: 5%;" (click)="cancelar()">Cancelar</button>
+    </div>
+ 
+  </div>
