@@ -68,11 +68,15 @@ const routes: Routes = [
   },
   {
     path: 'quirofanocreacion',
-    loadChildren: () => import('./pages/quirofanocreacion/quirofanocreacion.module').then(m => m.QuirofanocreacionModule)
+    loadComponent: () => import('./pages/quirofanocreacion/quirofanocreacion.component').then(m => m.QuirofanocreacionComponent)
   },
   {
     path: 'programacioncirugia',
     loadComponent: () => import('./pages/programacioncirugia/programacioncirugia.component').then((m) => m.ProgramacioncirugiaComponent),
+  },
+  {
+    path: 'editarprogramacioncirugia',
+    loadComponent: () => import('./pages/editarprogramacioncirugia/editarprogramacioncirugia.component').then((m) => m.EditarprogramacioncirugiaComponent),
   },
 ];
 

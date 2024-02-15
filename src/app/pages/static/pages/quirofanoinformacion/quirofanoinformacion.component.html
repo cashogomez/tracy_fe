@@ -16,7 +16,7 @@
     <mat-datepicker #dp></mat-datepicker>
   </mat-form-field>
 
-  <button mat-raised-button color="primary" class="button-text" >Generar Reporte</button>
+  <button mat-raised-button color="primary" class="button-text" (click)="downloadPdf()" >Generar Reporte</button>
   <button mat-raised-button color="accent" class="button-text" routerLink="/static/programacioncirugia">Nueva Solicitud</button>
 </p>
 <!------------------------------ FILTRO -------------------------------->
@@ -27,7 +27,7 @@
 
 <!------------------------------ FIN DE ENCABEZADO -------------------------------->
 
-<div class="mat-elevation-z8">
+<div class="mat-elevation-z8" id="page-1" class="page">
   <mat-table #table [dataSource]="dataSource">
 
     <!--- Note that these columns can be defined in any order.
@@ -96,7 +96,7 @@
     <!-- Symbol Column -->
     <ng-container matColumnDef="id">
       <mat-header-cell *matHeaderCellDef> </mat-header-cell>
-      <mat-cell *matCellDef="let element"> <mat-icon class="botoneditar" (click)="editarFila(element)" fontIcon="edit" style="color: blue" matTooltip="Editar Registro"></mat-icon>
+      <mat-cell *matCellDef="let element"> <mat-icon class="botoneditar" routerLink="/static/editarprogramacioncirugia" (click)="editarFila(element)" fontIcon="edit" style="color: blue" matTooltip="Editar Registro"></mat-icon>
                                            <mat-icon class="botoneliminar" (click)="onBetaClicked(); eliminarFila(element) " fontIcon="cancel" style="color: red" matTooltip="Eliminar Registro" ></mat-icon> </mat-cell>
     </ng-container>
 

@@ -7,11 +7,13 @@ import { QuirofanocreacionComponent } from './quirofanocreacion.component';
 
 @NgModule({
   declarations: [
-    QuirofanocreacionComponent
+    
   ],
   imports: [
     CommonModule,
-    QuirofanocreacionRoutingModule
+    QuirofanocreacionRoutingModule,
+    QuirofanocreacionComponent
+
   ]
 })
 export class QuirofanocreacionModule { }

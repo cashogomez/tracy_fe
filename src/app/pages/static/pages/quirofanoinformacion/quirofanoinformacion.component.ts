@@ -21,6 +21,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, RouterModule, RouterOutlet } from '@angular/router';
 import { NotificationService } from '@app/services';
+import { ImprimirService } from '@app/services/imprimir/imprimir.service';
 
 
 @Component({
@@ -99,6 +100,7 @@ EliminarElementoTabla(ticket: number) {
   }
 
   constructor(
+    private pdfService: ImprimirService,
     private notification: NotificationService,
     private dataService: DynamicDialogService,
     
@@ -145,6 +147,9 @@ EliminarElementoTabla(ticket: number) {
     }
     return '';
   }
+  downloadPdf() {
+
+  }
 
   // ************************ PAGINATOR *******************
   @ViewChild(MatPaginator) paginator !: MatPaginator;
@@ -173,6 +178,7 @@ EliminarElementoTabla(ticket: number) {
   eliminarFila(element: Element) {
     this.borrarRegistro=element;
   }
+  
 }
 
 export interface Element {
