@@ -115,7 +115,10 @@ EliminarElementoTabla(ticket: number) {
           console.log(data);
           if (data==true) {
             console.log('Va bien');
-            this.EliminarElementoTabla(this.borrarRegistro.ticket);
+            if (this.borrarRegistro != undefined) {
+              this.EliminarElementoTabla(this.borrarRegistro.ticket);
+            }
+            
           }
           else {
             this.notification.error("¡Se canceló la operación");

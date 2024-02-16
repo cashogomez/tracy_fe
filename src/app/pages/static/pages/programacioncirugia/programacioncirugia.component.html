@@ -30,8 +30,6 @@
     </section>
   </div>
   
-  
-  
   <table class="alinear-input" align="center">
 
   <!------------------------------------------------------------              fila 1                                ----------------------------------------------------------------->
@@ -226,7 +224,7 @@
     </td>
   </tr> 
   </table>
-  
+  <!------------------- OTRA TABLA  ----->
   
   <table class="alinear-input" align="center"> 
     <tr style="width: 100%;">
@@ -241,6 +239,8 @@
     </tr>
   </table>
   
+
+   <!----------------------------- ------------------------->
   <h2 align="center"> Ingresa la información del equipamiento para la cirugía</h2>
 
 <div class="container">
@@ -254,21 +254,17 @@
     <div style=" width: 70%; margin-left:5%;">
   <label>Elemento:</label><br>
   <mat-form-field  style=" width: 100%">
-      <mat-select disableRipple>
-        <mat-option value="1">Kit 1</mat-option>
-        <mat-option value="2">Pinza Forester</mat-option>
-        <mat-option value="3">Bisturí Quirúrgico</mat-option>
-        <mat-option value="4">Pinzas Estándar</mat-option>
-        <mat-option value="5">Kit 2</mat-option>
+      <mat-select (selectionChange)="changeMaterial($event.value)" disableRipple>
+        <mat-option *ngFor="let x of material; let i = index" [value]="material[i]">{{material[i].Elemento}}</mat-option>
       </mat-select>
     </mat-form-field></div>
   
     <div style=" width: 10%; margin-left:1%; margin-right: 5%;">
     <label >Cantidad:</label><br>
     <mat-form-field style=" width: 100%">
-      <input matInput type="number" min="1"  step="1" value="1">
+      <input matInput type="number" min="1"  step="1" value="1" [(ngModel)]="cantidadCapturada" (ngModelChange)="cambioCantidad()">
     </mat-form-field>
-    <button mat-raised-button  style="margin-right: 5%;">Agregar</button>
+    <button mat-raised-button  style="margin-right: 5%;"  (click)="capturaAgregar()" >Agregar</button>
   </div>
     
   </div>
@@ -306,7 +302,7 @@
   
       <ng-container matColumnDef="icon">
         <th mat-header-cell *matHeaderCellDef style="background-color: white;"> </th>
-        <td mat-cell *matCellDef="let element"> <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="cancel" style="color: red" matTooltip="Eliminar Registro" (click)="eliminarRegistro(element)"></mat-icon> </td>
+        <td mat-cell *matCellDef="let element"> <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="cancel" style="color: red" matTooltip="Eliminar Registro" (click)="onBetaClicked(); eliminarFila(element) "></mat-icon> </td>
       </ng-container>
     
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
