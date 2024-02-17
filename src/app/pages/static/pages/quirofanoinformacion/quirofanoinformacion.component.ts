@@ -100,7 +100,6 @@ EliminarElementoTabla(ticket: number) {
   }
 
   constructor(
-    private pdfService: ImprimirService,
     private notification: NotificationService,
     private dataService: DynamicDialogService,
     

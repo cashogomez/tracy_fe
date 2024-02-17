@@ -16,12 +16,13 @@
     <mat-datepicker #dp></mat-datepicker>
   </mat-form-field>
 
-  <button mat-raised-button color="primary" class="button-text" (click)="downloadPdf()" >Generar Reporte</button>
-  <button mat-raised-button color="accent" class="button-text" routerLink="/static/programacioncirugia">Nueva Solicitud</button>
+      <button mat-raised-button  (click)="downloadPdf()" class="botones" style=" margin: 10px;" matTooltip="Generar un reporte" >Reporte</button>
+      <button mat-raised-button  routerLink="/static/programacioncirugia" class="botones" style=" margin: 10px;" matTooltip="Crear una nueva solicitud">Nueva Solicitud</button>
+
 </p>
 <!------------------------------ FILTRO -------------------------------->
 <mat-form-field>
-  <mat-label>Filter</mat-label>
+  <mat-label>Filtro</mat-label>
   <input matInput (keyup)="applyFilter($event)" placeholder="Búsqueda" #input>
 </mat-form-field>
 
