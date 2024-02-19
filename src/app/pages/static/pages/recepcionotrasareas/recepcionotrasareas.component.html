@@ -16,7 +16,7 @@
     <mat-datepicker #dp></mat-datepicker>
   </mat-form-field>
 
-  <button mat-raised-button color="primary" class="button-text" (click)="downloadPdf()" class="botones" style=" margin: 10px;" matTooltip="Generar reporte">Reporte</button>
+  <button mat-raised-button color="primary" class="button-text" (click)="generarPDF()" class="botones" style=" margin: 10px;" matTooltip="Generar reporte">Reporte</button>
   <button mat-raised-button color="primary" class="button-text" class="botones" style=" margin: 10px;" matTooltip="Nueva recepción">Recepción</button>
 </p>
 <!------------------------------ FILTRO -------------------------------->
@@ -36,38 +36,38 @@
     <!-- Position Column -->
     <ng-container matColumnDef="ticket">
       <mat-header-cell *matHeaderCellDef> Ticket </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.ticket}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.Ticket}} </mat-cell>
     </ng-container>
 
     <!-- Name Column -->
     <ng-container matColumnDef="fecha">
       <mat-header-cell *matHeaderCellDef matTooltip="Fecha de la cirugía"> Fecha </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.fecha}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.Fecha}} </mat-cell>
     </ng-container>
 
 
     <!-- Symbol Column -->
     <ng-container matColumnDef="area">
       <mat-header-cell *matHeaderCellDef> Áreas</mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.area}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.Area}} </mat-cell>
     </ng-container>
 
     <!-- Symbol Column -->
     <ng-container matColumnDef="sala">
       <mat-header-cell *matHeaderCellDef> Sala </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.sala}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.Sala}} </mat-cell>
     </ng-container>
 
     <!-- Symbol Column -->
     <ng-container matColumnDef="turno">
       <mat-header-cell *matHeaderCellDef> Turno </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.turno}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.Turno}} </mat-cell>
     </ng-container>
 
     <!-- Symbol Column -->
     <ng-container matColumnDef="estatus">
       <mat-header-cell *matHeaderCellDef> Estatus </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.estatus}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.Estatus}} </mat-cell>
     </ng-container>
 
     <!-- Symbol Column -->

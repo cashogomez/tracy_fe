@@ -16,7 +16,7 @@
     <mat-datepicker #dp></mat-datepicker>
   </mat-form-field>
 
-  <button mat-raised-button color="primary" class="button-text" (click)="downloadPdf()" class="botones" style=" margin: 10px;" matTooltip="Generar reporte">Reporte</button>
+  <button mat-raised-button color="primary" class="button-text" (click)="generarPDF()" class="botones" style=" margin: 10px;" matTooltip="Generar reporte">Reporte</button>
   <button mat-raised-button color="primary" class="button-text" class="botones" style=" margin: 10px;" matTooltip="Nueva recepción">Recepción</button>
 </p>
 <!------------------------------ FILTRO -------------------------------->
@@ -36,32 +36,32 @@
     <!-- Position Column -->
     <ng-container matColumnDef="ticket">
       <mat-header-cell *matHeaderCellDef> Ticket </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.ticket}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.Ticket}} </mat-cell>
     </ng-container>
 
     <!-- Name Column -->
     <ng-container matColumnDef="fecha">
       <mat-header-cell *matHeaderCellDef matTooltip="Fecha de la cirugía"> Fecha </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.fecha}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.Fecha}} </mat-cell>
     </ng-container>
 
 
     <!-- Symbol Column -->
     <ng-container matColumnDef="instrumental">
       <mat-header-cell *matHeaderCellDef> Instrumental </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.instrumental}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.Instrumental}} </mat-cell>
     </ng-container>
 
     <!-- Symbol Column -->
     <ng-container matColumnDef="proveedor">
       <mat-header-cell *matHeaderCellDef> Proveedor </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.proveedor}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.Proveedor}} </mat-cell>
     </ng-container>
 
     <!-- Symbol Column -->
     <ng-container matColumnDef="responsable">
       <mat-header-cell *matHeaderCellDef> Responsable </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.responsable}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.Responsable}} </mat-cell>
     </ng-container>
 
 
