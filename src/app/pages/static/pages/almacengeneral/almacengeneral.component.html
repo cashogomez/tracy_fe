@@ -9,7 +9,7 @@
 </div>
 
 <p align="end">
-  <button class="botones" style=" margin: 5px;" matTooltip="Generar reporte">Reporte</button>
+  <button class="botones"  (click)="generarPDF()" style=" margin: 5px;" matTooltip="Generar reporte">Reporte</button>
   <button class="botones" style=" margin: 5px;" matTooltip="Recepción de Material">Recepción</button>
 </p>
 
@@ -72,9 +72,9 @@
             <mat-header-cell *matHeaderCellDef> Prioridad </mat-header-cell>
             <mat-cell *matCellDef="let element"> 
       
-              <button mat-fab class="boton_alta" *ngIf="element.prioridad == 'alta' " >alta</button>
-              <button mat-fab class="boton_media" *ngIf="element.prioridad == 'media' ">media</button>
-              <button mat-fab class="boton_baja" *ngIf="element.prioridad == 'baja' ">baja</button>
+              <button mat-fab class="boton_alta" *ngIf="element.Prioridad == 'alta' " >alta</button>
+              <button mat-fab class="boton_media" *ngIf="element.Prioridad == 'media' ">media</button>
+              <button mat-fab class="boton_baja" *ngIf="element.Prioridad == 'baja' ">baja</button>
               
             </mat-cell>
           </ng-container>
@@ -82,13 +82,13 @@
               <!-- Name Column -->
     <ng-container matColumnDef="caducidad">
         <mat-header-cell *matHeaderCellDef matTooltip="Fecha de caducidad"> Caducidad</mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.caducidad}} </mat-cell>
+        <mat-cell *matCellDef="let element"> {{element.Caducidad}} </mat-cell>
       </ng-container>
 
     <!-- Position Column -->
     <ng-container matColumnDef="recepcion">
       <mat-header-cell *matHeaderCellDef matTooltip="Fecha recepción"> Recepción </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.recepcion}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.Recepcion}} </mat-cell>
     </ng-container>
 
 
@@ -103,16 +103,20 @@
     <!-- Symbol Column -->
     <ng-container matColumnDef="nombre">
       <mat-header-cell *matHeaderCellDef matTooltip="Nombre del material"> Nombre </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.nombre}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.Nombre}} </mat-cell>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="proveedor">
+      <mat-header-cell *matHeaderCellDef matTooltip="Proveedor externo"> Proveedor </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.Proveedor}} </mat-cell>
     </ng-container>
 
     <!-- Symbol Column -->
     <ng-container matColumnDef="ubicacion">
-      <mat-header-cell *matHeaderCellDef matTooltip="Ubicación en almacén"> Ubicación </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.ubicacion}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef matTooltip="Ubicación"> Ubicación </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.Ubicacion}} </mat-cell>
     </ng-container>
-
-
 
     <!-- Symbol Column -->
     <ng-container matColumnDef="accion">

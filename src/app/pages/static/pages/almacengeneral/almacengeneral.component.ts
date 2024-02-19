@@ -7,6 +7,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AreaTrabajo } from '@app/models/backend/area';
 import { NotificationService } from '@app/services';
 import 'moment/locale/es';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'app-almacengeneral',
@@ -15,7 +18,7 @@ import 'moment/locale/es';
   styleUrl: './almacengeneral.component.scss'
 })
 export class AlmacengeneralComponent {
-
+  nombrejefa= "María Dolores Rodríguez Ramírez";
   editarRegistro !: Element;
   borrarRegistro !: Element;
   area: AreaTrabajo[]=[
@@ -48,28 +51,54 @@ turno =[
 ];
 
   /** Constants used to fill up our data base. */
- ELEMENT_DATA: Element[] = [
-  { recepcion: 1, caducidad: 'Hydrogen', QR: 'falla', edad: 'H', diagnostico: 1, nombre: 'Hydrogen', sala: 'falla', ubicacion: 'H', prioridad: 'alta', accion: 'falla', id: '1'  },
-  { recepcion: 2, caducidad: 'Helium', QR: 'falla', edad: 'He', diagnostico: 1, nombre: 'Hydrogen', sala: 'falla', ubicacion: 'H', prioridad: 'media', accion: 'falla', id: '2' },
-  { recepcion: 3, caducidad: 'Lithium', QR: 'falla', edad: 'Li', diagnostico: 1, nombre: 'Hydrogen', sala: 'falla', ubicacion: 'H', prioridad: 'baja', accion: 'falla', id: '3'  },
-  { recepcion: 4, caducidad: 'Beryllium', QR: '9.0122', edad: 'Be', diagnostico: 1, nombre: 'Hydrogen', sala: 'falla', ubicacion: 'H', prioridad: 'alta', accion: 'falla', id: '4'  },
-  { recepcion: 5, caducidad: 'Boron', QR: '10.811', edad: 'B', diagnostico: 1, nombre: 'Hydrogen', sala: 'falla', ubicacion: 'H' , prioridad: 'alta', accion: 'falla', id: '5' },
-  { recepcion: 6, caducidad: 'Carbon', QR: '12.0107', edad: 'C', diagnostico: 1, nombre: 'Hydrogen', sala: 'falla', ubicacion: 'H' , prioridad: 'baja', accion: 'falla', id: '6' },
-  { recepcion: 7, caducidad: 'Nitrogen', QR: '14.0067', edad: 'N', diagnostico: 1, nombre: 'Hydrogen', sala: 'falla', ubicacion: 'H' , prioridad: 'media', accion: 'falla', id: '7' },
-  { recepcion: 8, caducidad: 'Oxygen', QR: '15.9994', edad: 'O', diagnostico: 1, nombre: 'Hydrogen', sala: 'falla', ubicacion: 'H' , prioridad: 'alta', accion: 'falla', id: '8' },
-  { recepcion: 9, caducidad: 'Fluorine', QR: '18.9984', edad: 'F', diagnostico: 1, nombre: 'Hydrogen', sala: 'falla', ubicacion: 'H' , prioridad: 'baja', accion: 'falla', id: '9' },
-  { recepcion: 10, caducidad: 'Neon', QR: '20.1797', edad: 'Ne', diagnostico: 1, nombre: 'Hydrogen', sala: 'falla', ubicacion: 'H', prioridad: 'media', accion: 'falla', id: '10'  },
-  { recepcion: 11, caducidad: 'Sodium', QR: '22.9897', edad: 'Na', diagnostico: 1, nombre: 'Hydrogen', sala: 'falla', ubicacion: 'H', prioridad: 'baja', accion: 'falla', id: '11'  },
-  { recepcion: 12, caducidad: 'Magnesium', QR: '24.305', edad: 'Mg', diagnostico: 1, nombre: 'Hydrogen', sala: 'falla', ubicacion: 'H', prioridad: 'media', accion: 'falla', id: '12'  },
-  { recepcion: 13, caducidad: 'Aluminum', QR: '26.9815', edad: 'Al', diagnostico: 1, nombre: 'Hydrogen', sala: 'falla', ubicacion: 'H', prioridad: 'alta', accion: 'falla', id: '13'  },
-  { recepcion: 14, caducidad: 'Silicon', QR: '28.0855', edad: 'Si', diagnostico: 1, nombre: 'Hydrogen', sala: 'falla', ubicacion: 'H', prioridad: 'baja', accion: 'falla', id: '14'  },
-  { recepcion: 15, caducidad: 'Phosphorus', QR:' 30.9738', edad: 'P', diagnostico: 1, nombre: 'Hydrogen', sala: 'falla', ubicacion: 'H', prioridad: 'baja', accion: 'falla', id: '15'  },
-  { recepcion: 16, caducidad: 'Sulfur', QR: '32.065', edad: 'S', diagnostico: 1, nombre: 'Hydrogen', sala: 'falla', ubicacion: 'H' , prioridad: 'baja', accion: 'falla', id: '16' },
-  { recepcion: 17, caducidad: 'Chlorine', QR: '35.453', edad: 'Cl', diagnostico: 1, nombre: 'Hydrogen', sala: 'falla', ubicacion: 'H' , prioridad: 'baja', accion: 'falla', id: '17' },
-  { recepcion: 18, caducidad: 'Argon', QR: '39.948', edad: 'Ar', diagnostico: 1, nombre: 'Hydrogen', sala: 'falla', ubicacion: 'H' , prioridad: 'alta', accion: 'falla', id: '18' },
-  { recepcion: 19, caducidad: 'Potassium', QR: '39.0983', edad: 'K', diagnostico: 1, nombre: 'Hydrogen', sala: 'falla', ubicacion: 'H' , prioridad: 'media', accion: 'falla', id: '19' },
-  { recepcion: 20, caducidad: 'Calcium', QR: '40.078', edad: 'Ca', diagnostico: 1, nombre: 'Hydrogen', sala: 'falla', ubicacion: 'H' , prioridad: 'media', accion: 'falla', id: '20' },
-];
+  ELEMENT_DATA = [
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'baja', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'media', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'baja', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'baja', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'baja', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'media', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'baja', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'baja', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'media', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'media', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'baja', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'media', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'media', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'media', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+    {Prioridad: 'alta', Caducidad: '15/11/2023', Recepcion:'15/10/2023', QR:12345375, Proveedor:'Smartes', Nombre: 'Set de Angiocardio', Ubicacion: 'Estante A-2'},
+  
+  ];
   areaElegida!: AreaTrabajo;
   area_id!: number;
 
@@ -135,7 +164,7 @@ turno =[
   dataSource: MatTableDataSource<Element>;
 // **********************************************************
 
-  displayedColumns = ['prioridad', 'caducidad', 'recepcion', 'QR', 'nombre',  'ubicacion', 'accion' ];
+  displayedColumns = ['prioridad', 'caducidad', 'recepcion', 'QR', 'nombre','proveedor',  'ubicacion', 'accion' ];
 
   editarFila(element: Element) {
     this.editarRegistro=element;
@@ -147,20 +176,208 @@ turno =[
     this.areaElegida = valor;
     this.area_id = this.areaElegida.id;
 }
+generarPDF() {
+  createPDF(this.ELEMENT_DATA, this.nombrejefa);
+}
 }
 
 export interface Element {
-  caducidad: string;
-  recepcion: number;
-  QR: string;
-  edad: string;
-
-  diagnostico: number;
-  nombre: string;
-  sala: string;
-  ubicacion: string;
-
-  prioridad: string;
-  accion: string;
-  id: string;
+  Caducidad: string;
+  Recepcion: string;
+  QR: number;
+  Proveedor: string;
+  Nombre: string;
+  Ubicacion: string;
+  Prioridad: string;
 }
+
+// ********************** RUTINAS DE IMPRESIÖN *****************
+
+const date = new Date();
+const año = date.getFullYear();
+const mes = date.toLocaleString('default', { month: 'short' });
+const mes2 = date.toLocaleString('default', { month: 'long' });
+const dia = date.getDate(); 
+const hora = date.getHours();
+const minutos = date.getMinutes();
+
+
+const fecha =dia +' de '+ mes2 +' del '+ año +', '+ hora + ':' + minutos + 'hrs';
+
+const area = 'Almacén CEyE'
+const turno = 1;
+
+
+function buildTableBody(data: { [x: string]: { toString: () => any; }; }[], columns: (string | number)[]) {
+  var body = [];
+
+  body.push(columns);
+
+  data.forEach(function(row: { [x: string]: { toString: () => any; }; }) {
+      var dataRow: any[] = [];
+
+      columns.forEach(function(column: string | number) {
+          dataRow.push({text : row[column].toString(), alignment : 'center', color : 'black', bold:false, fontSize: 9, margin: [0, 10, 0, 0]});
+      })
+
+      body.push(dataRow, );
+  });
+
+  return body;
+}
+
+function table(data: { [x: string]: { toString: () => any; }; }[] | { name: string; age: number; }[], columns: (string | number)[]) {
+  return {
+    style: 'tableExample',
+      table: {
+        widths: ['15%','15%','15%','15%','15%','15%','15%',],
+          headerRows: 1,
+          body: buildTableBody(data, columns),
+      },layout: 'noBorders'
+    
+  };
+}
+function getBase64ImageFromURL(url: string) {
+  return new Promise((resolve, reject) => {
+    var img = new Image();
+    img.setAttribute("crossOrigin", "anonymous");
+  
+    img.onload = () => {
+      var canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+  
+      var ctx = canvas.getContext("2d");
+      ctx!.drawImage(img, 0, 0);
+  
+      var dataURL = canvas.toDataURL("image/png");
+  
+      resolve(dataURL);
+    };
+  
+    img.onerror = error => {
+      reject(error);
+    };
+  
+    img.src = url;
+  });}
+
+  async function createPDF(fuenteDatos: { [x: string]: { toString: () => any; }; }[], jefaNombre: string){
+
+  const pdfDefinition: any = {
+
+    pageSize: 'letter',
+    pageMargins: [20, 250, 20, 80],
+
+    background: [
+      {
+        "image":"logo",
+          width: 100,
+          margin:[20,22,0,0]
+      },
+
+      {
+        "image":"logo",
+          width: 600,
+          margin:[-2,60,0,0],
+          opacity: 0.1
+      }
+    ],
+
+    header:[
+   
+      {text: 'INSTITUTO NACIONAL DE CIENCIAS MÉDICAS NUTRICIÓN SALVADOR ZUBIRÁN', style: 'header2'},
+      {text: 'SUBDIRECCIÓN DE ENFERMERÍA: '+jefaNombre, style: 'header'},
+      {text: 'DEPARTAMENTO DE ENFERMERÍA', style: 'header'},
+      {text: 'CENTRAL DE EQUIPOS Y ESTERILIZACIÓN', style: 'header'},
+      {text: 'Fecha de Impresión: '+fecha, style: 'header3'},
+      {text: 'ALMACÉN GENERAL', style: 'header2'},
+      {
+        columns: [
+          {
+            text: 'Área: '+ area, 
+            width:'40%',alignment: "center", margin:[0,25,0,0], fontSize: 11, bold:true,
+          },
+          {
+            text: 'Turno: '+turno,
+            width:'10%',alignment: "center", margin:[0,25,0,0], fontSize: 11, bold:true,
+          },
+          {
+            text: 'Rango de Fecha: '+/*aqui va la primera la variable de fecha del piker*/'10/08/23'+' - '+/*aqui va la segunda la variable de fecha del piker*/'16/12/23',
+            width:'50%',alignment: "center", margin:[0,25,0,0], fontSize: 11, bold:true,
+          },
+        ]
+      },
+      
+    ],
+
+    content: [
+      
+       table(fuenteDatos, ['Prioridad', 'Caducidad', 'Recepcion', 'Proveedor', 'Nombre', 'Ubicacion'], ),
+  ],
+  
+images:{
+  
+  "logo" : await getBase64ImageFromURL(
+      "../../assets/generales/Logo_nutricion.png")
+    
+},
+  styles: {
+
+    header: {
+      fontSize: 11,
+      bold: true,
+      margin: [40, 7, 0, 0],
+      alignment: "center",
+      color: 'black',
+      position:'fixed',
+    },
+    header2: {
+      fontSize: 11,
+      bold: true,
+      margin: [40, 30, 0, 0],
+      alignment: "center",
+      color: 'black',
+      position:'fixed',
+     
+    },
+    header3: {
+      fontSize: 11,
+      bold: true,
+      margin: [0, 27, 30, 0],
+      alignment: "right",
+      color: 'black',
+      position:'fixed',
+    },
+    footer: {
+      fontSize: 10,
+      margin: [0, 20, 0, 0],
+      alignment: "center",
+      color: 'black',
+      position:'fixed',
+    },
+    tableExample: {
+      fontSize: 11,
+      bold: true,
+      margin: [60, 0, 0, 0],
+      alignment : 'center',
+      color: 'black'
+    },
+  
+  },
+  
+  footer:[
+    
+    {text: 'TRACY © '+año, style: 'footer'},
+  ]
+  }
+    
+  
+
+  const pdf =  pdfMake.createPdf(pdfDefinition);
+  //pdf.download('Reporte Almacén General '+ dia + '/'+mes2+'/'+año + ' ('+ hora + '/'+ minutos + 'hr)');
+pdf.open()
+  
+}
+
+
