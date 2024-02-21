@@ -5,9 +5,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { NotificationService } from '@app/services';
-import 'moment/locale/ja';
-import 'moment/locale/fr';
 import 'moment/locale/es';
+import pdfMake from "pdfmake/build/pdfmake";
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+(pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'app-distribucionquirofano',
@@ -16,32 +17,134 @@ import 'moment/locale/es';
   styleUrl: './distribucionquirofano.component.scss'
 })
 export class DistribucionquirofanoComponent {
-
+  nombrejefa= "María Dolores Rodríguez Ramírez";
   editarRegistro !: Element;
   borrarRegistro !: Element;
   /** Constants used to fill up our data base. */
- ELEMENT_DATA: Element[] = [
-  { ticket: 1, fecha: 'Hydrogen', paciente: 'falla', edad: 'H', diagnostico: 1, cirugia: 'Hydrogen', sala: 'falla', turno: 'H', prioridad: 'alta', accion: 'falla', id: '1'  },
-  { ticket: 2, fecha: 'Helium', paciente: 'falla', edad: 'He', diagnostico: 1, cirugia: 'Hydrogen', sala: 'falla', turno: 'H', prioridad: 'media', accion: 'falla', id: '2' },
-  { ticket: 3, fecha: 'Lithium', paciente: 'falla', edad: 'Li', diagnostico: 1, cirugia: 'Hydrogen', sala: 'falla', turno: 'H', prioridad: 'baja', accion: 'falla', id: '3'  },
-  { ticket: 4, fecha: 'Beryllium', paciente: '9.0122', edad: 'Be', diagnostico: 1, cirugia: 'Hydrogen', sala: 'falla', turno: 'H', prioridad: 'alta', accion: 'falla', id: '4'  },
-  { ticket: 5, fecha: 'Boron', paciente: '10.811', edad: 'B', diagnostico: 1, cirugia: 'Hydrogen', sala: 'falla', turno: 'H' , prioridad: 'alta', accion: 'falla', id: '5' },
-  { ticket: 6, fecha: 'Carbon', paciente: '12.0107', edad: 'C', diagnostico: 1, cirugia: 'Hydrogen', sala: 'falla', turno: 'H' , prioridad: 'baja', accion: 'falla', id: '6' },
-  { ticket: 7, fecha: 'Nitrogen', paciente: '14.0067', edad: 'N', diagnostico: 1, cirugia: 'Hydrogen', sala: 'falla', turno: 'H' , prioridad: 'media', accion: 'falla', id: '7' },
-  { ticket: 8, fecha: 'Oxygen', paciente: '15.9994', edad: 'O', diagnostico: 1, cirugia: 'Hydrogen', sala: 'falla', turno: 'H' , prioridad: 'alta', accion: 'falla', id: '8' },
-  { ticket: 9, fecha: 'Fluorine', paciente: '18.9984', edad: 'F', diagnostico: 1, cirugia: 'Hydrogen', sala: 'falla', turno: 'H' , prioridad: 'baja', accion: 'falla', id: '9' },
-  { ticket: 10, fecha: 'Neon', paciente: '20.1797', edad: 'Ne', diagnostico: 1, cirugia: 'Hydrogen', sala: 'falla', turno: 'H', prioridad: 'media', accion: 'falla', id: '10'  },
-  { ticket: 11, fecha: 'Sodium', paciente: '22.9897', edad: 'Na', diagnostico: 1, cirugia: 'Hydrogen', sala: 'falla', turno: 'H', prioridad: 'baja', accion: 'falla', id: '11'  },
-  { ticket: 12, fecha: 'Magnesium', paciente: '24.305', edad: 'Mg', diagnostico: 1, cirugia: 'Hydrogen', sala: 'falla', turno: 'H', prioridad: 'media', accion: 'falla', id: '12'  },
-  { ticket: 13, fecha: 'Aluminum', paciente: '26.9815', edad: 'Al', diagnostico: 1, cirugia: 'Hydrogen', sala: 'falla', turno: 'H', prioridad: 'alta', accion: 'falla', id: '13'  },
-  { ticket: 14, fecha: 'Silicon', paciente: '28.0855', edad: 'Si', diagnostico: 1, cirugia: 'Hydrogen', sala: 'falla', turno: 'H', prioridad: 'baja', accion: 'falla', id: '14'  },
-  { ticket: 15, fecha: 'Phosphorus', paciente:' 30.9738', edad: 'P', diagnostico: 1, cirugia: 'Hydrogen', sala: 'falla', turno: 'H', prioridad: 'baja', accion: 'falla', id: '15'  },
-  { ticket: 16, fecha: 'Sulfur', paciente: '32.065', edad: 'S', diagnostico: 1, cirugia: 'Hydrogen', sala: 'falla', turno: 'H' , prioridad: 'baja', accion: 'falla', id: '16' },
-  { ticket: 17, fecha: 'Chlorine', paciente: '35.453', edad: 'Cl', diagnostico: 1, cirugia: 'Hydrogen', sala: 'falla', turno: 'H' , prioridad: 'baja', accion: 'falla', id: '17' },
-  { ticket: 18, fecha: 'Argon', paciente: '39.948', edad: 'Ar', diagnostico: 1, cirugia: 'Hydrogen', sala: 'falla', turno: 'H' , prioridad: 'alta', accion: 'falla', id: '18' },
-  { ticket: 19, fecha: 'Potassium', paciente: '39.0983', edad: 'K', diagnostico: 1, cirugia: 'Hydrogen', sala: 'falla', turno: 'H' , prioridad: 'media', accion: 'falla', id: '19' },
-  { ticket: 20, fecha: 'Calcium', paciente: '40.078', edad: 'Ca', diagnostico: 1, cirugia: 'Hydrogen', sala: 'falla', turno: 'H' , prioridad: 'media', accion: 'falla', id: '20' },
-];
+  ELEMENT_DATA = [
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'baja', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'media', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'baja', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'media', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'baja', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'media', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'baja', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'media', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'baja', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'media', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'baja', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'media', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'baja', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
+  
+  
+  ];
 
 // EliminarElementoTabla(key: number) {
 //   this.ELEMENT_DATA.forEach((value,index)=>{
@@ -81,8 +184,8 @@ export class DistribucionquirofanoComponent {
     }
     return '';
   }
-  downloadPdf() {
-
+  generarPDF() {
+    createPDF(this.ELEMENT_DATA, this.nombrejefa);
   }
 
   // ************************ PAGINATOR *******************
@@ -117,17 +220,207 @@ export class DistribucionquirofanoComponent {
 }
 
 export interface Element {
-  fecha: string;
-  ticket: number;
-  paciente: string;
-  edad: string;
-
-  diagnostico: number;
-  cirugia: string;
-  sala: string;
-  turno: string;
-
-  prioridad: string;
-  accion: string;
-  id: string;
+Prioridad: string;
+Ticket: number;
+Cirugia: string;
+Fecha: string;
+Sala: number;
+Turno: number;
 }
+
+// ****************************   Impresion ***********************+
+const date = new Date();
+const año = date.getFullYear();
+const mes = date.toLocaleString('default', { month: 'short' });
+const mes2 = date.toLocaleString('default', { month: 'long' });
+const dia = date.getDate(); 
+const hora = date.getHours();
+const minutos = date.getMinutes();
+const fecha =dia +' de '+ mes2 +' del '+ año +', '+ hora + ':' + minutos + 'hrs';
+const area = 'Almacén CEyE'
+const turno = 1;
+
+
+function buildTableBody(data: { [x: string]: { toString: () => any; }; }[], columns: (string | number)[]) {
+  var body: any[][] = [];
+
+
+  data.forEach(function(row: { [x: string]: { toString: () => any; }; }) {
+      var dataRow: any[] = [];
+
+      columns.forEach(function(column: string | number) {
+          dataRow.push({text : row[column].toString(), alignment : 'center', color : 'black', bold:false, fontSize: 9, margin: [0, 10, 0, 0]});
+      })
+
+      body.push(dataRow, );
+  });
+
+  return body;
+}
+
+function table(data: { [x: string]: { toString: () => any; }; }[] | { name: string; age: number; }[], columns: (string | number)[]) {
+  return {
+    style: 'tableExample',
+      table: {
+        widths: ['17%','17%','19%','17%','17%','13%','13%',],
+          body: buildTableBody(data, columns),
+      },layout: 'noBorders'
+    
+  };
+}
+function getBase64ImageFromURL(url: string) {
+  return new Promise((resolve, reject) => {
+    var img = new Image();
+    img.setAttribute("crossOrigin", "anonymous");
+  
+    img.onload = () => {
+      var canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+  
+      var ctx = canvas.getContext("2d");
+      ctx!.drawImage(img, 0, 0);
+  
+      var dataURL = canvas.toDataURL("image/png");
+  
+      resolve(dataURL);
+    };
+  
+    img.onerror = error => {
+      reject(error);
+    };
+  
+    img.src = url;
+  });}
+
+  async function createPDF(dataSource:  { [x: string]: { toString: () => any; }; }[], nombreJefa: string){
+
+  const pdfDefinition: any = {
+
+    pageSize: 'A4',
+    pageMargins: [20, 270, 20, 80],
+
+    background: [
+      {
+        "image":"logo",
+          width: 100,
+          margin:[20,22,0,0]
+      },
+
+      {
+        "image":"logo",
+          width: 600,
+          margin:[-2,60,0,0],
+          opacity: 0.1
+      }
+    ],
+
+    header:[
+   
+      {text: 'INSTITUTO NACIONAL DE CIENCIAS MÉDICAS NUTRICIÓN SALVADOR ZUBIRÁN', style: 'header2'},
+      {text: 'SUBDIRECCIÓN DE ENFERMERÍA: '+nombreJefa, style: 'header'},
+      {text: 'DEPARTAMENTO DE ENFERMERÍA', style: 'header'},
+      {text: 'CENTRAL DE EQUIPOS Y ESTERILIZACIÓN', style: 'header'},
+      {text: 'Fecha de Impresión: '+fecha, style: 'header3'},
+      {text: 'DISTRIBUCIÓN MATERIAL DE QUIRÓFANO', style: 'header2'},
+      {
+        columns: [
+          {
+            text: 'Área: '+ area, 
+            width:'40%',alignment: "center", margin:[0,25,0,0], fontSize: 11, bold:true,
+          },
+          {
+            text: 'Turno: '+turno,
+            width:'10%',alignment: "center", margin:[0,25,0,0], fontSize: 11, bold:true,
+          },
+          {
+            text: 'Rango de Fecha: '+/*aqui va la primera la variable de fecha del piker*/'10/08/23'+' - '+/*aqui va la segunda la variable de fecha del piker*/'16/12/23',
+            width:'50%',alignment: "center", margin:[0,25,0,0], fontSize: 11, bold:true,
+          },
+        ]
+      },
+
+
+      {
+        style: 'tableExample', margin:[20,20,20,0],
+        table: {
+          widths: ['17%','17%','19%','17%','17%','13%','13%',],
+          body: [
+            ['Prioridad', 'Ticket', 'Tipo de Cirugia', 'Fecha de Cirugía', 'Sala', 'Turno'],
+          ]
+        },layout: 'noBorders'
+      },
+
+      
+    ],
+
+    content: [
+      
+       table(dataSource, ['Prioridad', 'Ticket', 'Cirugia', 'Fecha', 'Sala', 'Turno'], ),
+  ],
+  
+images:{
+  
+  "logo" : await getBase64ImageFromURL(
+      "../../assets/generales/Logo_nutricion.png")
+    
+},
+  styles: {
+
+    header: {
+      fontSize: 11,
+      bold: true,
+      margin: [40, 7, 0, 0],
+      alignment: "center",
+      color: 'black',
+      position:'fixed',
+    },
+    header2: {
+      fontSize: 11,
+      bold: true,
+      margin: [40, 30, 0, 0],
+      alignment: "center",
+      color: 'black',
+      position:'fixed',
+     
+    },
+    header3: {
+      fontSize: 11,
+      bold: true,
+      margin: [0, 27, 30, 0],
+      alignment: "right",
+      color: 'black',
+      position:'fixed',
+    },
+    footer: {
+      fontSize: 10,
+      margin: [0, 20, 0, 0],
+      alignment: "center",
+      color: 'black',
+      position:'fixed',
+    },
+    tableExample: {
+      fontSize: 9,
+      bold: true,
+      margin: [0, -15, 0, 0],
+      alignment : 'center',
+      color: 'black'
+    },
+  
+  },
+  
+  footer:[
+    
+    {text: 'TRACY © '+año, style: 'footer'},
+  ]
+  }
+    
+  
+
+  const pdf =  pdfMake.createPdf(pdfDefinition);
+  //pdf.download('Reporte Almacén General '+ dia + '/'+mes2+'/'+año + ' ('+ hora + '/'+ minutos + 'hr)');
+pdf.open()
+  
+}
+
+

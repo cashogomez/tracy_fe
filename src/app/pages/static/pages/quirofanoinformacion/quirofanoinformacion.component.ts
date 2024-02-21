@@ -248,9 +248,9 @@ const fecha =dia +' de '+ mes2 +' del '+ año +', '+ hora + ':' + minutos + 'hrs
 
 
 function buildTableBody(data: { [x: string]: { toString: () => any; }; }[], columns: (string | number)[]) {
-  var body = [];
+  var body: any[][] = [];
 
-  body.push(columns);
+  //body.push(columns);
 
   data.forEach(function(row: { [x: string]: { toString: () => any; }; }) {
       var dataRow: any[] = [];
@@ -270,7 +270,7 @@ function table(data: { [x: string]: { toString: () => any; }; }[] | { name: stri
     style: 'tableExample',
       table: {
         widths: ['7%','12%','20%','5%','15%','17%','5%','5%','10%'],
-          headerRows: 1,
+          //headerRows: 1,
           body: buildTableBody(data, columns),
       },layout: 'noBorders'
     
@@ -306,7 +306,7 @@ function getBase64ImageFromURL(url: string) {
  
     const pdfDefinition: any = {
       pageSize: 'letter',
-      pageMargins: [20, 250, 20, 80],
+      pageMargins: [20, 270, 20, 60],
 
       background: [
         {
@@ -330,6 +330,15 @@ function getBase64ImageFromURL(url: string) {
         {text: 'Fecha de Impresión: '+fecha, style: 'header3'},
         {text: 'SOLICITUDES DE PROGRAMACIÓN DE CIRUGÍA', style: 'header2'},
         {text: 'Rango de Fecha: '+/*aqui va la primera la variable de fecha del piker*/'10/08/23'+' - '+/*aqui va la segunda la variable de fecha del piker*/'16/12/23', style: 'header3' },
+        {
+          style: 'tableExample', margin:[20,20,20,0],
+          table: {
+            widths: ['7%','12%','20%','5%','15%','17%','5%','5%','15%'],
+            body: [
+              ['Ticket', 'Fecha', 'Paciente', 'Edad', 'Diagnóstico', 'Tipo de Cirugía', 'Sala', 'Turno', 'Estatus'],
+            ]
+          },layout: 'noBorders'
+        },
       ],
 
       content: [
@@ -380,7 +389,7 @@ function getBase64ImageFromURL(url: string) {
       tableExample: {
         fontSize: 9,
         bold: true,
-        margin: [15, 0, 0, 0],
+        margin: [0, -15, 0, 0],
         alignment : 'center',
         color: 'black'
       },

@@ -8,6 +8,8 @@ import { NotificationService } from '@app/services/notification/notification.ser
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
+import 'moment/locale/es';
 
 @Component({
   selector: 'app-recepcionotrasareas',

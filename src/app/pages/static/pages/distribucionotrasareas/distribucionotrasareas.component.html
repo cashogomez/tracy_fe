@@ -9,7 +9,7 @@
 </div>
 
 <p align="end">
-  <button class="botones" style=" margin: 5px;" matTooltip="Generar reporte">Reporte</button>
+  <button class="botones" style=" margin: 5px;" matTooltip="Generar reporte" (click)="generarPDF()">Reporte</button>
   <button class="botones" style=" margin: 5px;" matTooltip="Generar préstamo">Préstamo</button>
 </p>
 
@@ -63,13 +63,13 @@
     <!-- Position Column -->
     <ng-container matColumnDef="ticket">
       <mat-header-cell *matHeaderCellDef> Ticket </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.ticket}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.Ticket}} </mat-cell>
     </ng-container>
 
     <!-- Name Column -->
     <ng-container matColumnDef="fecha">
       <mat-header-cell *matHeaderCellDef matTooltip="Fecha de recepción"> Fecha </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.fecha}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.Fecha}} </mat-cell>
     </ng-container>
 
 
@@ -82,13 +82,13 @@
     <!-- Symbol Column -->
     <ng-container matColumnDef="nombre">
       <mat-header-cell *matHeaderCellDef matTooltip="Nombre del material"> Nombre </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.nombre}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.Nombre}} </mat-cell>
     </ng-container>
 
     <!-- Symbol Column -->
     <ng-container matColumnDef="turno">
       <mat-header-cell *matHeaderCellDef> Turno </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.turno}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.Turno}} </mat-cell>
     </ng-container>
 
     <!-- Symbol Column -->
@@ -96,9 +96,9 @@
       <mat-header-cell *matHeaderCellDef> Prioridad </mat-header-cell>
       <mat-cell *matCellDef="let element"> 
 
-        <button mat-fab class="boton_alta" *ngIf="element.prioridad == 'alta' " >alta</button>
-        <button mat-fab class="boton_media" *ngIf="element.prioridad == 'media' ">media</button>
-        <button mat-fab class="boton_baja" *ngIf="element.prioridad == 'baja' ">baja</button>
+        <button mat-fab class="boton_alta" *ngIf="element.Prioridad == 'alta' " >alta</button>
+        <button mat-fab class="boton_media" *ngIf="element.Prioridad == 'media' ">media</button>
+        <button mat-fab class="boton_baja" *ngIf="element.Prioridad == 'baja' ">baja</button>
         
       </mat-cell>
     </ng-container>

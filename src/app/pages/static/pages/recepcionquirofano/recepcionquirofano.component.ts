@@ -7,9 +7,6 @@ import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatDatepickerModule, MatDatepickerIntl} from '@angular/material/datepicker';
 import {DateAdapter, MAT_DATE_LOCALE} from '@angular/material/core';
 import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
-
-import 'moment/locale/ja';
-import 'moment/locale/fr';
 import 'moment/locale/es';
 import { MatDivider } from '@angular/material/divider';
 import { NotificationService } from '@app/services/notification/notification.service';

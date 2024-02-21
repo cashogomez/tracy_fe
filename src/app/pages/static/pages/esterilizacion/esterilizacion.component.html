@@ -1,1 +1,21 @@
-<p>esterilizacion works!</p>
+<!------------------------------ INICIO DE ENCABEZADO -------------------------------->
+<h2 align="center">Esterilización</h2>
+
+<div class="container">
+  <div class="line"><mat-divider></mat-divider></div>
+  <div class="text mat-typography">Esterilización</div>
+  <div class="line"><mat-divider></mat-divider></div>
+</div>
+
+<p align="end">
+  <mat-form-field>
+    <mat-label>Elige la fecha</mat-label>
+    <input matInput [matDatepicker]="dp">
+    <mat-hint>{{getDateFormatString()}}</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+    <mat-datepicker #dp></mat-datepicker>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" class="button-text" class="botones" style=" margin: 20px;" matTooltip="Generar reporte">Reporte</button>
+
+</p>
