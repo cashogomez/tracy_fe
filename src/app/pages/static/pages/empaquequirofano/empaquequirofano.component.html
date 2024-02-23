@@ -9,7 +9,7 @@
 </div>
 
 <p align="end">
-  <button class="botones" style=" margin: 5px;" matTooltip="Generar reporte">Reporte</button>
+  <button class="botones" style=" margin: 5px;" (click)="generarPDF()" matTooltip="Generar reporte">Reporte</button>
   <button class="botones" style=" margin: 5px;" matTooltip="Consulta QR">QR</button>
 </p>
 
@@ -68,42 +68,42 @@
           The actual rendered columns are set as a property on the row definition" -->
 
         <!-- Symbol Column -->
-        <ng-container matColumnDef="prioridad">
+        <ng-container matColumnDef="Prioridad">
             <mat-header-cell *matHeaderCellDef> Prioridad </mat-header-cell>
             <mat-cell *matCellDef="let element"> 
       
-              <button mat-fab class="boton_alta" *ngIf="element.prioridad == 'alta' " >alta</button>
-              <button mat-fab class="boton_media" *ngIf="element.prioridad == 'media' ">media</button>
-              <button mat-fab class="boton_baja" *ngIf="element.prioridad == 'baja' ">baja</button>
+              <button mat-fab class="boton_alta" *ngIf="element.Prioridad == 'alta' " >alta</button>
+              <button mat-fab class="boton_media" *ngIf="element.Prioridad == 'media' ">media</button>
+              <button mat-fab class="boton_baja" *ngIf="element.Prioridad == 'baja' ">baja</button>
               
             </mat-cell>
           </ng-container>
 
     <!-- Symbol Column -->
-    <ng-container matColumnDef="nombre">
+    <ng-container matColumnDef="Nombre">
         <mat-header-cell *matHeaderCellDef matTooltip="Nombre del material"> Nombre </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.nombre}} </mat-cell>
+        <mat-cell *matCellDef="let element"> {{element.Nombre}} </mat-cell>
       </ng-container>
 
 
 
               <!-- Name Column -->
-    <ng-container matColumnDef="por_elaborar">
+    <ng-container matColumnDef="Elaborar">
         <mat-header-cell *matHeaderCellDef matTooltip="Empaque por elaborar"> Por elaborar</mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.por_elaborar}} </mat-cell>
+        <mat-cell *matCellDef="let element"> {{element.Elaborar}} </mat-cell>
       </ng-container>
 
     <!-- Position Column -->
-    <ng-container matColumnDef="estatus">
+    <ng-container matColumnDef="Estatus">
       <mat-header-cell *matHeaderCellDef matTooltip="Estatus del empaque"> Estatus </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.estatus}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.Estatus}} </mat-cell>
     </ng-container>
 
 
 
 
  <!-- Symbol Column -->
- <ng-container matColumnDef="accion">
+ <ng-container matColumnDef="Accion">
     <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
     <mat-cell *matCellDef="let element">  <button class="botones" style=" margin-right: 20px;" matTooltip="Empaquetar material">Empaquetar</button> </mat-cell>
   </ng-container>
@@ -111,7 +111,7 @@
 
 
     <!-- Symbol Column -->
-    <ng-container matColumnDef="impresion">
+    <ng-container matColumnDef="Impresion">
       <mat-header-cell *matHeaderCellDef> Impresión </mat-header-cell>
       <mat-cell *matCellDef="let element">  <button class="botones" style=" margin-right: 20px;" matTooltip="Imprimir QR">QR</button> </mat-cell>
     </ng-container>
