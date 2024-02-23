@@ -78,6 +78,10 @@ const routes: Routes = [
     path: 'editarprogramacioncirugia',
     loadComponent: () => import('./pages/editarprogramacioncirugia/editarprogramacioncirugia.component').then((m) => m.EditarprogramacioncirugiaComponent),
   },
+  {
+    path: 'dashboard',
+    loadChildren: () => import('./pages/dashboard/dashboard.module').then((m) => m.DashboardModule),
+  },
 ];
 
 
