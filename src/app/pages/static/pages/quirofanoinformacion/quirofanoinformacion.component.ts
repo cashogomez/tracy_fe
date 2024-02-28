@@ -305,7 +305,7 @@ function getBase64ImageFromURL(url: string) {
   async function createPDF(dataSource:  { [x: string]: { toString: () => any; }; }[], nombreJefa: string ){
  
     const pdfDefinition: any = {
-      pageSize: 'letter',
+      pageSize: 'A4',
       pageMargins: [20, 270, 20, 60],
 
       background: [

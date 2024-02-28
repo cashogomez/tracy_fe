@@ -12,5 +12,6 @@ export const environment = {
             measurementId: "G-D9EGJXX1SR"
           }
     },
-    url: 'http://194.163.172.100:1337/'
+    //url: 'http://194.163.172.100:1337/'
+    url: 'http://127.0.0.1:8000/'
 }

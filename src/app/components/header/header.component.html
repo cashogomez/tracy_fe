@@ -2,9 +2,9 @@
     <button mat-icon-button  matTooltip="Menu" (click)="onMenuToggleDispatch()">
         <mat-icon>menu</mat-icon>
     </button>
-    <span>TRACY</span>
+    <span routerLink="/">TRACY</span>
     <span class="toolbar-item-spacer"></span>
-    <p *ngIf="usuario!=null" class="temaHora">
+    <p  class="temaHora">
       {{ message | date: "EEE d 'de' MMM, YYY. hh:mm:ss a"}}
     </p>
     <button mat-icon-button matTooltip="Ingresar" routerLink="/auth/login" *ngIf="usuario==null" (click)="start()" >
@@ -14,8 +14,9 @@
         <mat-icon>logout</mat-icon>
     </button>
  
-    <button mat-icon-button matTooltip="Mi cuenta" [matMenuTriggerFor]="userAccountMenu" *ngIf="usuario!=null">
-        <img  class="images" src="{{usuario!.foto}}" width="40px" class="circular" />
+    <button mat-icon-button matTooltip="Mi cuenta" [matMenuTriggerFor]="userAccountMenu" >
+       <!--  <img  class="images" src="{{usuario!.foto}}" width="40px" class="circular" /> -->
+       <img  class="images" src="/assets/generales/silueta.jpg" width="40px" class="circular" />
     </button>
     <mat-menu #userAccountMenu [overlapTrigger]="false" yPosition="below">
         <button mat-menu-item routerLink="auth/edition">

@@ -243,7 +243,7 @@ function getBase64ImageFromURL(url: string) {
 
   const pdfDefinition: any = {
 
-    pageSize: 'letter',
+    pageSize: 'A4',
     pageMargins: [20, 270, 20, 80],
 
     background: [

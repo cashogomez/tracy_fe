@@ -41,6 +41,28 @@ import * as fromUser from '@app/store/user';
 })
 export class MenuListaComponent implements OnInit{
   @Output() menuToggle = new EventEmitter<void>();
+  // usuario: fromUser.UserResponse| null ={
+  //   nombre: 'Juan',
+  //   paterno: 'Perez',
+  //   materno: 'perez',
+  //   telefono: '2222222222',
+  //   foto: '/assets/generales/silueta.jpg',
+  //   email: 'juan@gmail.com',
+  //   username: 'juanga',
+  //   numeroEmpleado: '',
+  //   puesto: '',
+  //   area: '',
+  //   empresa_id: '',
+  //   is_active: 'false',
+  //   is_admin: 'false',
+  //   is_staff: 'false',
+  //   is_superadmin: 'false',
+  //   response: '',
+  //   token: {
+  //     access: '',
+  //     refresh: '',
+  //   }
+  // };
   usuario: fromUser.UserResponse | null = null;
   constructor(private store: Store<fromRoot.State>, private router: Router) {}
 
