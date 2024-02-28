@@ -124,6 +124,7 @@ export class QuirofanoinformacionComponent {
 // } 
 EliminarElementoTabla(ticket: number) {
   this.dataSource.data = this.dataSource.data.filter((u) => u.Ticket !== ticket);
+  this.ELEMENT_DATA = this.dataSource.data;
   this.notification.success("¡El registro se borro exitosamente!");
 }
 
