@@ -139,12 +139,6 @@ export class ProgramacioncirugiaComponent implements OnInit {
     }
     return '';
   }
-  aceptar() {
-    console.log('acepto');
-  }
-  cancelar() {
-    console.log('cancelar');
-  }
   eliminarFila(element: Element) {
     this.borrarRegistro=element;
   }
@@ -158,8 +152,24 @@ export class ProgramacioncirugiaComponent implements OnInit {
       (component) => component.MensajecontinuarComponent
     )
   );
+  private lazyLoadAceptar$ = from(
+    import('@app/services/emergente/components/mensajeaceptar/mensajeaceptar.component').then(
+      (component) => component.MensajeaceptarComponent
+    )
+  );
+  private lazyLoadCancelar$ = from(
+    import('@app/services/emergente/components/mensajecancelar/mensajecancelar.component').then(
+      (component) => component.MensajecancelarComponent
+    )
+  );
   onBetaClicked() {
     this.dataService.showDialog(this.lazyLoadBeta$);
+  }
+  onAceptarClicked() {
+    this.dataService.showDialog(this.lazyLoadAceptar$);
+  }
+  onCancelarClicked() {
+    this.dataService.showDialog(this.lazyLoadCancelar$);
   }
   changeMaterial(valor: Element) { 
     this.materialElegido = valor;

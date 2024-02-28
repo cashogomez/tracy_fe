@@ -1,9 +1,9 @@
 <!------------------------------ INICIO DE ENCABEZADO -------------------------------->
-<h2 align="center"> Información de programación de cirugía</h2>
+<h2 align="center"> Datos de programación de cirugía</h2>
 
 <div class="container">
   <div class="line"><mat-divider></mat-divider></div>
-  <div class="text mat-typography">Solicitudes de Instrumentos</div>
+  <div class="text mat-typography">Información de programación de Cirugía</div>
   <div class="line"><mat-divider></mat-divider></div>
 </div>
 
@@ -309,8 +309,8 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
     <div align="center">
-        <button mat-raised-button  style="margin-right: 5%;" (click)="aceptar()">Aceptar</button>
-        <button mat-raised-button  style="margin-right: 5%;" (click)="cancelar()">Cancelar</button>
+      <button mat-raised-button routerLink="/static/quirofanoinformacion" style="margin-right: 5%;" (click)="onCancelarClicked()">Cancelar</button>
+      <button mat-raised-button routerLink="/static/quirofanoinformacion" style="margin-right: 5%;" (click)="onAceptarClicked()">Aceptar</button> 
     </div>
  
   </div>
