@@ -17,7 +17,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import 'moment/locale/ja';
 import 'moment/locale/fr';
 import 'moment/locale/es';
@@ -62,6 +62,8 @@ import { from } from 'rxjs';
 export class ProgramacioncirugiaComponent implements OnInit {
   borrarRegistro !: Element;
   materialElegido !: Element;
+  valorElegido : string=''
+  tipoOperacion : number = 0;
   material: Element[] = [    
   {Elemento: 'Set 1', Cantidad:8, Descripcion: 'Set 1 para quirófano'},
   {Elemento: 'Set 2', Cantidad:4, Descripcion: 'Set 2 para quirófano'},
@@ -79,6 +81,7 @@ export class ProgramacioncirugiaComponent implements OnInit {
   ];
   
   constructor(
+    private router: Router,
     private _adapter: DateAdapter<any>,
     private _intl: MatDatepickerIntl,
     private notification: NotificationService,
@@ -86,15 +89,42 @@ export class ProgramacioncirugiaComponent implements OnInit {
     @Inject(MAT_DATE_LOCALE) private _locale: string,) {
         // Assign the data to the data source for the table to render
         this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
-
+        
         // ****** Recibe datos ******
         this.dataService.data$.subscribe(data => {
-          console.log(data);
+          // console.log(data);
+          
           if (data==true) {
-            console.log('Va bien');
-            if (this.borrarRegistro!= undefined) {
-              this.EliminarElementoTabla(this.borrarRegistro.Elemento);
-            }
+            switch(this.tipoOperacion) { 
+              case 1: { 
+                console.log('Va bien');
+                if (this.borrarRegistro!= undefined) {
+                  this.EliminarElementoTabla(this.borrarRegistro.Elemento);
+                  this.notification.success("Registro Borrado exitosamente");
+                }
+                else {
+                  this.notification.error("Registro no encontrado");
+                }
+                
+                 break; 
+              } 
+              case 2: { 
+                this.notification.success("Ticket generado");
+                this.router.navigate(['/static/quirofanoinformacion']);
+                 //statements; 
+                 break; 
+              } 
+              case 3: { 
+                this.notification.error("Operación cancelada");
+                this.router.navigate(['/static/quirofanoinformacion']);
+                //statements; 
+                break; 
+             } 
+              default: { 
+                 //statements; 
+                 break; 
+              } 
+           }
             
           }
           else {
@@ -164,12 +194,15 @@ export class ProgramacioncirugiaComponent implements OnInit {
   );
   onBetaClicked() {
     this.dataService.showDialog(this.lazyLoadBeta$);
+    this.tipoOperacion = 1
   }
   onAceptarClicked() {
     this.dataService.showDialog(this.lazyLoadAceptar$);
+    this.tipoOperacion = 2
   }
   onCancelarClicked() {
     this.dataService.showDialog(this.lazyLoadCancelar$);
+    this.tipoOperacion = 3
   }
   changeMaterial(valor: Element) { 
     this.materialElegido = valor;
@@ -199,6 +232,9 @@ console.log(this.materialElegido)
 
   }
   this.dataSource.data = this.dataSource.data
+  this.cantidadCapturada = ''
+  this.valorElegido = ''
+  this.cantidad = 0
 }
   
 }

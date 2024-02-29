@@ -254,7 +254,7 @@
     <div style=" width: 70%; margin-left:5%;">
   <label>Elemento:</label><br>
   <mat-form-field  style=" width: 100%">
-      <mat-select (selectionChange)="changeMaterial($event.value)" disableRipple>
+      <mat-select [(ngModel)]="valorElegido"  (selectionChange)="changeMaterial($event.value)" disableRipple>
         <mat-option *ngFor="let x of material; let i = index" [value]="material[i]">{{material[i].Elemento}}</mat-option>
       </mat-select>
     </mat-form-field></div>
@@ -309,8 +309,8 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
     <div align="center">
-      <button mat-raised-button routerLink="/static/quirofanoinformacion" style="margin-right: 5%;" (click)="onCancelarClicked()">Cancelar</button>
-      <button mat-raised-button routerLink="/static/quirofanoinformacion" style="margin-right: 5%;" (click)="onAceptarClicked()">Aceptar</button> 
+      <button mat-raised-button  style="margin-right: 5%;" (click)="onCancelarClicked()">Cancelar</button>
+      <button mat-raised-button  style="margin-right: 5%;" (click)="onAceptarClicked()">Aceptar</button> 
     </div>
  
   </div>
