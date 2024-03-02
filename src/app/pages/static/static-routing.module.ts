@@ -82,6 +82,10 @@ const routes: Routes = [
     path: 'dashboard',
     loadChildren: () => import('./pages/dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
+  {
+    path: 'admininstrumental',
+    loadChildren: () => import('./pages/instrumental/instrumental.module').then((m) => m.InstrumentalModule),
+  },
 ];
 
 
