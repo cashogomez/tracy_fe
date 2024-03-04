@@ -36,43 +36,43 @@
     <!-- Name Column -->
     <ng-container matColumnDef="Nombre">
       <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.Nombre}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.nombre}} </mat-cell>
     </ng-container>
 
     <!-- Weight Column -->
     <ng-container matColumnDef="Tipo">
       <mat-header-cell *matHeaderCellDef> Tipo</mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.Tipo}}</mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.tipo}}</mat-cell>
     </ng-container>
 
     <!-- Symbol Column -->
     <ng-container matColumnDef="Marca">
       <mat-header-cell *matHeaderCellDef> Marca </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.Marca}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.marca}} </mat-cell>
     </ng-container>
 
     <!-- Symbol Column -->
     <ng-container matColumnDef="Lote">
       <mat-header-cell *matHeaderCellDef> Lote </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.Lote}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.lote}} </mat-cell>
     </ng-container>
 
     <!-- Symbol Column -->
     <ng-container matColumnDef="Caducidad">
       <mat-header-cell *matHeaderCellDef matTooltip="Número de veces que se puede usar el instrumento"> Caducidad</mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.Caducidad}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.caducidad}} </mat-cell>
     </ng-container>
 
     <!-- Symbol Column -->
     <ng-container matColumnDef="Descripcion">
       <mat-header-cell *matHeaderCellDef> Descripción</mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.Descripcion}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.descripcion}} </mat-cell>
     </ng-container>
 
         <!-- Symbol Column -->
     <ng-container matColumnDef="Cantidad">
         <mat-header-cell *matHeaderCellDef> Cantidad</mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.Cantidad}} </mat-cell>
+        <mat-cell *matCellDef="let element"> {{element.cantidad}} </mat-cell>
     </ng-container>
 
     <!-- Symbol Column -->
@@ -92,6 +92,7 @@
   <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of elementos"></mat-paginator>
 </div>
 <!------------------------------------------ SEGUNDA TABLA ------------------------------------------------>
+
 <section class="flex-container" *ngIf="verSegundaTabla" >
     <mat-card>
         <mat-card-header>
@@ -104,7 +105,7 @@
         <button mat-button appFilesUpload [multiple]="true" (changed)="onFilesChanged($event)">Subir Imagen</button>
         <mat-card-content>
 
-        <form #f="ngForm" (ngSubmit)="registrarUsuario(f)" >
+        <form #f="ngForm" (ngSubmit)="registrarInstrumento(f)" >
 
             <mat-form-field>
                 <mat-label>Nombre</mat-label>
@@ -149,18 +150,9 @@
             </mat-form-field>
 
 
-            <mat-divider vertical style="height:20px"></mat-divider>
-
-            <section class="example-section" >
-                <label >Estado del instrumento:</label>
-                <mat-radio-group [(ngModel)]="selectedRadio" name="radioOpt1" (change)="radioButtonChange($event)" >
-                  <mat-radio-button  *ngFor="let permiso of permisos"  [value]="permiso"  >{{permiso}}</mat-radio-button>
-                </mat-radio-group>
-              </section>
-
             <mat-divider vertical style="height:30px"></mat-divider>
             <button mat-raised-button class="botones" (click)="crearInstrumento(3)">Cancelar</button>
-            <button mat-raised-button class="botones" type="submit" (click)="crearInstrumento(2)">Enviar</button>
+            <button mat-raised-button class="botones" type="submit" >Enviar</button>
         </form>
     </mat-card-content>
     </mat-card>

@@ -23,6 +23,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { PopupsModule } from '@app/shared';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -51,6 +52,7 @@ import { PopupsModule } from '@app/shared';
     MatCheckboxModule,
     MatDividerModule, 
     MatRadioModule,
+    HttpClientModule
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },

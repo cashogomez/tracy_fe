@@ -1,10 +1,15 @@
 export interface Instrumento {
+    id: number;
     nombre: string;
-    tipo: string;
-    marca: string;
     cantidad: number;
+    familia: string;
+    individuo: number;
+    codigo_qr: string;
+    uso: number;
+    tipo: string;
+    marca: string;  
     lote: string;
-    caducidad: string;
+    caducidad: number;
     foto: string;
     descripcion: string;
     set: string;
@@ -15,3 +20,4 @@ export interface Instrumento {
     created: string;
     updated: string;
 }
+export type InstrumentoRequest = Omit<Instrumento, 'id'>;

@@ -1,32 +1,26 @@
 import { Component, Inject, ViewChild } from '@angular/core';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatDatepickerModule, MatDatepickerIntl } from '@angular/material/datepicker';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatDatepickerIntl } from '@angular/material/datepicker';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
-import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 
 import 'moment/locale/es';
 
 
 import { DynamicDialogService } from '@app/services/emergente/emergente.service';
-import { MatDivider } from '@angular/material/divider';
 import { from } from 'rxjs';
-import { MatIcon } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive, RouterModule, RouterOutlet } from '@angular/router';
 import { NotificationService } from '@app/services';
-import { ImprimirService } from '@app/services/imprimir/imprimir.service';
 import pdfMake from "pdfmake/build/pdfmake";
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { NgForm } from '@angular/forms';
-import { MatRadioChange } from '@angular/material/radio';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
-import {Instrumento} from '@app/models/backend/instrumento';
+import {Instrumento, InstrumentoRequest} from '@app/models/backend/instrumento';
+import { InstrumentoService } from '@app/services/instrumento/instrumento.service';
+
+import { Buffer } from "buffer";
+import { response } from 'express';
 
 @Component({
   selector: 'app-instrumental',
@@ -36,84 +30,26 @@ import {Instrumento} from '@app/models/backend/instrumento';
 })
 export class InstrumentalComponent {
   nombrejefa= "María Dolores Rodríguez Ramírez";
-  editarRegistro !: Element;
-  borrarRegistro !: Element;
+  editarRegistro !: Instrumento;
+  borrarRegistro !: Instrumento;
   verSegundaTabla = false;
-  foto : string ="/assets/generales/instrumento.png";
+  foto : string ="https://firebasestorage.googleapis.com/v0/b/tracy-nutricion.appspot.com/o/instrumento.png?alt=media&token=e73f04cf-b593-45da-ba73-202b5362fe63";
+  codigos: string[]=[]
   permisos = [
     'completo' , 
     'funcional', 
     'prelavado',
   ];
   selectedRadio : string = '';
-  is_completo : boolean = false;
-  is_funcional : boolean = false;
+  is_completo : boolean = true;
+  is_funcional : boolean = true;
   is_prelavado : boolean = false;
-
+  instrumentos: Instrumento[] = [];
+  temporal!: Instrumento;
+  lista_familia: string[] = [];
+  ELEMENT_DATA: any[] = [];
   /** Constants used to fill up our data base. */
- ELEMENT_DATA = [
-  {id: 1, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false,  Descripcion:'pendiente', Cantidad:10},
-  {id: 2, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 3, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 4, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 5, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 6, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 7, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 8, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 9, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 10, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
 
-  {id: 11, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 12, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 13, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 14, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 15, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 16, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 17, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 18, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 19, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 20, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-
-  {id: 21, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 22, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente',Cantidad:10},
-  {id: 23, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 24, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 25, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 26, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 27, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 28, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 29, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 30, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-
-  {id: 31, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 32, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 33, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 34, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 35, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 36, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 37, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 38, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 39, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 40, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-
-  {id: 41, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 42, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 43, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 44, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 45, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 46, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 47, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 48, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 49, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-  {id: 50, Nombre: 'Pinza', Tipo:'Mayo', Lote:22, Marca:'Miltex', Foto:'Estenosis Aórtica', Caducidad:1, Prelavado: true, Completo: false, Funcional: false, Descripcion:'pendiente', Cantidad:10},
-
-];
-
-// EliminarElementoTabla(key: number) {
-//   this.ELEMENT_DATA.forEach((value,index)=>{
-//       if(value.id==key) this.ELEMENT_DATA.splice(index,1);
-//   });
-// } 
 EliminarElementoTabla(id: number) {
   this.dataSource.data = this.dataSource.data.filter((u) => u.id !== id);
   this.ELEMENT_DATA = this.dataSource.data;
@@ -133,18 +69,19 @@ EliminarElementoTabla(id: number) {
   constructor(
     private notification: NotificationService,
     private dataService: DynamicDialogService,
+    private instrumentoService : InstrumentoService, 
     
     private _adapter: DateAdapter<any>,
     private _intl: MatDatepickerIntl,
     @Inject(MAT_DATE_LOCALE) private _locale: string,) {
         // Assign the data to the data source for the table to render
+        
         this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
 
         // ****** Recibe datos ******
         this.dataService.data$.subscribe(data => {
           console.log(data);
           if (data==true) {
-            console.log('Va bien');
             if (this.borrarRegistro != undefined) {
               this.EliminarElementoTabla(this.borrarRegistro.id);
             }
@@ -155,43 +92,29 @@ EliminarElementoTabla(id: number) {
           }
         });
 
+        
+
   }
 
   ngOnInit() {
+    this.instrumentoService.traerinstrumentos().subscribe(datos => {
+          this.instrumentos = datos;
+          this.instrumentos.forEach((name, index) => {
+            let indice = this.lista_familia.findIndex(u => u === name.familia);
+            //console.log(indice)
+            if (indice == -1) {
+              this.lista_familia.push(name.familia);
+              this.ELEMENT_DATA.push(name)
+              
+            }
+          })
+          this.dataSource.data = this.ELEMENT_DATA;
+          console.log(this.lista_familia)
+          console.log('********************************************');
 
+    });
   }
-  radioButtonChange(data: MatRadioChange) {
-    switch (this.selectedRadio)
-    {
-        case this.permisos[0]:
-            this.is_completo = true;
-            this.is_funcional = false;
-            this.is_prelavado = false;
-          break;
-        case this.permisos[1]:
-            this.is_completo  = false;
-            this.is_funcional = true;
-            this.is_prelavado = false;
-
-          break;
-          case this.permisos[2]:
-            this.is_completo  = false;
-            this.is_funcional = false;
-            this.is_prelavado = true;
-
-          break;
-          case this.permisos[3]:
-            this.is_completo  = false;
-            this.is_funcional = false;
-            this.is_prelavado = false;
-
-          break;
-      default:
-          alert('Default case');
-          break;
-    }
-    //console.log(this.selectedRadio)
-  }
+ 
   generarPDF() {
     createPDF(this.ELEMENT_DATA, this.nombrejefa);
   }
@@ -212,15 +135,15 @@ EliminarElementoTabla(id: number) {
     }
   }
   //dataSource: MatTableDataSource<Element>;
-  dataSource: MatTableDataSource<Element>;
+  dataSource: MatTableDataSource<Instrumento>;
 // **********************************************************
 
   displayedColumns = ['id', 'Nombre', 'Tipo', 'Marca', 'Descripcion',  'Lote',  'Caducidad', 'Cantidad','accion' ];
 
-  editarFila(element: Element) {
+  editarFila(element: Instrumento) {
     this.editarRegistro=element;
   }
-  eliminarFila(element: Element) {
+  eliminarFila(element: Instrumento) {
     this.borrarRegistro=element;
   }
   crearInstrumento(valor: number) {
@@ -253,48 +176,81 @@ EliminarElementoTabla(id: number) {
       } 
    } 
   }
-  registrarUsuario(form: NgForm){
-    const userInstrumentoRequest: Instrumento = {
+  registrarInstrumento(form: NgForm){
+    console.log('inicio');
+    const userInstrumentoRequest: InstrumentoRequest = {
       nombre: form.value.Nombre,
+      cantidad: form.value.Cantidad,
       tipo: form.value.Tipo,
       marca: form.value.Marca,
-      cantidad: form.value.Descripcion,
+      uso: 0,
       lote: form.value.Lote,
       caducidad: form.value.Caducidad,
       foto: this.foto,
-      descripcion: form.value.Cantidad,
+      descripcion: form.value.Descripcion,
       prelavado: this.is_prelavado,
       completo: this.is_completo,
       funcional : this.is_funcional,
       set: '',
       empaque: '',
+      codigo_qr: '',
+      familia: '',
+      individuo: 0,
       created: Date.now.toString(),
       updated: Date.now.toString(),
     };
+    userInstrumentoRequest.familia = Buffer.from(userInstrumentoRequest.nombre+
+                                      userInstrumentoRequest.tipo+
+                                      userInstrumentoRequest.marca+
+                                      userInstrumentoRequest.descripcion).toString('base64')
+    console.log(userInstrumentoRequest);
+   
+    this.generadorQR(userInstrumentoRequest.cantidad,userInstrumentoRequest );
+    for (var i=0; i<userInstrumentoRequest.cantidad; i++) {
+      userInstrumentoRequest.codigo_qr=this.codigos[i]
+      userInstrumentoRequest.individuo = i                              
+
+      this.instrumentoService.altainstrumento(userInstrumentoRequest).subscribe((response: Instrumento) => {
+        console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+        console.log(response);
+        this.instrumentoService.traerinstrumentos().subscribe(datos => {
+          this.instrumentos = datos;
+          this.instrumentos.forEach((name, index) => {
+            let indice = this.lista_familia.findIndex(u => u === name.familia);
+            //console.log(indice)
+            if (indice == -1) {
+              this.lista_familia.push(name.familia);
+              this.ELEMENT_DATA.push(name)
+              
+            }
+          })
+          this.dataSource.data = this.ELEMENT_DATA;
+          console.log(this.lista_familia)
+          console.log('********************************************');
+
+    });
+        //this.temporal =JSON.parse(JSON.stringify(response))
+        //this.instrumentos.push(response)
+      });
+    }
+    //console.log(this.temporal);
+    //this.ELEMENT_DATA.push(JSON.parse(JSON.stringify(this.temporal)))
+    this.notification.success('El instrumento se registró exitosamente')
+    this.codigos=[]
     form.reset();
+    this.verSegundaTabla=false
+
   }
   onFilesChanged(urls: string | string[]): void {
     this.foto=urls[0];
   }
+  generadorQR(valor: number, instrumento: InstrumentoRequest) {
+    for (let i = 1; i < valor+1; i++) {
+      this.codigos.push(Buffer.from(instrumento.nombre+instrumento.tipo+instrumento.marca+instrumento.descripcion).toString('base64')+','+i.toString())
+    }
+    console.log(this.codigos)
+  }
 }
-
-export interface Element {
-  Nombre: string;
-  id: number;
-  Tipo: string;
-  Lote: number;
-
-  Marca: string;
-  Foto: string;
-  Caducidad: number;
-  Prelavado: boolean;
-  Completo: boolean;
-  Funcional: boolean;
-  Descripcion: string;
-  Cantidad: number;
-}
-
-
 const date = new Date();
 const año = date.getFullYear();
 const mes = date.toLocaleString('default', { month: 'short' });
@@ -394,7 +350,7 @@ function getBase64ImageFromURL(url: string) {
           table: {
             widths: ['15%','15%','15%','15%','10%','10%','10%', '10%'],
             body: [
-              ['id', 'Nombre', 'Tipo','Marca',  'Descripcion',  'Lote', 'Cantidad','Caducidad'],
+              ['id', 'nombre', 'tipo','marca',  'descripcion',  'lote', 'cantidad','caducidad'],
             ]
           },layout: 'noBorders'
         },
@@ -402,7 +358,7 @@ function getBase64ImageFromURL(url: string) {
 
       content: [
         
-         table(dataSource, ['id', 'Nombre', 'Tipo','Marca',  'Descripcion',  'Lote', 'Cantidad','Caducidad'], ),
+         table(dataSource, ['id', 'nombre', 'tipo','marca',  'descripcion',  'lote', 'cantidad','caducidad'], ),
     ],
     
   images:{
