@@ -16,7 +16,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { RouterOutlet, RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -52,7 +52,8 @@ import { HttpClientModule } from '@angular/common/http';
     MatCheckboxModule,
     MatDividerModule, 
     MatRadioModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule,
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },

@@ -78,7 +78,7 @@
     <!-- Symbol Column -->
     <ng-container matColumnDef="accion">
       <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
-      <mat-cell *matCellDef="let element"> <mat-icon class="botoneditar" routerLink="/static/editarprogramacioncirugia" (click)="editarFila(element)" fontIcon="edit" style="color: blue" matTooltip="Editar Registro"></mat-icon>
+      <mat-cell *matCellDef="let element"> <mat-icon class="botoneditar"  (click)="editarFila(element)" fontIcon="edit" style="color: blue" matTooltip="Editar Registro"></mat-icon>
                                            <mat-icon class="botoneliminar" (click)="onBetaClicked(); eliminarFila(element) " fontIcon="cancel" style="color: red" matTooltip="Eliminar Registro" ></mat-icon> </mat-cell>
     </ng-container>
 
@@ -157,6 +157,75 @@
     </mat-card-content>
     </mat-card>
 </section>
+
+<!------------------------------------------ TERCERA TABLA ------------------------------------------------>
+
+<section class="flex-container" *ngIf="verTerceraTabla" >
+  <mat-card>
+      <mat-card-header>
+          <mat-card-title>Editar Instrumento</mat-card-title>
+      </mat-card-header>
+      <div >
+          <img mat-card-image ngSrc={{foto}} width="200" height="200" alt="Imagen Foto">
+      </div>
+      
+      <button mat-button appFilesUpload [multiple]="true" (changed)="onFilesChanged($event)">Subir Imagen</button>
+      <mat-card-content>
+
+      <form (ngSubmit)="editarInstrumento()" [formGroup]="formaEdicion">
+
+          <mat-form-field>
+              <mat-label>Nombre</mat-label>
+              <input type="tex" matInput placeholder="Nombre del Instrumento" formControlName="Nombre" required>
+              <mat-error>Debe ingresar un nombre</mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+              <mat-label>Tipo</mat-label>
+              <input type="tex" matInput placeholder="Tipo de instrumento" formControlName="Tipo" required>
+              <mat-error>Ingresa el tipo de instrumento</mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+              <mat-label>Marca</mat-label>
+              <input type="tex" matInput placeholder="Marca" formControlName="Marca" required>
+              <mat-error>Debe ingresar la marca del instrumento</mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+              <mat-label>Descripción</mat-label>
+              <input type="tex" matInput placeholder="Descripción del intrumento" formControlName="Descripcion" required>
+              <mat-error>Debe ingresar un descripción</mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+              <mat-label>Lote</mat-label>
+              <input type="tex" matInput placeholder="Lote" formControlName="Lote" required>
+              <mat-error>Señala el lote del instrumento</mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+              <mat-label>Caducidad</mat-label>
+              <input type="text" matInput placeholder="Caducidad" formControlName="Caducidad"  required>
+              <mat-error>Debe ingresar el numero de usos del instrumento</mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+              <mat-label>Cantidad</mat-label>
+              <input type="tex" matInput placeholder="Cantidad" formControlName="Cantidad"  required>
+              <mat-error>Introduce la cantidad de instrumentos</mat-error>
+          </mat-form-field>
+
+
+          <mat-divider vertical style="height:30px"></mat-divider>
+          <button mat-raised-button class="botones" >Cancelar</button>
+          <button mat-raised-button class="botones" type="submit" >Enviar</button>
+      </form>
+  </mat-card-content>
+  </mat-card>
+</section>
+
+
 
 
 
