@@ -58,12 +58,6 @@
     </ng-container>
 
     <!-- Symbol Column -->
-    <ng-container matColumnDef="Caducidad">
-      <mat-header-cell *matHeaderCellDef matTooltip="Número de veces que se puede usar el instrumento"> Caducidad</mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.caducidad}} </mat-cell>
-    </ng-container>
-
-    <!-- Symbol Column -->
     <ng-container matColumnDef="Descripcion">
       <mat-header-cell *matHeaderCellDef> Descripción</mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.descripcion}} </mat-cell>
@@ -137,11 +131,6 @@
                 <mat-error>Señala el lote del instrumento</mat-error>
             </mat-form-field>
 
-            <mat-form-field>
-                <mat-label>Caducidad</mat-label>
-                <input type="text" matInput placeholder="Caducidad" name="Caducidad" ngModel required>
-                <mat-error>Debe ingresar el numero de usos del instrumento</mat-error>
-            </mat-form-field>
 
             <mat-form-field>
                 <mat-label>Cantidad</mat-label>

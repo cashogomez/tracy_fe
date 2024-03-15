@@ -9,7 +9,6 @@ export interface Instrumento {
     tipo: string;
     marca: string;  
     lote: string;
-    caducidad: number;
     foto: string;
     descripcion: string;
     set: string;

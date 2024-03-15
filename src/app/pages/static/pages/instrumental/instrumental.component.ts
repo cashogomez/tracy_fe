@@ -37,7 +37,7 @@ export class InstrumentalComponent {
   verSegundaTabla = false;
   verTerceraTabla = false;
   foto : string ="https://firebasestorage.googleapis.com/v0/b/tracy-nutricion.appspot.com/o/instrumento.png?alt=media&token=e73f04cf-b593-45da-ba73-202b5362fe63";
-  codigos: string[]=[]
+  //codigos: string[]=[]
   permisos = [
     'completo' , 
     'funcional', 
@@ -57,19 +57,17 @@ EliminarElementoTabla(id: number) {
   // ******************* Borrar elementos del front end ***************************
   let borrarRegistro: Instrumento[] = this.dataSource.data.filter((u) => u.id == id);
   this.instrumentos = this.instrumentos.filter((u) => u.id !== id);
-  let familia_reg = borrarRegistro[0].familia
+
   
   if (borrarRegistro[0].cantidad == 1) {
     this.dataSource.data = this.dataSource.data.filter((u) => u.id != borrarRegistro[0].id);
     this.instrumentoService.borrarinstrumento(id).subscribe(respuesta => {})
   }
   else {
-    let instrumento_fam: Instrumento[] =  this.instrumentos.filter((u) => u.familia == familia_reg);
-    let cantidad_reg = instrumento_fam.length;
-    instrumento_fam[0].cantidad = instrumento_fam[0].cantidad -1
+    borrarRegistro[0].cantidad = borrarRegistro[0].cantidad -1
     this.dataSource.data = this.dataSource.data.filter((u) => u.id != borrarRegistro[0].id);
-    if (cantidad_reg > 0) {
-      this.dataSource.data.push(instrumento_fam[0])
+    if ( borrarRegistro[0].cantidad > 0) {
+      this.dataSource.data.push(borrarRegistro[0])
     }
   
     this.ELEMENT_DATA= this.dataSource.data
@@ -78,16 +76,11 @@ EliminarElementoTabla(id: number) {
 
      // *******************************************************************************
   // ************************ Eliminar registro BASE DE DATOS **********************
-  this.instrumentoService.borrarinstrumento(id).subscribe(respuesta => {
-    if (respuesta == null) {
-      instrumento_fam.forEach((value) => {
-        value.cantidad = cantidad_reg
-        this.instrumentoService.editarinstrumento(value, value.id).subscribe(datosE => {
-          console.log(datosE);
-        });
-      })
-    }
-  });
+
+    this.instrumentoService.editarinstrumento(borrarRegistro[0], borrarRegistro[0].id).subscribe(datosE => {
+      console.log(datosE);
+    });
+
 
   }
  
@@ -186,7 +179,7 @@ EliminarElementoTabla(id: number) {
   dataSource: MatTableDataSource<Instrumento>;
 // **********************************************************
 
-  displayedColumns = ['id', 'Nombre', 'Tipo', 'Marca', 'Descripcion',  'Lote',  'Caducidad', 'Cantidad','accion' ];
+  displayedColumns = ['id', 'Nombre', 'Tipo', 'Marca', 'Descripcion',  'Lote',   'Cantidad','accion' ];
 
   editarFila(elemento: Instrumento) {
     this.notification.success('Ya puedes editar el Instrumento')
@@ -198,7 +191,6 @@ EliminarElementoTabla(id: number) {
     this.formaEdicion?.get('Marca')?.setValue(elemento.marca);
     this.formaEdicion?.get('Descripcion')?.setValue(elemento.descripcion);
     this.formaEdicion?.get('Lote')?.setValue(elemento.lote);
-    this.formaEdicion?.get('Caducidad')?.setValue(elemento.caducidad);
     this.foto = elemento.foto
   };
   eliminarFila(element: Instrumento) {
@@ -206,222 +198,55 @@ EliminarElementoTabla(id: number) {
   }
   editarInstrumento( ) {
     // ******************* Actualización de visualización al usuario ************
-
     this.instrumentoService.traerUNinstrumentos(this.editarRegistro.id).subscribe((responseUnico) => {
-      let retornoInstrumento: Instrumento = responseUnico
+
       this.ELEMENT_DATA = this.ELEMENT_DATA.filter((u) => u.id != responseUnico.id);
 
       console.log(this.ELEMENT_DATA);
-      let instrumentos_fam = this.instrumentos.filter((valor) => valor.familia == retornoInstrumento.familia )
 
       const instrumentoPantalla: Instrumento = {
-        id: retornoInstrumento.id,
+        id: responseUnico.id,
         nombre: this.formaEdicion?.get('Nombre')?.value!,
         cantidad: this.formaEdicion?.get('Cantidad')?.value!,
         tipo: this.formaEdicion?.get('Tipo')?.value!,
         marca: this.formaEdicion?.get('Marca')?.value!,
-        uso: retornoInstrumento.uso,
+        uso: responseUnico.uso,
         lote: this.formaEdicion?.get('Lote')?.value!,
-        caducidad: this.formaEdicion?.get('Caducidad')?.value!,
         foto: this.foto,
         descripcion: this.formaEdicion?.get('Descripcion')?.value!,
-        prelavado: retornoInstrumento.prelavado,
-        completo: retornoInstrumento.completo,
-        funcional : retornoInstrumento.funcional,
-        set: retornoInstrumento.set,
-        empaque: retornoInstrumento.empaque,
-        codigo_qr: retornoInstrumento.codigo_qr,
-        familia: retornoInstrumento.familia,
-        individuo: retornoInstrumento.individuo,
+        prelavado: responseUnico.prelavado,
+        completo: responseUnico.completo,
+        funcional : responseUnico.funcional,
+        set: responseUnico.set,
+        empaque: responseUnico.empaque,
+        codigo_qr: responseUnico.codigo_qr,
+        familia: responseUnico.familia,
+        individuo: responseUnico.individuo,
         created: Date.now.toString(),
         updated: Date.now.toString(),
       };
-      this.ELEMENT_DATA.push(instrumentoPantalla)
-      console.log(instrumentoPantalla)
-      console.log(this.ELEMENT_DATA)
-      
-      this.dataSource.data = this.ELEMENT_DATA
-     //this.ELEMENT_DATA = this.dataSource.data
-     // ********************************* Termina actualización de pantalla **************
-
-      console.log('****** Revisando Fila +++++++++++')
-      console.log(retornoInstrumento)
-      console.log(this.formaEdicion?.get('Cantidad')?.value)
-      console.log('+++++++++++++++++++++++++++++++++++')
-      if (this.formaEdicion?.get('Cantidad')?.value != instrumentos_fam.length) {
-        // ***************************** Se altera el valor de la cantidad *******************
-        if (this.formaEdicion?.get('Cantidad')?.value! > instrumentos_fam.length) {
-
-          // **************************** La cantidad es mayor que la cantidad que se tiene
-
-          let nuevos = this.formaEdicion?.get('Cantidad')?.value! - instrumentos_fam.length
-          
-          // ******** Encontrar Mayor **************
-          let mayor=0
-          instrumentos_fam.forEach((valor) => {
-            if (valor.individuo > mayor) {
-              mayor = valor.individuo
-            }
-          });
-          instrumentos_fam.forEach((instrumentoExistente) => {
-            const userInstrumento: Instrumento = {
-              id: instrumentoExistente.id,
-              nombre: this.formaEdicion?.get('Nombre')?.value!,
-              cantidad: this.formaEdicion?.get('Cantidad')?.value!,
-              tipo: this.formaEdicion?.get('Tipo')?.value!,
-              marca: this.formaEdicion?.get('Marca')?.value!,
-              uso: instrumentoExistente.uso,
-              lote: this.formaEdicion?.get('Lote')?.value!,
-              caducidad: this.formaEdicion?.get('Caducidad')?.value!,
-              foto: this.foto,
-              descripcion: this.formaEdicion?.get('Descripcion')?.value!,
-              prelavado: instrumentoExistente.prelavado,
-              completo: instrumentoExistente.completo,
-              funcional : instrumentoExistente.funcional,
-              set: instrumentoExistente.set,
-              empaque: instrumentoExistente.empaque,
-              codigo_qr: instrumentoExistente.codigo_qr,
-              familia: instrumentoExistente.familia,
-              individuo: instrumentoExistente.individuo,
-              created: Date.now.toString(),
-              updated: Date.now.toString(),
-            };
-            this.instrumentoService.editarinstrumento(userInstrumento, userInstrumento.id).subscribe((response: Instrumento) => {
-
-            });
-
-          });
-          const userInstrumentoRequest: InstrumentoRequest = {
-            nombre: this.formaEdicion?.get('Nombre')?.value!,
-            cantidad: this.formaEdicion?.get('Cantidad')?.value!,
-            tipo: this.formaEdicion?.get('Tipo')?.value!,
-            marca: this.formaEdicion?.get('Marca')?.value!,
-            uso: 0,
-            lote: this.formaEdicion?.get('Lote')?.value!,
-            caducidad: this.formaEdicion?.get('Caducidad')?.value!,
-            foto: this.foto,
-            descripcion: this.formaEdicion?.get('Descripcion')?.value!,
-            prelavado: this.is_prelavado,
-            completo: this.is_completo,
-            funcional : this.is_funcional,
-            set: '',
-            empaque: '',
-            codigo_qr: '',
-            familia: '',
-            individuo: 0,
-            created: Date.now.toString(),
-            updated: Date.now.toString(),
-          };
-          userInstrumentoRequest.familia = retornoInstrumento.familia
-          
-          this.generadorQR(nuevos,userInstrumentoRequest );
-
-          for (var i=mayor; i<nuevos+mayor; i++) {
-            userInstrumentoRequest.codigo_qr=this.codigos[i-mayor]
-            userInstrumentoRequest.individuo = i                              
-            
-            this.instrumentoService.altainstrumento(userInstrumentoRequest).subscribe((response: Instrumento) => {
-              console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
-              console.log(response);
-
-              //this.temporal =JSON.parse(JSON.stringify(response))
-              //this.instrumentos.push(response)
-            });
-          }
-            //console.log(this.temporal);
-            //this.ELEMENT_DATA.push(JSON.parse(JSON.stringify(this.temporal)))
-
-        }
-        else {
-
-          // *******************************  La cantidad es menor que la cantidad existente ********************
-
-          let instrumentos_fam = this.instrumentos.filter((valor) => valor.familia == retornoInstrumento.familia )
-          let nuevos = instrumentos_fam.length - this.formaEdicion?.get('Cantidad')?.value!
-          
-          console.log(`Familia original: ${instrumentos_fam.length}`)
-          console.log(instrumentos_fam)
-          for (let iy = 0; iy < nuevos; iy++) {
-            this.instrumentoService.borrarinstrumento(instrumentos_fam[iy].id).subscribe(respuesta => {
-              //instrumentos_fam.splice(iy, 1); // borrar elemento borrado de la base de datos
-                // ************* Actualizar la cantidad de los campos que quedan **************
-                if (iy == nuevos - 1) {
-                  console.log(`Familia reducida: ${instrumentos_fam.length}`)
-                  console.log(`Se borraron: ${nuevos} ${iy}`)
-                  console.log(instrumentos_fam)
-                  for (let xxx= nuevos; xxx < instrumentos_fam.length; xxx++) {
-                    const userInstrumento: Instrumento = {
-                      id: instrumentos_fam[xxx].id,
-                      nombre: this.formaEdicion?.get('Nombre')?.value!,
-                      cantidad: this.formaEdicion?.get('Cantidad')?.value!,
-                      tipo: this.formaEdicion?.get('Tipo')?.value!,
-                      marca: this.formaEdicion?.get('Marca')?.value!,
-                      uso: instrumentos_fam[xxx].uso,
-                      lote: this.formaEdicion?.get('Lote')?.value!,
-                      caducidad: this.formaEdicion?.get('Caducidad')?.value!,
-                      foto: instrumentos_fam[xxx].foto,
-                      descripcion: this.formaEdicion?.get('Descripcion')?.value!,
-                      prelavado:instrumentos_fam[xxx].prelavado,
-                      completo: instrumentos_fam[xxx].completo,
-                      funcional : instrumentos_fam[xxx].funcional,
-                      set: instrumentos_fam[xxx].set,
-                      empaque: instrumentos_fam[xxx].empaque,
-                      codigo_qr: instrumentos_fam[xxx].codigo_qr,
-                      familia: instrumentos_fam[xxx].familia,
-                      individuo: instrumentos_fam[xxx].individuo,
-                      created: Date.now.toString(),
-                      updated: Date.now.toString(),
-                    };
-                    this.instrumentoService.editarinstrumento(userInstrumento, userInstrumento.id).subscribe((response: Instrumento) => {
-  
-                    });
-                  }
-  
-  
-  
-                  // *************************************************************************
-                
-              }
-            }); // **** Borrar instrumento *******
-          }
-        }
+      if (instrumentoPantalla.cantidad > 0) {
+        this.instrumentoService.editarinstrumento(instrumentoPantalla, instrumentoPantalla.id).subscribe((responseUnico) => {
+          this.ELEMENT_DATA.push(instrumentoPantalla)
+          this.dataSource.data = this.ELEMENT_DATA
+        })
       }
       else {
-        // ********************** NO se altera la cantidad del instrumento *****************
-
-        let instrumentos_fam = this.instrumentos.filter((valor) => valor.familia == retornoInstrumento.familia )
-        instrumentos_fam.forEach((instrumentoExistente) => {
-          const userInstrumento: Instrumento = {
-            id: instrumentoExistente.id,
-            nombre: this.formaEdicion?.get('Nombre')?.value!,
-            cantidad: this.formaEdicion?.get('Cantidad')?.value!,
-            tipo: this.formaEdicion?.get('Tipo')?.value!,
-            marca: this.formaEdicion?.get('Marca')?.value!,
-            uso: instrumentoExistente.uso,
-            lote: this.formaEdicion?.get('Lote')?.value!,
-            caducidad: this.formaEdicion?.get('Caducidad')?.value!,
-            foto: this.foto,
-            descripcion: this.formaEdicion?.get('Descripcion')?.value!,
-            prelavado: instrumentoExistente.prelavado,
-            completo: instrumentoExistente.completo,
-            funcional : instrumentoExistente.funcional,
-            set: instrumentoExistente.set,
-            empaque: instrumentoExistente.empaque,
-            codigo_qr: instrumentoExistente.codigo_qr,
-            familia: instrumentoExistente.familia,
-            individuo: instrumentoExistente.individuo,
-            created: Date.now.toString(),
-            updated: Date.now.toString(),
-          };
-          this.instrumentoService.editarinstrumento(userInstrumento, userInstrumento.id).subscribe((response: Instrumento) => {
-  
-          });
+        this.instrumentoService.borrarinstrumento(instrumentoPantalla.id).subscribe((responseUnico) => {
+          this.dataSource.data = this.ELEMENT_DATA
         })
 
       }
+
+
+     // ********************************* Termina actualización de pantalla **************
+
+      console.log('****** Revisando Fila +++++++++++')
+      console.log(this.formaEdicion?.get('Cantidad')?.value)
+      console.log('+++++++++++++++++++++++++++++++++++')
+
     });
     this.notification.success('El instrumento se editó exitosamente')
-    this.codigos=[]
     this.verTerceraTabla=false
  
             // *************************  FIN DE EDICIÓN ************************************
@@ -470,7 +295,6 @@ EliminarElementoTabla(id: number) {
       marca: form.value.Marca,
       uso: 0,
       lote: form.value.Lote,
-      caducidad: form.value.Caducidad,
       foto: this.foto,
       descripcion: form.value.Descripcion,
       prelavado: this.is_prelavado,
@@ -488,40 +312,21 @@ EliminarElementoTabla(id: number) {
                                       userInstrumentoRequest.tipo+
                                       userInstrumentoRequest.marca+
                                       userInstrumentoRequest.descripcion).toString('base64')
+    userInstrumentoRequest.codigo_qr = Buffer.from(userInstrumentoRequest.nombre+
+                                        userInstrumentoRequest.tipo+
+                                        userInstrumentoRequest.marca+
+                                        userInstrumentoRequest.descripcion).toString('base64')
     console.log(userInstrumentoRequest);
-   
-    this.generadorQR(userInstrumentoRequest.cantidad,userInstrumentoRequest );
-    for (var i=0; i<userInstrumentoRequest.cantidad; i++) {
-      userInstrumentoRequest.codigo_qr=this.codigos[i]
-      userInstrumentoRequest.individuo = i                              
+                              
+    this.instrumentoService.altainstrumento(userInstrumentoRequest).subscribe((response: Instrumento) => {
+      this.temporal = response
+      this.ELEMENT_DATA.push(JSON.parse(JSON.stringify(this.temporal)))
+      this.dataSource.data = this.ELEMENT_DATA
+    })
 
-      this.instrumentoService.altainstrumento(userInstrumentoRequest).subscribe((response: Instrumento) => {
-        console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
-        console.log(response);
-        this.instrumentoService.traerinstrumentos().subscribe(datos => {
-          this.instrumentos = datos;
-          this.instrumentos.forEach((name, index) => {
-            let indice = this.lista_familia.findIndex(u => u === name.familia);
-            //console.log(indice)
-            if (indice == -1) {
-              this.lista_familia.push(name.familia);
-              this.ELEMENT_DATA.push(name)
-              
-            }
-          })
-          this.dataSource.data = this.ELEMENT_DATA;
-          console.log(this.lista_familia)
-          console.log('********************************************');
 
-    });
-        //this.temporal =JSON.parse(JSON.stringify(response))
-        //this.instrumentos.push(response)
-      });
-    }
-    //console.log(this.temporal);
-    //this.ELEMENT_DATA.push(JSON.parse(JSON.stringify(this.temporal)))
     this.notification.success('El instrumento se registró exitosamente')
-    this.codigos=[]
+
     form.reset();
     this.verSegundaTabla=false
 
@@ -529,12 +334,12 @@ EliminarElementoTabla(id: number) {
   onFilesChanged(urls: string | string[]): void {
     this.foto=urls[0];
   }
-  generadorQR(valor: number, instrumento: InstrumentoRequest) {
-    for (let i = 1; i < valor+1; i++) {
-      this.codigos.push(Buffer.from(instrumento.nombre+instrumento.tipo+instrumento.marca+instrumento.descripcion).toString('base64')+','+i.toString())
-    }
-    console.log(this.codigos)
-  }
+  // generadorQR(valor: number, instrumento: InstrumentoRequest) {
+  //   for (let i = 1; i < valor+1; i++) {
+  //     this.codigos.push(Buffer.from(instrumento.nombre+instrumento.tipo+instrumento.marca+instrumento.descripcion).toString('base64')+','+i.toString())
+  //   }
+  //   console.log(this.codigos)
+  // }
 }
 const date = new Date();
 const año = date.getFullYear();
