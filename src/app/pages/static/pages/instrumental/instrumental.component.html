@@ -169,7 +169,7 @@
           <img mat-card-image ngSrc={{foto}} width="200" height="200" alt="Imagen Foto">
       </div>
       
-      <button mat-button appFilesUpload [multiple]="true" (changed)="onFilesChanged($event)">Subir Imagen</button>
+      <button mat-button appFilesUpload [multiple]="true" (changed)="onFilesChanged($event)" matTooltip="Da click para subir la imagen del instrumento" >Subir Imagen</button>
       <mat-card-content>
 
       <form (ngSubmit)="editarInstrumento()" [formGroup]="formaEdicion">
@@ -218,7 +218,7 @@
 
 
           <mat-divider vertical style="height:30px"></mat-divider>
-          <button mat-raised-button class="botones" >Cancelar</button>
+          <button mat-raised-button class="botones" (click)="cancelarEdicion()" >Cancelar</button>
           <button mat-raised-button class="botones" type="submit" >Enviar</button>
       </form>
   </mat-card-content>

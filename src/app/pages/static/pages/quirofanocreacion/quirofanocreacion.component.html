@@ -1,6 +1,6 @@
 <div style="width:80%; margin-left: 10%; margin-right: 10px;">
 
-  <mat-tab-group  [color]="'accent'"  [backgroundColor]="'primary'">
+  <mat-tab-group  [color]="'warn'"  [backgroundColor]="'primary'">
       <mat-tab  label="Lista de Set´s"> <!------           contenido de los dos botones              -------->
   
   
@@ -205,7 +205,7 @@
                           <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
                     </mat-table>
   
-                  <br><br><div align="center"> <img src="https://ahlfenix.com/wp-content/uploads/2018/11/SET-INSTRUMENTAL-DE-SUTURA.jpg" width="150px"></div>
+                  <br><br><div align="center"> <img src={{foto}} width="150px"></div>
                 <div align="right"><button class="botones" >Editar</button></div> 
               
               </mat-expansion-panel>
@@ -214,7 +214,11 @@
             </mat-accordion><!------           finaliza la parte deslizante             -------->
   
   
-          </mat-tab>
+      </mat-tab>
+  
+  
+  
+  <!--------------------------------------------------- CREACIÓN DE SET --------------------------------------------------------------->
   
   
       <mat-tab label="Creación de Set´s"> <!------           contenido de los dos botones              -------->
@@ -231,35 +235,30 @@
                 </button>
                             }
               </mat-form-field>  </div>
-                 <button   aria-label="submit" (click)="value2=value" style="margin-right: 5%;" class="botones">Agregar</button>
+                 <button   aria-label="submit" (click)="value2=value; nombreSeleccionado()" style="margin-right: 5%;" class="botones" matTooltip="Crear nombre del set">Crear nombre</button>
             </div>
   
   
           <div  style="display: flex;  align-items: center;">
             <div style=" width: 70%; margin-left:5%;">
-          <label>Elemento:</label><br>
-         <mat-form-field  style=" width: 100%">
-              <mat-select disableRipple>
-                <mat-option value="1">Pinza Halsted</mat-option>
-                <mat-option value="2">Pinza de Pean</mat-option>
-                <mat-option value="3">Pinza Judo-Allis</mat-option>
-                <mat-option value="4">Pinzas Kocher curvas</mat-option>
-                <mat-option value="5">Pinza de Kocher</mat-option>
-                <mat-option value="6">Pinza Mosquito</mat-option>
-                <mat-option value="7">Pinza para campo</mat-option>
-                <mat-option value="8">Pinza para tubo</mat-option>
-                <mat-option value="9">Grosmayer</mat-option>
-                <mat-option value="10">Pinza clamp</mat-option>
-              </mat-select>
-            </mat-form-field></div>
+              <label>Elemento:</label><br>
+              <mat-form-field  style=" width: 100%">
+                  <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
+                  <mat-autocomplete #auto="matAutocomplete" (optionSelected)='instrumentoElegido($event.option.value)' [displayWith]="displayFn">
+                    @for (option of filteredOptions | async; track option) {
+                      <mat-option [value]="option">{{option.name}}</mat-option>
+                    }
+                  </mat-autocomplete>
+              </mat-form-field>
+            </div>
   
             <div style=" width: 10%; margin-left:1%; margin-right: 5%;">
             <label >Cantidad:</label><br>
             <mat-form-field style=" width: 100%">
-              <input matInput type="number" min="1"  step="1" value="1">
+              <input matInput [formControl]="cantidadControl"  type="number" min="1"  step="1" value="1">
             </mat-form-field>
           </div>
-            <button style="margin-right: 5%;" class="botones">Agregar</button>
+            <button style="margin-right: 5%;" class="botones" matTooltip="Agregar el instrumento al Set" (click)="capturarValor()" >Agregar</button>
           </div>
   
 
@@ -282,7 +281,7 @@
               </mat-form-field>
             </div>
             <div style=" width: 17%; margin-left:1%; margin-right: 3%;">
-            <button class="botones" aria-label="submit" (click)="value3_1=value3" (click)="value4_1=value4" style="margin-right: 5%;">Agregar</button>
+            <button class="botones" aria-label="submit" (click)="value3_1=value3; minmaxSeleccionado()" (click)="value4_1=value4" style="margin-right: 5%;" matTooltip="Configurar criterios de almacén" >Configurar almacén</button>
           </div>
           </div>
 
@@ -351,33 +350,26 @@
         </mat-table>
       </div>
   
-         
-  
-      <br><br> <div style="text-align: center;">
-        <img id="imgPreview" class="imaencenter"></div>
-  <style>
-   .imaencenter{
-      align-items: center;
-      margin: auto;
-      width: 200px;
-      height: 150px;
-    }
-  </style>
-
-
-
-
-
-      <div align="center" style="margin: 50px;">
-        <input  type="file" name="Examinar" accept="image/*" onchange="previewImage(event, '#imgPreview')">
-      </div>   
-
-            
-  
-        <div style="display: flex; justify-content: right;">
-          <button class="botones" style=" margin-right: 20px;">Cancelar</button>
-          <button class="botones" style=" margin-right: 20px;">Guardar</button>
-        </div>
+      <div align="center">
+        <mat-card>
+          <mat-card-header>
+              <mat-card-title >Imagen nuevo Set</mat-card-title>
+          </mat-card-header>
+          <div >
+              <img mat-card-image ngSrc={{foto}} width="200" height="200" alt="Imagen Foto">
+          </div>
+          
+          <button mat-button appFilesUpload [multiple]="true" (changed)="onFilesChanged($event)">Subir Imagen</button>
+          <mat-card-content>
+              
+    
+                <div style="display: flex; justify-content: right;">
+                  <button class="botones" style=" margin-right: 20px;">Cancelar</button>
+                  <button class="botones" style=" margin-right: 20px;">Guardar</button>
+                </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
 
       
       
