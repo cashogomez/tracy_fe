@@ -41,6 +41,11 @@
                     <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
                     <mat-cell *matCellDef="let element"> {{element.Nombre}} </mat-cell>
                   </ng-container>
+
+                  <ng-container matColumnDef="Tipo">
+                    <mat-header-cell *matHeaderCellDef> Tipo </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.Tipo}} </mat-cell>
+                    </ng-container>
                 
                   <ng-container matColumnDef="Descripcion">
                     <mat-header-cell *matHeaderCellDef> Descripción </mat-header-cell>
@@ -105,6 +110,11 @@
                     <mat-cell *matCellDef="let element"> {{element.Nombre}} </mat-cell>
                   </ng-container>
                 
+                  <ng-container matColumnDef="Tipo">
+                    <mat-header-cell *matHeaderCellDef> Tipo </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.Tipo}} </mat-cell>
+                    </ng-container>
+
                   <ng-container matColumnDef="Descripcion">
                     <mat-header-cell *matHeaderCellDef> Descripción </mat-header-cell>
                     <mat-cell *matCellDef="let element"> {{element.Descripcion}} </mat-cell>
@@ -171,6 +181,11 @@
                           <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
                           <mat-cell *matCellDef="let element"> {{element.Nombre}} </mat-cell>
                           </ng-container>
+
+                          <ng-container matColumnDef="Tipo">
+                            <mat-header-cell *matHeaderCellDef> Tipo </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.Tipo}} </mat-cell>
+                            </ng-container>
                       
                           <ng-container matColumnDef="Descripcion">
                           <mat-header-cell *matHeaderCellDef> Descripción </mat-header-cell>
@@ -311,7 +326,12 @@
               <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
               <mat-cell *matCellDef="let element"> {{element.Nombre}} </mat-cell>
               </ng-container>
-          
+    
+              <ng-container matColumnDef="Tipo">
+                <mat-header-cell *matHeaderCellDef> Tipo </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.Tipo}} </mat-cell>
+                </ng-container>
+        
               <ng-container matColumnDef="Descripcion">
               <mat-header-cell *matHeaderCellDef> Descripción </mat-header-cell>
               <mat-cell *matCellDef="let element"> {{element.Descripcion}} </mat-cell>

@@ -148,14 +148,14 @@ export class QuirofanocreacionComponent {
   value4 = '1';
   value4_1= this.value4;
   panelOpenState = false;
-  displayedColumns: string[] = ['id', 'Nombre', 'Descripcion', 'Marca', 'Cantidad'];
+  displayedColumns: string[] = ['id', 'Nombre', 'Tipo', 'Descripcion', 'Marca', 'Cantidad'];
   
 
   dataSource2 = ELEMENT_DATA2;
 
   dataSource3 = ELEMENT_DATA3;
 
-  dataSource4 = new MatTableDataSource(this.ELEMENT_DATA);
+  dataSource4 = new MatTableDataSource(this.ELEMENT_DATA6);
 
   nombreElegido: boolean = false
   minmaxElegido: boolean = false
@@ -213,15 +213,37 @@ export class QuirofanocreacionComponent {
     {
       this.cantidad = this.cantidadControl?.value
       var splitted = this.instrumentoRecibido.name.split(" ", 5); 
-      let elementoagregado: PeriodicElement ={
-        id: parseInt(splitted[0]),
-        Nombre: splitted[1],
-        Descripcion: splitted[2],
-        Marca: splitted[3],
-        Cantidad: this.cantidad,
+
+      let encontradoElemento = this.ELEMENT_DATA6.filter(e => e.id == parseInt(splitted[0]));
+      let elementoAgregado: PeriodicElement;
+
+      if (encontradoElemento.length > 0) {
+        this.ELEMENT_DATA6 = this.ELEMENT_DATA6.filter(e => e.id != encontradoElemento[0].id)
+          elementoAgregado = {
+          id: parseInt(splitted[0]),
+          Nombre: encontradoElemento[0].Nombre,
+          Tipo: encontradoElemento[0].Tipo,
+          Descripcion: encontradoElemento[0].Descripcion,
+          Marca: encontradoElemento[0].Marca,
+          Cantidad: this.cantidad + encontradoElemento[0].Cantidad
+        }
       }
-      this.ELEMENT_DATA6.push(elementoagregado);
+      else {
+        let instrumentoEncontrado = this.ELEMENT_DATA5.filter(e => e.id == parseInt(splitted[0]))
+        console.log(instrumentoEncontrado)
+          elementoAgregado = {
+          id: parseInt(splitted[0]),
+          Nombre: instrumentoEncontrado[0].nombre,
+          Tipo: instrumentoEncontrado[0].tipo,
+          Descripcion: instrumentoEncontrado[0].descripcion,
+          Marca: instrumentoEncontrado[0].marca,
+          Cantidad: this.cantidad
+        }
+      }
+      console.log(elementoAgregado)
+      this.ELEMENT_DATA6.push(elementoAgregado);
       this.dataSource4.data = this.ELEMENT_DATA6
+      
 
       this.notification.success("Se agregó correctamente");
     }
@@ -278,48 +300,49 @@ export class QuirofanocreacionComponent {
 export interface PeriodicElement {
   id: number;
   Nombre: string;
+  Tipo: string;
   Descripcion: string;
   Marca: string;
   Cantidad:number;
 }
 
 const ELEMENT_DATA: PeriodicElement[] = [
-  {id: 1, Nombre: 'Pinza Halsted',        Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM PREMIUM', Cantidad:2},
-  {id: 2, Nombre: 'Pinza de Pean',        Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM SILVERY', Cantidad:3},
-  {id: 3, Nombre: 'Pinza Judo-Allis',     Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM SILVERY', Cantidad:4},
-  {id: 4, Nombre: 'Pinzas Kocher curvas', Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM PREMIUM', Cantidad:1},
+  {id: 1, Nombre: 'Pinza Halsted',   Tipo: 'SOk',     Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM PREMIUM', Cantidad:2},
+  {id: 2, Nombre: 'Pinza de Pean',   Tipo: 'SOk',     Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM SILVERY', Cantidad:3},
+  {id: 3, Nombre: 'Pinza Judo-Allis', Tipo: 'SOk',    Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM SILVERY', Cantidad:4},
+  {id: 4, Nombre: 'Pinzas Kocher curvas', Tipo: 'SOk', Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM PREMIUM', Cantidad:1},
 ];
 
 const ELEMENT_DATA2: PeriodicElement[] = [
-  {id: 1, Nombre: 'Pinza de Kocher',      Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM SILVERY', Cantidad:5},
-  {id: 2, Nombre: 'Pinza Mosquito',       Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM PREMIUM', Cantidad:2},
-  {id: 3, Nombre: 'Pinza para campo ',    Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM SILVERY', Cantidad:7},
-  {id: 4, Nombre: 'Pinza para tubo',      Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM PREMIUM', Cantidad:5},
-  {id: 5, Nombre: 'Grosmayer',            Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM SILVERY', Cantidad:7},
+  {id: 1, Nombre: 'Pinza de Kocher', Tipo: 'SOk',     Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM SILVERY', Cantidad:5},
+  {id: 2, Nombre: 'Pinza Mosquito',  Tipo: 'SOk',     Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM PREMIUM', Cantidad:2},
+  {id: 3, Nombre: 'Pinza para campo ', Tipo: 'SOk',   Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM SILVERY', Cantidad:7},
+  {id: 4, Nombre: 'Pinza para tubo',  Tipo: 'SOk',    Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM PREMIUM', Cantidad:5},
+  {id: 5, Nombre: 'Grosmayer',   Tipo: 'SOk',         Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM SILVERY', Cantidad:7},
 ];
 
 const ELEMENT_DATA3: PeriodicElement[] = [
-  {id: 1, Nombre: 'Pinza de Tubo',        Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM SILVERY', Cantidad:3},
-  {id: 2, Nombre: 'Pinza clamp',          Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM SILVERY', Cantidad:5},
-  {id: 3, Nombre: 'Grosmayer',            Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM SILVERY', Cantidad:7},
-  {id: 4, Nombre: 'Pinza Mosquito',       Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM PREMIUM', Cantidad:2},
-  {id: 5, Nombre: 'Atraumático',          Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM SILVERY', Cantidad:7},
-  {id: 6, Nombre: 'Pinza Judo-Allis',     Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM SILVERY', Cantidad:4},
-  {id: 7, Nombre: 'Pinzas Kocher curvas', Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM PREMIUM', Cantidad:1},
+  {id: 1, Nombre: 'Pinza de Tubo',  Tipo: 'SOk',      Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM SILVERY', Cantidad:3},
+  {id: 2, Nombre: 'Pinza clamp',  Tipo: 'SOk',        Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM SILVERY', Cantidad:5},
+  {id: 3, Nombre: 'Grosmayer',  Tipo: 'SOk',          Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM SILVERY', Cantidad:7},
+  {id: 4, Nombre: 'Pinza Mosquito', Tipo: 'SOk',      Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM PREMIUM', Cantidad:2},
+  {id: 5, Nombre: 'Atraumático',    Tipo: 'SOk',      Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM SILVERY', Cantidad:7},
+  {id: 6, Nombre: 'Pinza Judo-Allis', Tipo: 'SOk',    Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM SILVERY', Cantidad:4},
+  {id: 7, Nombre: 'Pinzas Kocher curvas', Tipo: 'SOk', Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM PREMIUM', Cantidad:1},
 ];
 
 
 const ELEMENT_DATA4: PeriodicElement[] = [
-  {id: 1, Nombre: 'Pinza Halsted',        Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM SILVERY', Cantidad:3},
-  {id: 2, Nombre: 'Pinza de Pean',          Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM SILVERY', Cantidad:5},
-  {id: 3, Nombre: 'Pinza Judo-Allis',            Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM SILVERY', Cantidad:7},
-  {id: 4, Nombre: 'Pinzas Kocher curvas',       Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM PREMIUM', Cantidad:2},
-  {id: 5, Nombre: 'Pinzas de Kocher',          Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM SILVERY', Cantidad:7},
-  {id: 6, Nombre: 'Pinza Mosquito',     Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM SILVERY', Cantidad:4},
-  {id: 7, Nombre: 'Pinza para campo', Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM PREMIUM', Cantidad:1},
-  {id: 8, Nombre: 'Pinza para tubo', Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM PREMIUM', Cantidad:1},
-  {id: 9, Nombre: 'Grosmayer', Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM PREMIUM', Cantidad:1},
-  {id: 10, Nombre: 'Pinza clamp', Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM PREMIUM', Cantidad:1},
+  {id: 1, Nombre: 'Pinza Halsted',  Tipo: 'SOk',      Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM SILVERY', Cantidad:3},
+  {id: 2, Nombre: 'Pinza de Pean',   Tipo: 'SOk',       Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM SILVERY', Cantidad:5},
+  {id: 3, Nombre: 'Pinza Judo-Allis',   Tipo: 'SOk',         Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM SILVERY', Cantidad:7},
+  {id: 4, Nombre: 'Pinzas Kocher curvas', Tipo: 'SOk',      Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM PREMIUM', Cantidad:2},
+  {id: 5, Nombre: 'Pinzas de Kocher', Tipo: 'SOk',         Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM SILVERY', Cantidad:7},
+  {id: 6, Nombre: 'Pinza Mosquito', Tipo: 'SOk',    Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM SILVERY', Cantidad:4},
+  {id: 7, Nombre: 'Pinza para campo',Tipo: 'SOk', Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM PREMIUM', Cantidad:1},
+  {id: 8, Nombre: 'Pinza para tubo', Tipo: 'SOk', Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM PREMIUM', Cantidad:1},
+  {id: 9, Nombre: 'Grosmayer', Tipo: 'SOk', Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM PREMIUM', Cantidad:1},
+  {id: 10, Nombre: 'Pinza clamp', Tipo: 'SOk', Descripcion: 'pinzas quirúrgicas', Marca: 'HERGOM PREMIUM', Cantidad:1},
 ];
 
 
@@ -332,13 +355,7 @@ interface InstrumentoForma {
   Minimo:FormControl<number>;
   Maximo:FormControl<number>;
 }
-export interface PeriodicElement {
-  id: number;
-  Nombre: string;
-  Descripcion: string;
-  Marca: string;
-  Cantidad:number;
-}
+
 export interface User {
   name: string;
 }
