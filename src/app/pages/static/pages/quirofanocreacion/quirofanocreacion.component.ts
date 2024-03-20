@@ -34,7 +34,7 @@ import 'moment/locale/es';
 
 import { DynamicDialogService } from '@app/services/emergente/emergente.service';
 import { from } from 'rxjs';
-import { NotificationService } from '@app/services';
+import { NotificationService, SetService } from '@app/services';
 import pdfMake from "pdfmake/build/pdfmake";
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
@@ -48,6 +48,8 @@ import { MatCardModule } from '@angular/material/card';
 import { PopupsModule } from '@app/shared/popups';
 import { MatDivider, MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { SetEnviado, SetRequest } from '@app/models/backend/set';
+import { CantidadInstrumentoService } from '@app/services/cantidadinstrumento/cantidadinstrumento.service';
 
 @Component({
   selector: 'app-quirofanocreacion',
@@ -117,8 +119,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 export class QuirofanocreacionComponent {
   myControl = new FormControl<string | User>('');
   public cantidadControl = new FormControl();
-  cantidad: number = 0;
-  instrumentoRecibido!: User;
+
 
   options: User[] = [];
 
@@ -134,8 +135,6 @@ export class QuirofanocreacionComponent {
   ELEMENT_DATA6: PeriodicElement[] = [];
   lista_familia: string[] = [];
   codigos: string[]=[];
-
-
 
   filteredOptions!: Observable<User[]>;
 
@@ -160,11 +159,24 @@ export class QuirofanocreacionComponent {
   nombreElegido: boolean = false
   minmaxElegido: boolean = false
 
+  // ********** Valor para crear set *******************+
+
+  valorMaximo: number = 0 
+  valorMinimo: number = 0
+  cantidad: number = 0
+  nombreSet: string = ''
+  instrumentoRecibido!: User;
+  envioSet: SetRequest | undefined;
+  recibidoSet: SetEnviado | undefined;
+  // ****************************************************
+
 
   constructor(
     private fb: FormBuilder,
     private instrumentoService : InstrumentoService,
     private notification: NotificationService,
+    private setService: SetService,
+    private cantidadInstrumentoService: CantidadInstrumentoService
   )
   {
     this.cantidadControl.setValue(0);
@@ -202,11 +214,14 @@ export class QuirofanocreacionComponent {
     });
 
   }
-  nombreSeleccionado() {
+  nombreSeleccionado(nombre: string) {
     this.nombreElegido = true
+    this.nombreSet = nombre
   }
-  minmaxSeleccionado() {
+  minmaxSeleccionado(min: string, max: string) {
     this.minmaxElegido = true
+    this.valorMaximo = parseInt(max)
+    this.valorMinimo =parseInt(min)
   }
   capturarValor() {
     if (this.nombreElegido == true && this.minmaxElegido == true ) 
@@ -263,6 +278,7 @@ export class QuirofanocreacionComponent {
         }
       }
     }
+    // *********** RESETEAR FORMATO DE CAPTURAR INSTRUMENTO ***************
 
   }
   onFilesChanged(urls: string | string[]): void {
@@ -293,7 +309,36 @@ export class QuirofanocreacionComponent {
     return this.options.filter(option => option.name.toLowerCase().includes(filterValue));
   }
 
+  crearSet() {
 
+    // ELEMENT_DATA6 y DataSource4 tienen los instrumentos que se usaran
+    this.envioSet = {
+      numero: 1,
+      maximo: this.valorMaximo,
+      minimo: this.valorMinimo,
+      nombre: this.nombreSet,
+      foto: this.foto,
+      activo: true,
+    }
+    this.setService.altaset(this.envioSet).subscribe((response: SetEnviado) => {
+      console.log(response);
+      
+      this.dataSource4.data.forEach(dataInstrumento  => {
+        let instrumentoreal = this.instrumentos.filter(i => i.id === dataInstrumento.id);
+        let cantidadinstrumento = {
+          cantidad: dataInstrumento.Cantidad,
+          instrumento: instrumentoreal[0].id,
+          set: response.id,
+        }
+        this.cantidadInstrumentoService.altacantidadinstrumento(cantidadinstrumento).subscribe(response => {
+            console.log('******************')
+            console.log(response)
+        });
+        // ********************** Aqui crear la cantidad de set en la base de datos **********
+      }), 
+      this.notification.success('El set fue creado exitosament');
+    })
+  }
 
 }
 

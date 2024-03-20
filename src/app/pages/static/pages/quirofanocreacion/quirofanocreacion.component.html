@@ -238,7 +238,7 @@
                 </button>
                             }
               </mat-form-field>  </div>
-                 <button   aria-label="submit" (click)="value2=value; nombreSeleccionado()" style="margin-right: 5%;" class="botones" matTooltip="Crear nombre del set">Crear nombre</button>
+                 <button   aria-label="submit" (click)="value2=value; nombreSeleccionado(value)" style="margin-right: 5%;" class="botones" matTooltip="Crear nombre del set">Crear nombre</button>
             </div>
   
   
@@ -284,7 +284,7 @@
               </mat-form-field>
             </div>
             <div style=" width: 17%; margin-left:1%; margin-right: 3%;">
-            <button class="botones" aria-label="submit" (click)="value3_1=value3; minmaxSeleccionado()" (click)="value4_1=value4" style="margin-right: 5%;" matTooltip="Configurar criterios de almacén" >Configurar almacén</button>
+            <button class="botones" aria-label="submit" (click)="value3_1=value3; minmaxSeleccionado(value3, value4)" (click)="value4_1=value4" style="margin-right: 5%;" matTooltip="Configurar criterios de almacén" >Configurar almacén</button>
           </div>
           </div>
 
@@ -369,7 +369,7 @@
     
                 <div style="display: flex; justify-content: right;">
                   <button class="botones" style=" margin-right: 20px;">Cancelar</button>
-                  <button class="botones" style=" margin-right: 20px;">Guardar</button>
+                  <button class="botones" style=" margin-right: 20px;"  (click)="crearSet()" >Guardar</button>
                 </div>
           </mat-card-content>
         </mat-card>
