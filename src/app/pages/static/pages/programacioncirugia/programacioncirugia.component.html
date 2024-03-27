@@ -10,7 +10,7 @@
 <p align="end">
   <mat-form-field>
     <mat-label>Fecha de cirugía</mat-label>
-    <input matInput [matDatepicker]="dp">
+    <input matInput [matDatepicker]="dp" (dateChange)="showDate($event)">
     <mat-hint>{{getDateFormatString()}}</mat-hint>
     <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
     <mat-datepicker #dp></mat-datepicker>
@@ -30,7 +30,12 @@
     </section>
   </div>
   
+<!------------------------------------------------------ Empieza ------------------------------------------>
+
+<form (ngSubmit)="capturarProgCirug()" [formGroup]="formaEdicion">
+
   <table class="alinear-input" align="center">
+
 
   <!------------------------------------------------------------              fila 1                                ----------------------------------------------------------------->
     <tr>
@@ -40,8 +45,8 @@
   
       <td>
         <mat-form-field class="input1">
-          <input matInput type="text" placeholder="Hugo Rodriguez" >
-          </mat-form-field>
+          <input matInput type="text" placeholder="Hugo Rodriguez" formControlName="Paciente" required>
+        </mat-form-field>
       </td>
   
       <td>
@@ -50,7 +55,7 @@
   
       <td>
         <mat-form-field class="input2">
-          <input matInput type="text" placeholder="Hernioplastía Inguinal Laparoscópica" >
+          <input matInput type="text" placeholder="Hernioplastía Inguinal Laparoscópica" formControlName="Cirugia" required >
         </mat-form-field>
       </td>
     </tr>
@@ -64,7 +69,7 @@
   
       <td>
         <mat-form-field class="input1">
-          <input matInput type="text" placeholder="112233" >
+          <input matInput type="text" placeholder="112233" formControlName="Registro" required >
           </mat-form-field>
       </td>
   
@@ -74,7 +79,7 @@
   
       <td>
         <mat-form-field class="input2">
-          <input matInput type="text" placeholder="Dr. Pablo" >
+          <input matInput type="text" placeholder="Dr. Pablo" formControlName="Solicita" required>
         </mat-form-field>
       </td>
     </tr>
@@ -88,7 +93,7 @@
   
       <td>
         <mat-form-field class="input1">
-          <input matInput type="text" placeholder="35 años" >
+          <input matInput type="text" placeholder="35 años" formControlName="Edad" required>
           </mat-form-field>
       </td>
 
@@ -100,7 +105,7 @@
   
       <td>
         <mat-form-field class="input2">
-          <input matInput type="text" placeholder="Dra. Yazmin" >
+          <input matInput type="text" placeholder="Dra. Yazmin" formControlName="Cirujano" required>
         </mat-form-field>
       </td>
     </tr>
@@ -114,7 +119,7 @@
   
       <td>
         <mat-form-field class="input1">
-          <input matInput type="text" placeholder="7/01/1981" >
+          <input matInput type="text" placeholder="7/01/1981" formControlName="Nacimiento" required>
           </mat-form-field>
       </td>
   
@@ -124,7 +129,7 @@
   
       <td>
         <mat-form-field class="input2">
-          <input matInput type="text" placeholder="Dr. Casimiro " >
+          <input matInput type="text" placeholder="Dr. Casimiro " formControlName="Anestesiologo" required>
         </mat-form-field>
       </td>
     </tr>
@@ -137,7 +142,7 @@
   
     <td>
       <mat-form-field class="input1">
-        <input matInput type="text" placeholder="204" >
+        <input matInput type="text" placeholder="204" formControlName="Habitacion" required>
         </mat-form-field>
     </td>
   
@@ -147,7 +152,7 @@
   
     <td>
       <mat-form-field class="input2">
-        <input matInput type="text" placeholder="Epidural" >
+        <input matInput type="text" placeholder="Epidural" formControlName="Anestesia" required>
       </mat-form-field>
     </td>
   </tr>
@@ -161,7 +166,7 @@
   
     <td>
       <mat-form-field class="input1">
-        <input matInput type="text" placeholder="Quirófano 2" >
+        <input matInput type="text" placeholder="Quirófano 2" formControlName="Sala" required>
         </mat-form-field>
     </td>
   
@@ -171,7 +176,7 @@
   
     <td>
       <mat-form-field class="input2">
-        <input matInput type="text" placeholder="Enf. Juanita" >
+        <input matInput type="text" placeholder="Enf. Juanita" formControlName="Ayudante" required>
       </mat-form-field>
     </td>
   </tr>
@@ -185,7 +190,7 @@
   
     <td>
       <mat-form-field class="input1">
-        <input matInput type="text" placeholder="1" >
+        <input matInput type="text" placeholder="1" formControlName="Turno" required>
         </mat-form-field>
     </td>
   
@@ -195,7 +200,7 @@
   
     <td>
       <mat-form-field class="input2">
-        <input matInput type="text" placeholder="Jefatura de Quirófano" >
+        <input matInput type="text" placeholder="Jefatura de Quirófano" formControlName="AreaRegistro" required>
       </mat-form-field>
     </td>
   </tr>
@@ -209,7 +214,7 @@
   
     <td>
       <mat-form-field class="input1">
-        <input matInput type="text" placeholder="Hernia Inguinal Bilateral" >
+        <input matInput type="text" placeholder="Hernia Inguinal Bilateral" formControlName="Diagnostico" required>
         </mat-form-field>
     </td>
   
@@ -219,7 +224,7 @@
   
     <td>
       <mat-form-field class="input2">
-        <input matInput type="text" placeholder="Susana García" >
+        <input matInput type="text" placeholder="Susana García" formControlName="Enfermera" required>
       </mat-form-field>
     </td>
   </tr> 
@@ -233,13 +238,13 @@
       </td>
       <td style="width: 86%;">
         <mat-form-field class="textarea">
-          <textarea matInput placeholder="3 Pinzas H. extras para la cirugía "></textarea>
+          <textarea matInput placeholder="3 Pinzas H. extras para la cirugía " formControlName="Notas" required></textarea>
         </mat-form-field>
       </td>
     </tr>
   </table>
   
-
+</form>
    <!----------------------------- ------------------------->
   <h2 align="center"> Ingresa la información del equipamiento para la cirugía</h2>
 
@@ -254,9 +259,12 @@
     <div style=" width: 70%; margin-left:5%;">
   <label>Elemento:</label><br>
   <mat-form-field  style=" width: 100%">
-      <mat-select [(ngModel)]="valorElegido"  (selectionChange)="changeMaterial($event.value)" disableRipple>
-        <mat-option *ngFor="let x of material; let i = index" [value]="material[i]">{{material[i].Elemento}}</mat-option>
-      </mat-select>
+    <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete"  (optionSelected)='elementoElegido($event.option.value)' [displayWith]="displayFn">
+        @for (option of filteredOptions | async; track option) {
+          <mat-option [value]="option">{{option.name}}</mat-option>
+        }
+      </mat-autocomplete>
     </mat-form-field></div>
   
     <div style=" width: 10%; margin-left:1%; margin-right: 5%;">

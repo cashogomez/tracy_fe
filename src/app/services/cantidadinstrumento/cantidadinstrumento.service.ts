@@ -20,18 +20,19 @@ export class CantidadInstrumentoService {
     var httpOptions = {
       headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`})
     };
-    console.log(`${environment.url}ceye/cantidadinstrumento/`);
-    return this.http.post<any>(`${environment.url}ceye/cantidadinstrumento/`, registrarCantidadInstrumento, httpOptions)
+    var direccion = `${environment.url}ceye/set/${registrarCantidadInstrumento.set.id}/instrumento/${registrarCantidadInstrumento.instrumento.id}/`
+    console.log(registrarCantidadInstrumento);
+    return this.http.post<any>(direccion, {'instrumento':registrarCantidadInstrumento.instrumento, 'set': registrarCantidadInstrumento.set, 'cantidad': registrarCantidadInstrumento.cantidad }, httpOptions)
   }
 
-  traercantidadinstrumento(): Observable<CantidadInstrumentoEnviado[]> {
+  traercantidadinstrumento(pk:number): Observable<CantidadInstrumentoEnviado[]> {
     var token = this.getToken();
     
     var httpOptions = {
       headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`})
     };
-    console.log(`${environment.url}ceye/cantidadinstrumento/`);
-    return  this.http.get<CantidadInstrumentoEnviado[]>(`${environment.url}ceye/cantidadinstrumento/`, httpOptions)
+    console.log(`${environment.url}ceye/set/${pk}/instrumentoset/`);
+    return  this.http.get<CantidadInstrumentoEnviado[]>(`${environment.url}ceye/set/${pk}/instrumentoset/`, httpOptions)
   }
   
   traerUNset(pk:number): Observable<CantidadInstrumentoEnviado> {

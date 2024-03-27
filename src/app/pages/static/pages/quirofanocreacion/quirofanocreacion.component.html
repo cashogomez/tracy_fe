@@ -1,14 +1,14 @@
-<div style="width:80%; margin-left: 10%; margin-right: 10px;">
+<div style="width:80%; margin-left: 10%; margin-right: 10px;"  >
 
   <mat-tab-group  [color]="'warn'"  [backgroundColor]="'primary'">
-      <mat-tab  label="Lista de Set´s"> <!------           contenido de los dos botones              -------->
+      <mat-tab  label="Lista de Set´s" > <!------           contenido de los dos botones              -------->
   
-  
-         <br> <mat-accordion><!------           inicia la parte deslizante              -------->
-              <mat-expansion-panel hideToggle style="width: 90%; margin-left: 5%; margin-right: 5px;">
+        <div *ngFor="let setactual of noSets; let i = index " >
+         <br> <mat-accordion  ><!------           inicia la parte deslizante              -------->
+              <mat-expansion-panel  style="width: 90%; margin-left: 5%; margin-right: 5px;"[expanded]="step === i" (opened)="setStep(i); actualizarInstrumento(setactual)" hideToggle>
                 <mat-expansion-panel-header>
                   <mat-panel-title> <!------           colocar titulo de las tablas deslizantes               -------->
-                      Set laparoscopia
+                    {{setactual.nombre}}
                   </mat-panel-title>
               </mat-expansion-panel-header> <!------           colocar contenido dentro de las tablas deslizantes               -------->
                    
@@ -20,12 +20,12 @@
                 </div>
                 <div style=" width: 40%; margin-left:1%; margin-right: 5%;">
                   <h1>
-                    <span  style="font-size: 1rem; ">Mínimo de Set´s: 5</span>
+                    <span  style="font-size: 1rem; ">Mínimo de Set´s: {{setactual.minimo}}</span>
                   </h1>
                 </div>
                 <div style=" width: 40%; margin-left:1%; margin-right: 3%; ">
                   <h1>
-                    <span  style="font-size: 1rem; ">Máximo de Set´s: 10 </span>
+                    <span  style="font-size: 1rem; ">Máximo de Set´s: {{setactual.maximo}} </span>
                   </h1>
                 </div>
               </div>
@@ -39,184 +39,40 @@
                 
                   <ng-container matColumnDef="Nombre">
                     <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{element.Nombre}} </mat-cell>
+                    <mat-cell *matCellDef="let element"> {{element.nombre}} </mat-cell>
                   </ng-container>
 
                   <ng-container matColumnDef="Tipo">
                     <mat-header-cell *matHeaderCellDef> Tipo </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{element.Tipo}} </mat-cell>
+                    <mat-cell *matCellDef="let element"> {{element.tipo}} </mat-cell>
                     </ng-container>
                 
                   <ng-container matColumnDef="Descripcion">
                     <mat-header-cell *matHeaderCellDef> Descripción </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{element.Descripcion}} </mat-cell>
+                    <mat-cell *matCellDef="let element"> {{element.descripcion}} </mat-cell>
                   </ng-container>
                 
                   <ng-container matColumnDef="Marca">
                     <mat-header-cell *matHeaderCellDef> Marca </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{element.Marca}} </mat-cell>
+                    <mat-cell *matCellDef="let element"> {{element.marca}} </mat-cell>
                   </ng-container>
                 
                   <ng-container matColumnDef="Cantidad" >
                       <mat-header-cell *matHeaderCellDef> Cantidad </mat-header-cell>
-                      <mat-cell *matCellDef="let element"> {{element.Cantidad}} </mat-cell>
+                      <mat-cell *matCellDef="let element"> {{element.cantidad}} </mat-cell>
                     </ng-container>
-  
   
                   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                   <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
                 </mat-table>
                
-                <br><br><div align="center"> <img src="https://img.freepik.com/foto-gratis/pintura-lago-montana-montana-al-fondo_188544-9126.jpg" width="150px"></div>
-                <div align="right"><button class="botones" >Editar</button></div> 
+                <br><br><div align="center"> <img src="{{setactual.foto}}" width="150px"></div>
+                <div align="right"><button class="botones" (click)="eliminarSet(setactual); onBetaClicked();" >Eliminar</button></div> 
               </mat-expansion-panel>
              
-  
-              <br> <mat-expansion-panel hideToggle style="width: 90%; margin-left: 5%; margin-right: 5px;">
-                <mat-expansion-panel-header>
-                  <mat-panel-title> <!------           colocar titulo de las tablas deslizantes               -------->
-                    Set 2
-                  </mat-panel-title>
-                </mat-expansion-panel-header> <!------           colocar contenido dentro de las tablas deslizantes               -------->
-                
-                         
-              <div style="width: 100%; display: flex; margin-top: 0; margin-bottom: 40px;">
-                  <div style="width: 30%; margin-left:10%; margin-right: 5%;">
-                    <h1>
-                      <span  style="font-size: 1rem; ">Almacén: </span>
-                    </h1>
-                  </div>
-                  <div style=" width: 40%; margin-left:1%; margin-right: 5%;">
-                    <h1>
-                      <span  style="font-size: 1rem; ">Mínimo de Set´s: 4</span>
-                    </h1>
-                  </div>
-                  <div style=" width: 40%; margin-left:1%; margin-right: 3%; ">
-                    <h1>
-                      <span  style="font-size: 1rem; ">Máximo de Set´s: 8 </span>
-                    </h1>
-                  </div>
-                </div>
-
-              <mat-table [dataSource]="dataSource2" class="mat-elevation-z8">  <!------           Inicia tabla 2              -------->
-           
-                  <ng-container matColumnDef="id">
-                    <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
-                  </ng-container>
-                
-                  <ng-container matColumnDef="Nombre">
-                    <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{element.Nombre}} </mat-cell>
-                  </ng-container>
-                
-                  <ng-container matColumnDef="Tipo">
-                    <mat-header-cell *matHeaderCellDef> Tipo </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{element.Tipo}} </mat-cell>
-                    </ng-container>
-
-                  <ng-container matColumnDef="Descripcion">
-                    <mat-header-cell *matHeaderCellDef> Descripción </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{element.Descripcion}} </mat-cell>
-                  </ng-container>
-                
-                  <ng-container matColumnDef="Marca">
-                    <mat-header-cell *matHeaderCellDef> Marca </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{element.Marca}} </mat-cell>
-                  </ng-container>
-                
-                  <ng-container matColumnDef="Cantidad">
-                      <mat-header-cell *matHeaderCellDef> Cantidad </mat-header-cell>
-                      <mat-cell *matCellDef="let element"> {{element.Cantidad}} </mat-cell>
-                    </ng-container>
-  
-  
-                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-                </mat-table>
-  
-  
-                <br><br><div align="center"> <img src="https://biotronitech.com.co/wp-content/uploads/2021/05/Set-basico-para-diagnostico-y-cirugia-de-senos-paranasales-600x600.jpg" width="150px"></div>
-                <div align="right"><button  class="botones">Editar</button></div> 
-  
-              </mat-expansion-panel>
-      
-  
-              
-              <br> <mat-expansion-panel hideToggle style="width: 90%; margin-left: 5%; margin-right: 5px;">
-                  <mat-expansion-panel-header>
-                    <mat-panel-title> <!------           colocar titulo de las tablas deslizantes               -------->
-                      Set 3
-                    </mat-panel-title>
-  
-                  </mat-expansion-panel-header> <!------           colocar contenido dentro de las tablas deslizantes               -------->
-                  
-                          
-              <div style="width: 100%; display: flex; margin-top: 0; margin-bottom: 40px;">
-                    <div style="width: 30%; margin-left:10%; margin-right: 5%;">
-                      <h1>
-                        <span  style="font-size: 1rem; ">Almacén: </span>
-                      </h1>
-                    </div>
-                    <div style=" width: 40%; margin-left:1%; margin-right: 5%;">
-                      <h1>
-                        <span  style="font-size: 1rem; ">Mínimo de Set´s: 7</span>
-                      </h1>
-                    </div>
-                    <div style=" width: 40%; margin-left:1%; margin-right: 3%; ">
-                      <h1>
-                        <span  style="font-size: 1rem; ">Máximo de Set´s: 16 </span>
-                      </h1>
-                    </div>
-                  </div>
-
-                  <mat-table [dataSource]="dataSource3" class="mat-elevation-z8">  <!------           Inicia tabla 3              -------->
-           
-                          <ng-container matColumnDef="id">
-                          <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
-                          <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
-                          </ng-container>
-                      
-                          <ng-container matColumnDef="Nombre">
-                          <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
-                          <mat-cell *matCellDef="let element"> {{element.Nombre}} </mat-cell>
-                          </ng-container>
-
-                          <ng-container matColumnDef="Tipo">
-                            <mat-header-cell *matHeaderCellDef> Tipo </mat-header-cell>
-                            <mat-cell *matCellDef="let element"> {{element.Tipo}} </mat-cell>
-                            </ng-container>
-                      
-                          <ng-container matColumnDef="Descripcion">
-                          <mat-header-cell *matHeaderCellDef> Descripción </mat-header-cell>
-                          <mat-cell *matCellDef="let element"> {{element.Descripcion}} </mat-cell>
-                          </ng-container>
-                      
-                          <ng-container matColumnDef="Marca">
-                          <mat-header-cell *matHeaderCellDef> Marca </mat-header-cell>
-                          <mat-cell *matCellDef="let element"> {{element.Marca}} </mat-cell>
-                          </ng-container>
-                      
-  
-                          <ng-container matColumnDef="Cantidad">
-                              <mat-header-cell *matHeaderCellDef> Cantidad </mat-header-cell>
-                              <mat-cell *matCellDef="let element"> {{element.Cantidad}} </mat-cell>
-                          </ng-container>
-  
-  
-                          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-                    </mat-table>
-  
-                  <br><br><div align="center"> <img src={{foto}} width="150px"></div>
-                <div align="right"><button class="botones" >Editar</button></div> 
-              
-              </mat-expansion-panel>
-  
-  
             </mat-accordion><!------           finaliza la parte deslizante             -------->
   
-  
+          </div>
       </mat-tab>
   
   
@@ -238,7 +94,7 @@
                 </button>
                             }
               </mat-form-field>  </div>
-                 <button   aria-label="submit" (click)="value2=value; nombreSeleccionado(value)" style="margin-right: 5%;" class="botones" matTooltip="Crear nombre del set">Crear nombre</button>
+                 <button   aria-label="submit" (click)="value2=value; nombreSeleccionado(value)" style="margin-right: 5%;" class="botones" matTooltip="Crear nombre del Set">Crear nombre</button>
             </div>
   
   
@@ -368,7 +224,7 @@
               
     
                 <div style="display: flex; justify-content: right;">
-                  <button class="botones" style=" margin-right: 20px;">Cancelar</button>
+                  <button class="botones" style=" margin-right: 20px;" (click)="cancelarOperacion()">Cancelar</button>
                   <button class="botones" style=" margin-right: 20px;"  (click)="crearSet()" >Guardar</button>
                 </div>
           </mat-card-content>

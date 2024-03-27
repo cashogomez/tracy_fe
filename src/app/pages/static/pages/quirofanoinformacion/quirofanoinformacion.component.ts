@@ -69,7 +69,7 @@ export class QuirofanoinformacionComponent {
   {Ticket: 7, Fecha: '27/05/2023', Paciente:'José Lino Santos García', Edad:22, Diagnostico:'Laparotomia', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
   {Ticket: 8, Fecha: '27/05/2023', Paciente:'José Lino Santos García', Edad:22, Diagnostico:'Laparotomia', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
   {Ticket: 9, Fecha: '27/05/2023', Paciente:'José Lino Santos García', Edad:22, Diagnostico:'Laparotomia', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-  {Ticket: 10, Fecha: '27/05/2023', Paciente:'José Lino Santos García', Edad:22, Diagnostico:'Laparotomia', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
+  {Ticket: 10,Fecha: '27/05/2023', Paciente:'José Lino Santos García', Edad:22, Diagnostico:'Laparotomia', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
 
   {Ticket: 11, Fecha: '27/05/2023', Paciente:'José Lino Santos García', Edad:22, Diagnostico:'Laparotomia', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
   {Ticket: 12, Fecha: '27/05/2023', Paciente:'José Lino Santos García', Edad:22, Diagnostico:'Laparotomia', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
