@@ -1,0 +1,221 @@
+<!------------------------------ INICIO DE ENCABEZADO -------------------------------->
+<h2 align="center">Inventario Instrumental</h2>
+
+<div class="container">
+  <div class="line"><mat-divider></mat-divider></div>
+  <div class="text mat-typography">Listado de Instrumental</div>
+  <div class="line"><mat-divider></mat-divider></div>
+</div>
+
+<p align="end">
+
+      <button mat-raised-button (click)="generarPDF()" class="botones" style=" margin: 10px;" matTooltip="Generar un reporte" >Reporte</button>
+      <button mat-raised-button   class="botones" matTooltip="Nueva alta de instrumental" (click)="crearInstrumento(1)" >Alta</button>
+
+</p>
+<!------------------------------ FILTRO -------------------------------->
+<mat-form-field>
+  <mat-label>Filtro</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Búsqueda" #input>
+</mat-form-field>
+
+<!------------------------------ FIN DE ENCABEZADO -------------------------------->
+
+<div class="mat-elevation-z8" id="page-1" class="page">
+  <mat-table #table [dataSource]="dataSource">
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> Id</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="Nombre">
+      <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.nombre}} </mat-cell>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="Tipo">
+      <mat-header-cell *matHeaderCellDef> Tipo</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.tipo}}</mat-cell>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="Marca">
+      <mat-header-cell *matHeaderCellDef> Marca </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.marca}} </mat-cell>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="Lote">
+      <mat-header-cell *matHeaderCellDef> Lote </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.lote}} </mat-cell>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="Descripcion">
+      <mat-header-cell *matHeaderCellDef> Descripción</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.descripcion}} </mat-cell>
+    </ng-container>
+
+        <!-- Symbol Column -->
+    <ng-container matColumnDef="Cantidad">
+        <mat-header-cell *matHeaderCellDef> Cantidad</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.cantidad}} </mat-cell>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="accion">
+      <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
+      <mat-cell *matCellDef="let element"> <mat-icon class="botoneditar"  (click)="editarFila(element)" fontIcon="edit" style="color: blue" matTooltip="Editar Registro"></mat-icon>
+                                           <mat-icon class="botoneliminar" (click)="onBetaClicked(); eliminarFila(element) " fontIcon="cancel" style="color: red" matTooltip="Eliminar Registro" ></mat-icon> </mat-cell>
+    </ng-container>
+
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <!-- <mat-row (click)="test()" *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
+    <mat-row *matRowDef="let row; columns: displayedColumns;" class="element-row"></mat-row>
+
+  </mat-table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of elementos"></mat-paginator>
+</div>
+<!------------------------------------------ SEGUNDA TABLA ------------------------------------------------>
+
+<section class="flex-container" *ngIf="verSegundaTabla" >
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Alta de un nuevo Instrumento</mat-card-title>
+        </mat-card-header>
+        <div >
+            <img mat-card-image ngSrc={{foto}} width="200" height="200" alt="Imagen Foto">
+        </div>
+        
+        <button mat-button appFilesUpload [multiple]="true" (changed)="onFilesChanged($event)">Subir Imagen</button>
+        <mat-card-content>
+
+        <form #f="ngForm" (ngSubmit)="registrarInstrumento(f)" >
+
+            <mat-form-field>
+                <mat-label>Nombre</mat-label>
+                <input type="tex" matInput placeholder="Nombre del Instrumento" name="Nombre" ngModel required>
+                <mat-error>Debe ingresar un nombre</mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Tipo</mat-label>
+                <input type="tex" matInput placeholder="Tipo de instrumento" name="Tipo" ngModel required>
+                <mat-error>Ingresa el tipo de instrumento</mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Marca</mat-label>
+                <input type="tex" matInput placeholder="Marca" name="Marca" ngModel required>
+                <mat-error>Debe ingresar la marca del instrumento</mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Descripción</mat-label>
+                <input type="tex" matInput placeholder="Descripción del intrumento" name="Descripcion" ngModel required>
+                <mat-error>Debe ingresar un descripción</mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Lote</mat-label>
+                <input type="tex" matInput placeholder="Lote" name="Lote" ngModel required>
+                <mat-error>Señala el lote del instrumento</mat-error>
+            </mat-form-field>
+
+
+            <mat-form-field>
+                <mat-label>Cantidad</mat-label>
+                <input type="tex" matInput placeholder="Cantidad" name="Cantidad" ngModel required>
+                <mat-error>Introduce la cantidad de instrumentos</mat-error>
+            </mat-form-field>
+
+
+            <mat-divider vertical style="height:30px"></mat-divider>
+            <button mat-raised-button class="botones" (click)="crearInstrumento(3)">Cancelar</button>
+            <button mat-raised-button class="botones" type="submit" >Enviar</button>
+        </form>
+    </mat-card-content>
+    </mat-card>
+</section>
+
+<!------------------------------------------ TERCERA TABLA ------------------------------------------------>
+
+<section class="flex-container" *ngIf="verTerceraTabla" >
+  <mat-card>
+      <mat-card-header>
+          <mat-card-title>Editar Instrumento</mat-card-title>
+      </mat-card-header>
+      <div >
+          <img mat-card-image ngSrc={{foto}} width="200" height="200" alt="Imagen Foto">
+      </div>
+      
+      <button mat-button appFilesUpload [multiple]="true" (changed)="onFilesChanged($event)" matTooltip="Da click para subir la imagen del instrumento" >Subir Imagen</button>
+      <mat-card-content>
+
+      <form (ngSubmit)="editarInstrumento()" [formGroup]="formaEdicion">
+
+          <mat-form-field>
+              <mat-label>Nombre</mat-label>
+              <input type="tex" matInput placeholder="Nombre del Instrumento" formControlName="Nombre" required>
+              <mat-error>Debe ingresar un nombre</mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+              <mat-label>Tipo</mat-label>
+              <input type="tex" matInput placeholder="Tipo de instrumento" formControlName="Tipo" required>
+              <mat-error>Ingresa el tipo de instrumento</mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+              <mat-label>Marca</mat-label>
+              <input type="tex" matInput placeholder="Marca" formControlName="Marca" required>
+              <mat-error>Debe ingresar la marca del instrumento</mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+              <mat-label>Descripción</mat-label>
+              <input type="tex" matInput placeholder="Descripción del intrumento" formControlName="Descripcion" required>
+              <mat-error>Debe ingresar un descripción</mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+              <mat-label>Lote</mat-label>
+              <input type="tex" matInput placeholder="Lote" formControlName="Lote" required>
+              <mat-error>Señala el lote del instrumento</mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+              <mat-label>Caducidad</mat-label>
+              <input type="text" matInput placeholder="Caducidad" formControlName="Caducidad"  required>
+              <mat-error>Debe ingresar el numero de usos del instrumento</mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+              <mat-label>Cantidad</mat-label>
+              <input type="tex" matInput placeholder="Cantidad" formControlName="Cantidad"  required>
+              <mat-error>Introduce la cantidad de instrumentos</mat-error>
+          </mat-form-field>
+
+
+          <mat-divider vertical style="height:30px"></mat-divider>
+          <button mat-raised-button class="botones" (click)="cancelarEdicion()" >Cancelar</button>
+          <button mat-raised-button class="botones" type="submit" >Enviar</button>
+      </form>
+  </mat-card-content>
+  </mat-card>
+</section>
+
+
+
+
+
+  
