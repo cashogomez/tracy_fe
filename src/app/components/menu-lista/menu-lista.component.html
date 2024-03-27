@@ -1,0 +1,148 @@
+<mat-sidenav-container class="app-container" >
+    <mat-nav-list>
+
+        <mat-list-item routerLink="/">
+            <span></span><img class="images" src="./assets/generales/Logo_nutricion.png" width="45px"  (click)="onMenuToggleDispatch()"  />
+        </mat-list-item>
+
+        <mat-expansion-panel [class.mat-elevation-z0]="true" > 
+            <mat-expansion-panel-header>
+                <mat-icon>receipt</mat-icon> Recepción de Material
+            </mat-expansion-panel-header>
+            <mat-nav-list>
+                <a mat-list-item routerLink="static/recepcionquirofano" (click)="onMenuToggleDispatch()" >
+                    <span>Quirófano</span>
+                </a>
+                <a mat-list-item routerLink="static/recepcionotrasareas" (click)="onMenuToggleDispatch()">
+                    <span>Otras Áreas</span>
+                </a>
+                <a mat-list-item routerLink="static/recepcionproveedorexterno" (click)="onMenuToggleDispatch()" >
+                    <span>Proveedor Externo</span>
+                </a>
+            </mat-nav-list>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [class.mat-elevation-z0]="true" >
+            <mat-expansion-panel-header>
+                <mat-icon> local_drink</mat-icon> Lavado
+            </mat-expansion-panel-header>
+            <mat-nav-list>
+                <a mat-list-item routerLink="static/lavadomanual" (click)="onMenuToggleDispatch()">
+                    <span>Manual</span>
+                </a>
+                <a mat-list-item routerLink="static/lavadomaquina"  (click)="onMenuToggleDispatch()">
+                    <span>Máquinas</span>
+                </a>
+            </mat-nav-list>
+        </mat-expansion-panel>
+
+
+        <mat-expansion-panel [class.mat-elevation-z0]="true" >
+            <mat-expansion-panel-header>
+                <mat-icon>inbox</mat-icon> Empaque
+            </mat-expansion-panel-header>
+            <mat-nav-list>
+                <a mat-list-item routerLink="static/empaquequirofano" (click)="onMenuToggleDispatch()" >Quirófano y CEYE</a>
+                <a mat-list-item routerLink="static/empaqueotrasareas"  (click)="onMenuToggleDispatch()" >Otras Áreas o proveedor</a>
+            </mat-nav-list>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [class.mat-elevation-z0]="true"  >
+            <mat-expansion-panel-header>
+                <mat-icon> border_clear</mat-icon> Esterilización
+            </mat-expansion-panel-header>
+            <mat-nav-list>
+                <a mat-list-item routerLink="static/esterilizacion" (click)="onMenuToggleDispatch()" >Esterilización</a>
+            </mat-nav-list>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [class.mat-elevation-z0]="true" >
+            <mat-expansion-panel-header>
+                <mat-icon>storage</mat-icon> Almacenamiento
+            </mat-expansion-panel-header>
+            <mat-nav-list>
+                <a mat-list-item routerLink="static/almacengeneral" (click)="onMenuToggleDispatch()" >Almacén General</a>
+            </mat-nav-list>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [class.mat-elevation-z0]="true" >
+            <mat-expansion-panel-header>
+                <mat-icon> zoom_out_map</mat-icon> Distribución de Material
+            </mat-expansion-panel-header>
+            <mat-nav-list>
+                <a mat-list-item routerLink="static/distribucionquirofano" (click)="onMenuToggleDispatch()" >Quirófano y CEYE</a>
+            </mat-nav-list>
+            <mat-nav-list>
+                <a mat-list-item routerLink="static/distribucionotrasareas" (click)="onMenuToggleDispatch()" >Otras Áreas o proveedor</a>
+            </mat-nav-list>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [class.mat-elevation-z0]="true" >
+            <mat-expansion-panel-header>
+                <mat-icon>blur_on</mat-icon> Código QR
+            </mat-expansion-panel-header>
+            <mat-nav-list>
+                <a mat-list-item routerLink="static/qrbusqueda" (click)="onMenuToggleDispatch()" >Búsqueda</a>
+            </mat-nav-list>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [class.mat-elevation-z0]="true" >
+            <mat-expansion-panel-header>
+                <mat-icon>health_and_safety</mat-icon> Quirófano
+            </mat-expansion-panel-header>
+            <mat-nav-list>
+                <a mat-list-item routerLink="static/quirofanoinformacion" (click)="onMenuToggleDispatch()" > <mat-icon> medical_information</mat-icon> Programación de Cirugía </a>
+            </mat-nav-list>
+            <mat-nav-list>
+                <a mat-list-item routerLink="static/quirofanocreacion" (click)="onMenuToggleDispatch()" > <mat-icon>  dataset </mat-icon> Creación de Set's</a>
+            </mat-nav-list>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [class.mat-elevation-z0]="true" >
+            <mat-expansion-panel-header>
+                <mat-icon>settings</mat-icon> Administrador
+            </mat-expansion-panel-header>
+            <mat-nav-list>
+                <a mat-list-item routerLink="static/dashboard" (click)="onMenuToggleDispatch()" >Dashboard</a>
+            </mat-nav-list>
+            <mat-nav-list>
+                <a mat-list-item routerLink="auth/registration" (click)="onMenuToggleDispatch()" >Perfiles y usuarios</a>
+            </mat-nav-list>
+            <mat-nav-list>
+                <a mat-list-item routerLink="auth/registration" (click)="onMenuToggleDispatch()" >Generador de reportes</a>
+            </mat-nav-list>
+            <mat-nav-list>
+                <a mat-list-item routerLink="static/admininstrumental" (click)="onMenuToggleDispatch()" >Instrumental y equipo</a>
+            </mat-nav-list>
+            <mat-nav-list>
+                <a mat-list-item routerLink="auth/registration" (click)="onMenuToggleDispatch()" >Incidencias</a>
+            </mat-nav-list>
+            <mat-nav-list>
+                <a mat-list-item routerLink="auth/registration" (click)="onMenuToggleDispatch()" >Esterilizadores</a>
+            </mat-nav-list>
+            <mat-nav-list>
+                <a mat-list-item routerLink="auth/registration" (click)="onMenuToggleDispatch()" >Lavadoras</a>
+            </mat-nav-list>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [class.mat-elevation-z0]="true">
+            <mat-expansion-panel-header>
+                <mat-icon>info</mat-icon> Acerca de TRACY
+            </mat-expansion-panel-header>
+            <mat-nav-list>
+                <a mat-list-item routerLink="static/about" (click)="onMenuToggleDispatch()" >Información General</a>
+            </mat-nav-list>
+        </mat-expansion-panel>
+
+    </mat-nav-list>
+
+    <div class="smartest">
+
+        <h5>Powered by</h5>
+        <a target="_blank" href="https://www.smartest.mx/">
+            SMARTEST
+        </a>
+
+    </div>
+
+</mat-sidenav-container>

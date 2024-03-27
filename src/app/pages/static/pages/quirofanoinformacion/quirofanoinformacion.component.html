@@ -1,0 +1,108 @@
+<!------------------------------ INICIO DE ENCABEZADO -------------------------------->
+<h2 align="center">PROGRAMACIÓN DE CIRUGÍA</h2>
+
+<div class="container">
+  <div class="line"><mat-divider></mat-divider></div>
+  <div class="text mat-typography">Solicitudes de Instrumentos</div>
+  <div class="line"><mat-divider></mat-divider></div>
+</div>
+
+<p align="end">
+  <mat-form-field>
+    <mat-label>Elige la fecha</mat-label>
+    <input matInput [matDatepicker]="dp">
+    <mat-hint>{{getDateFormatString()}}</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+    <mat-datepicker #dp></mat-datepicker>
+  </mat-form-field>
+
+      <button mat-raised-button (click)="generarPDF()" class="botones" style=" margin: 10px;" matTooltip="Generar un reporte" >Reporte</button>
+      <button mat-raised-button  routerLink="/static/programacioncirugia" class="botones" style=" margin: 10px;" matTooltip="Crear una nueva solicitud">Nueva Solicitud</button>
+
+</p>
+<!------------------------------ FILTRO -------------------------------->
+<mat-form-field>
+  <mat-label>Filtro</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Búsqueda" #input>
+</mat-form-field>
+
+<!------------------------------ FIN DE ENCABEZADO -------------------------------->
+
+<div class="mat-elevation-z8" id="page-1" class="page">
+  <mat-table #table [dataSource]="dataSource">
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="ticket">
+      <mat-header-cell *matHeaderCellDef> Ticket </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.Ticket}} </mat-cell>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="fecha">
+      <mat-header-cell *matHeaderCellDef> Fecha </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.Fecha}} </mat-cell>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="paciente">
+      <mat-header-cell *matHeaderCellDef> Paciente </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.Paciente}}</mat-cell>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="edad">
+      <mat-header-cell *matHeaderCellDef> Edad </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.Edad}} </mat-cell>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="diagnostico">
+      <mat-header-cell *matHeaderCellDef> Diagnóstico </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.Diagnostico}} </mat-cell>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="cirugia">
+      <mat-header-cell *matHeaderCellDef> Cirugía </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.Cirugia}} </mat-cell>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="sala">
+      <mat-header-cell *matHeaderCellDef> Sala </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.Sala}} </mat-cell>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="turno">
+      <mat-header-cell *matHeaderCellDef> Turno </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.Turno}} </mat-cell>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="estatus">
+      <mat-header-cell *matHeaderCellDef> Estatus </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.Estatus}} </mat-cell>
+    </ng-container>
+
+
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="accion">
+      <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
+      <mat-cell *matCellDef="let element"> <mat-icon class="botoneditar" routerLink="/static/editarprogramacioncirugia" (click)="editarFila(element)" fontIcon="edit" style="color: blue" matTooltip="Editar Registro"></mat-icon>
+                                           <mat-icon class="botoneliminar" (click)="onBetaClicked(); eliminarFila(element) " fontIcon="cancel" style="color: red" matTooltip="Eliminar Registro" ></mat-icon> </mat-cell>
+    </ng-container>
+
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <!-- <mat-row (click)="test()" *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
+    <mat-row *matRowDef="let row; columns: displayedColumns;" class="element-row"></mat-row>
+
+  </mat-table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of elementos"></mat-paginator>
+</div>

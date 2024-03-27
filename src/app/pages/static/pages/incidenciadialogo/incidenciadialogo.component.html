@@ -1,0 +1,19 @@
+<div>
+    <h1 mat-dialog-title align="center">Reporte de Incidencia</h1>
+    <div mat-dialog-content>
+        <div style="display: flex;flex-direction: column; margin:1rem auto; max-width: 600px; padding: 1rem;">
+
+
+            <mat-form-field>
+                <textarea matInput [(ngModel)]="data.descripcion" type="text"  matTextareaAutosize matAutosizeMinRows=10 matAutosizeMaxRows=20
+                placeholder="Ingrese Incidencia"></textarea>
+            </mat-form-field>
+
+
+        </div>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-button class="botones" (click)="cancelar()">Cancelar</button>
+        <button mat-button class="botones" [mat-dialog-close]="data" cdkFocusInitial>Confirmar</button>
+    </div>
+</div>
