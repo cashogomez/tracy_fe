@@ -118,9 +118,13 @@
       </td>
   
       <td>
-        <mat-form-field class="input1">
-          <input matInput type="text" placeholder="7/01/1981" formControlName="Nacimiento" required>
-          </mat-form-field>
+        <mat-form-field>
+          <input matInput [matDatepicker]="dp2" (dateChange)="showNacimiento($event)">
+          <mat-hint>{{getDateFormatString()}}</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="dp2"></mat-datepicker-toggle>
+          <mat-datepicker #dp2></mat-datepicker>
+        </mat-form-field>
+      
       </td>
   
       <td>

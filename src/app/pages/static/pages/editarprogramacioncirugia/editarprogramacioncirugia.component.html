@@ -31,216 +31,225 @@
   </div>
   
   
-  
-  <table class="alinear-input" align="center">
+  <form (ngSubmit)="capturarProgCirug()" [formGroup]="formaEdicion">
+      
+    <table class="alinear-input" align="center">
 
-  <!------------------------------------------------------------              fila 1                                ----------------------------------------------------------------->
-    <tr>
-      <td>
-        <mat-label>Paciente: &nbsp;</mat-label>
-      </td>
-  
-      <td>
-        <mat-form-field class="input1">
-          <input matInput type="text" placeholder="Hugo Rodriguez" >
+    <!------------------------------------------------------------              fila 1                                ----------------------------------------------------------------->
+      <tr>
+        <td>
+          <mat-label>Paciente: &nbsp;</mat-label>
+        </td>
+    
+        <td>
+          <mat-form-field class="input1">
+            <input matInput type="text" placeholder="Hugo Rodriguez" formControlName="Paciente" required>
           </mat-form-field>
-      </td>
-  
-      <td>
-        <mat-label>Cirugía Programada: &nbsp;</mat-label>
-      </td>
-  
-      <td>
-        <mat-form-field class="input2">
-          <input matInput type="text" placeholder="Hernioplastía Inguinal Laparoscópica" >
-        </mat-form-field>
-      </td>
-    </tr>
-  
-  <!------------------------------------------------------------              fila 2                                ----------------------------------------------------------------->
-  
-    <tr>
-      <td>
-        <mat-label>Registro: &nbsp;</mat-label>
-      </td>
-  
-      <td>
-        <mat-form-field class="input1">
-          <input matInput type="text" placeholder="112233" >
+        </td>
+    
+        <td>
+          <mat-label>Cirugía Programada: &nbsp;</mat-label>
+        </td>
+    
+        <td>
+          <mat-form-field class="input2">
+            <input matInput type="text" placeholder="Hernioplastía Inguinal Laparoscópica" formControlName="Cirugia" required >
           </mat-form-field>
-      </td>
-  
-      <td>
-        <mat-label>Solicita: &nbsp;</mat-label>
-      </td>
-  
-      <td>
-        <mat-form-field class="input2">
-          <input matInput type="text" placeholder="Dr. Pablo" >
-        </mat-form-field>
-      </td>
-    </tr>
-  
-  <!------------------------------------------------------------              fila 3                                ----------------------------------------------------------------->
-  
-    <tr>
-      <td>
-        <mat-label>Edad: &nbsp;</mat-label>
-      </td>
-  
-      <td>
-        <mat-form-field class="input1">
-          <input matInput type="text" placeholder="35 años" >
+        </td>
+      </tr>
+    
+    <!------------------------------------------------------------              fila 2                                ----------------------------------------------------------------->
+    
+      <tr>
+        <td>
+          <mat-label>Registro: &nbsp;</mat-label>
+        </td>
+    
+        <td>
+          <mat-form-field class="input1">
+            <input matInput type="text" placeholder="112233" formControlName="Registro" required >
+            </mat-form-field>
+        </td>
+    
+        <td>
+          <mat-label>Solicita: &nbsp;</mat-label>
+        </td>
+    
+        <td>
+          <mat-form-field class="input2">
+            <input matInput type="text" placeholder="Dr. Pablo" formControlName="Solicita" required>
           </mat-form-field>
-      </td>
+        </td>
+      </tr>
+    
+    <!------------------------------------------------------------              fila 3                                ----------------------------------------------------------------->
+    
+      <tr>
+        <td>
+          <mat-label>Edad: &nbsp;</mat-label>
+        </td>
+    
+        <td>
+          <mat-form-field class="input1">
+            <input matInput type="text" placeholder="35 años" formControlName="Edad" required>
+            </mat-form-field>
+        </td>
 
 
-  
-      <td>
-        <mat-label>Médico cirujano: &nbsp;</mat-label>
-      </td>
-  
-      <td>
-        <mat-form-field class="input2">
-          <input matInput type="text" placeholder="Dra. Yazmin" >
-        </mat-form-field>
-      </td>
-    </tr>
-  
-  <!------------------------------------------------------------              fila 4                                ----------------------------------------------------------------->
-  
+    
+        <td>
+          <mat-label>Médico cirujano: &nbsp;</mat-label>
+        </td>
+    
+        <td>
+          <mat-form-field class="input2">
+            <input matInput type="text" placeholder="Dra. Yazmin" formControlName="Cirujano" required>
+          </mat-form-field>
+        </td>
+      </tr>
+    
+    <!------------------------------------------------------------              fila 4                                ----------------------------------------------------------------->
+    
+      <tr>
+        <td>
+          <mat-label>Fecha de Nacimiento: &nbsp;</mat-label>
+        </td>
+    
+        <td>
+          <mat-form-field>
+            <input matInput [matDatepicker]="dp2" (dateChange)="showNacimiento($event)">
+            <mat-hint>{{getDateFormatString()}}</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="dp2"></mat-datepicker-toggle>
+            <mat-datepicker #dp2></mat-datepicker>
+          </mat-form-field>
+        
+        </td>
+    
+        <td>
+          <mat-label>Med. Anestesiólogo: &nbsp;</mat-label>
+        </td>
+    
+        <td>
+          <mat-form-field class="input2">
+            <input matInput type="text" placeholder="Dr. Casimiro " formControlName="Anestesiologo" required>
+          </mat-form-field>
+        </td>
+      </tr>
+    
+    <!------------------------------------------------------------              fila 5                                ----------------------------------------------------------------->
     <tr>
       <td>
-        <mat-label>Fecha de Nacimiento: &nbsp;</mat-label>
+        <mat-label>Número de habitación: &nbsp;</mat-label>
       </td>
-  
+    
       <td>
         <mat-form-field class="input1">
-          <input matInput type="text" placeholder="7/01/1981" >
+          <input matInput type="text" placeholder="204" formControlName="Habitacion" required>
           </mat-form-field>
       </td>
-  
+    
       <td>
-        <mat-label>Med. Anestesiólogo: &nbsp;</mat-label>
+        <mat-label>Tipo de Anestesia: &nbsp;</mat-label>
       </td>
-  
+    
       <td>
         <mat-form-field class="input2">
-          <input matInput type="text" placeholder="Dr. Casimiro " >
+          <input matInput type="text" placeholder="Epidural" formControlName="Anestesia" required>
         </mat-form-field>
       </td>
     </tr>
-  
-  <!------------------------------------------------------------              fila 5                                ----------------------------------------------------------------->
-  <tr>
-    <td>
-      <mat-label>Número de habitación: &nbsp;</mat-label>
-    </td>
-  
-    <td>
-      <mat-form-field class="input1">
-        <input matInput type="text" placeholder="204" >
+    
+    <!------------------------------------------------------------              fila 6                                ----------------------------------------------------------------->
+    
+    <tr>
+      <td>
+        <mat-label>Sala: &nbsp;</mat-label>
+      </td>
+    
+      <td>
+        <mat-form-field class="input1">
+          <input matInput type="text" placeholder="Quirófano 2" formControlName="Sala" required>
+          </mat-form-field>
+      </td>
+    
+      <td>
+        <mat-label>Ayudante / Residente: &nbsp;</mat-label>
+      </td>
+    
+      <td>
+        <mat-form-field class="input2">
+          <input matInput type="text" placeholder="Enf. Juanita" formControlName="Ayudante" required>
         </mat-form-field>
-    </td>
-  
-    <td>
-      <mat-label>Tipo de Anestesia: &nbsp;</mat-label>
-    </td>
-  
-    <td>
-      <mat-form-field class="input2">
-        <input matInput type="text" placeholder="Epidural" >
-      </mat-form-field>
-    </td>
-  </tr>
-  
-  <!------------------------------------------------------------              fila 6                                ----------------------------------------------------------------->
-  
-  <tr>
-    <td>
-      <mat-label>Sala: &nbsp;</mat-label>
-    </td>
-  
-    <td>
-      <mat-form-field class="input1">
-        <input matInput type="text" placeholder="Quirófano 2" >
+      </td>
+    </tr>
+    
+    <!------------------------------------------------------------              fila 7                                ----------------------------------------------------------------->
+    
+    <tr>
+      <td>
+        <mat-label>Turno: &nbsp;</mat-label>
+      </td>
+    
+      <td>
+        <mat-form-field class="input1">
+          <input matInput type="text" placeholder="1" formControlName="Turno" required>
+          </mat-form-field>
+      </td>
+    
+      <td>
+        <mat-label>Área de registro: &nbsp;</mat-label>
+      </td>
+    
+      <td>
+        <mat-form-field class="input2">
+          <input matInput type="text" placeholder="Jefatura de Quirófano" formControlName="AreaRegistro" required>
         </mat-form-field>
-    </td>
-  
-    <td>
-      <mat-label>Ayudante / Residente: &nbsp;</mat-label>
-    </td>
-  
-    <td>
-      <mat-form-field class="input2">
-        <input matInput type="text" placeholder="Enf. Juanita" >
-      </mat-form-field>
-    </td>
-  </tr>
-  
-  <!------------------------------------------------------------              fila 7                                ----------------------------------------------------------------->
-  
-  <tr>
-    <td>
-      <mat-label>Turno: &nbsp;</mat-label>
-    </td>
-  
-    <td>
-      <mat-form-field class="input1">
-        <input matInput type="text" placeholder="1" >
-        </mat-form-field>
-    </td>
-  
-    <td>
-      <mat-label>Área de registro: &nbsp;</mat-label>
-    </td>
-  
-    <td>
-      <mat-form-field class="input2">
-        <input matInput type="text" placeholder="Jefatura de Quirófano" >
-      </mat-form-field>
-    </td>
-  </tr>
-  
-  <!------------------------------------------------------------              fila 8                                ----------------------------------------------------------------->
-  
-  <tr>
-    <td>
+      </td>
+    </tr>
+    
+    <!------------------------------------------------------------              fila 8                                ----------------------------------------------------------------->
+    
+    <tr>
+      <td>
       <mat-label>Diagnóstico: &nbsp;</mat-label>
     </td>
-  
+
     <td>
       <mat-form-field class="input1">
-        <input matInput type="text" placeholder="Hernia Inguinal Bilateral" >
+        <input matInput type="text" placeholder="Hernia Inguinal Bilateral" formControlName="Diagnostico" required>
         </mat-form-field>
     </td>
-  
+
     <td>
       <mat-label>Enfermera(o): &nbsp;</mat-label>
     </td>
-  
+
     <td>
       <mat-form-field class="input2">
-        <input matInput type="text" placeholder="Susana García" >
+        <input matInput type="text" placeholder="Susana García" formControlName="Enfermera" required>
       </mat-form-field>
     </td>
-  </tr> 
-  </table>
-  
-  
-  <table class="alinear-input" align="center"> 
-    <tr style="width: 100%;">
-      <td style="width: 14%;">
-        <mat-label>Notas Adicionales:</mat-label>
-      </td>
-      <td style="width: 86%;">
-        <mat-form-field class="textarea">
-          <textarea matInput placeholder="3 Pinzas H. extras para la cirugía "></textarea>
-        </mat-form-field>
-      </td>
-    </tr>
-  </table>
-  
+    </tr> 
+    </table>
+    
+    <!------------------- OTRA TABLA  ----->                                          x
+    
+    <table class="alinear-input" align="center"> 
+      <tr style="width: 100%;">
+        <td style="width: 14%;">
+          <mat-label>Notas Adicionales:</mat-label>
+        </td>
+        <td style="width: 86%;">
+          <mat-form-field class="textarea">
+            <textarea matInput placeholder="3 Pinzas H. extras para la cirugía " formControlName="Notas" required></textarea>
+          </mat-form-field>
+        </td>
+      </tr>
+    </table>
+</form>
+
+
+<!------------------------------------------------------------------------------------>
   <h2 align="center"> Ingresa la información del equipamiento para la cirugía</h2>
 
 <div class="container">

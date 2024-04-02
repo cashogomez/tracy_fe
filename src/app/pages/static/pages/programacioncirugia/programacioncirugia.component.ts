@@ -18,7 +18,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import 'moment/locale/es';
+
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NotificationService } from '@app/services/notification/notification.service';
 import { DynamicDialogService } from '@app/services/emergente/emergente.service';
@@ -31,7 +31,9 @@ import { SetEnviado } from '@app/models/backend/set';
 import { SetService } from '@app/services/set/set.service';
 import { InstrumentoService } from '@app/services/instrumento/instrumento.service';
 import { Instrumento } from '@app/models/backend/instrumento';
-
+import { TicketService } from '@app/services/ticket/ticket.service';
+import moment from 'moment';
+import 'moment/locale/es';
 
 @Component({
   selector: 'app-programacioncirugia',
@@ -75,9 +77,12 @@ export class ProgramacioncirugiaComponent implements OnInit {
   borrarRegistro !: Element;
   materialElegido !: Element;
 
+
   valorElegido : string=''
+  prioridad: number = 0;
   tipoOperacion : number = 0;
   fechaElegida: Date = new Date();
+  fechaNacimiento: Date = new Date();
   options: User[] = [];
 
   elementoRecibido!: User;
@@ -96,6 +101,7 @@ export class ProgramacioncirugiaComponent implements OnInit {
     private _intl: MatDatepickerIntl,
     private notification: NotificationService,
     private dataService: DynamicDialogService,
+    private ticketService: TicketService,
     private setService: SetService,
     private instrumentoService : InstrumentoService,
     @Inject(MAT_DATE_LOCALE) private _locale: string,) {
@@ -125,7 +131,10 @@ export class ProgramacioncirugiaComponent implements OnInit {
                 this.router.navigate(['/static/quirofanoinformacion']);
                  //statements;
                   // ***********************************************************************************
-                  this.capturarProgCirug();
+                  let tickerCapturado = this.capturarProgCirug();
+                  this.ticketService.altaticket(tickerCapturado).subscribe((ticket) => {
+                    console.log(ticket)
+                  })
                  break; 
               } 
               case 3: { 
@@ -245,15 +254,36 @@ export class ProgramacioncirugiaComponent implements OnInit {
 
   getDateFormatString(): string {
     if (this._locale === 'es-ES') {
-      return 'DD/MM/AAAA';
+      return 'DD-MM-AAAA';
     }
     return '';
+  }
+  showNacimiento(naci: any) {
+    this.fechaNacimiento = naci.value._d
   }
   showDate(valor: any) {
     console.log('Cambio la fecha')
     this.fechaElegida = valor.value._d
     console.log(this.fechaElegida.toString())
     console.log(this.labelPosition)
+    switch(this.labelPosition) { 
+      case 'baja': { 
+         this.prioridad = 1
+         break; 
+      } 
+      case 'media': { 
+        this.prioridad = 2
+         break; 
+      } 
+      case 'alta': { 
+        this.prioridad = 3
+        break; 
+     } 
+      default: { 
+        this.prioridad = 1
+         break; 
+      } 
+   } 
 
   }
   eliminarFila(element: Element) {
@@ -299,32 +329,32 @@ changeMaterial(valor: Element) {
 cambioCantidad() {
   this.cantidad = Number(this.cantidadCapturada)
 }
-capturarProgCirug() {
+capturarProgCirug(): TicketRequest {
   const tickerCapturado: TicketRequest = {
-    FechaCirugia: this.fechaElegida.toString(),
-    Paciente: this.formaEdicion?.get('Paciente')?.value!,
-    Registro: this.formaEdicion?.get('Registro')?.value!,
-    Edad: this.formaEdicion?.get('Edad')?.value!,
-    FechaNacimiento: this.formaEdicion?.get('FechaNacimiento')?.value!,
-    NoHabitacion: this.formaEdicion?.get('Habitacion')?.value!,
-    Sala: this.formaEdicion?.get('Sala')?.value!,
-    Turno: this.formaEdicion?.get('Turno')?.value!,
-    Diagnostico: this.formaEdicion?.get('Diagnostico')?.value!,
-    Cirugia: this.formaEdicion?.get('Cirugia')?.value!,
-    Solicita: this.formaEdicion?.get('Solicita')?.value!,
-    Cirujano: this.formaEdicion?.get('Cirujano')?.value!,
-    Anestesiologo: this.formaEdicion?.get('Anestesiologo')?.value!,
-    TipoAnestesia: this.formaEdicion?.get('Anestesia')?.value!,
-    Residente: this.formaEdicion?.get('Ayudante')?.value!,
-    AreaRegistro: this.formaEdicion?.get('Registro')?.value!,
-    Enfermero: this.formaEdicion?.get('Enfermera')?.value!,
-    NotasAdicionales: this.formaEdicion?.get('Notas')?.value!,
-    Prioridad: 0,
-    Notas: this.formaEdicion?.get('Notas')?.value!,
-    Activo: true
+    fecha_cirugia: this.fechaElegida.getTime().toString(),
+    paciente: this.formaEdicion?.get('Paciente')?.value!,
+    registro: this.formaEdicion?.get('Registro')?.value!,
+    edad: this.formaEdicion?.get('Edad')?.value!,
+    fecha_nacimiento: this.fechaNacimiento.getTime().toString(),
+    habitacion: this.formaEdicion?.get('Habitacion')?.value!,
+    sala: this.formaEdicion?.get('Sala')?.value!,
+    turno: this.formaEdicion?.get('Turno')?.value!,
+    diagnostico: this.formaEdicion?.get('Diagnostico')?.value!,
+    cirugia: this.formaEdicion?.get('Cirugia')?.value!,
+    solicita: this.formaEdicion?.get('Solicita')?.value!,
+    cirujano: this.formaEdicion?.get('Cirujano')?.value!,
+    anestesiologo: this.formaEdicion?.get('Anestesiologo')?.value!,
+    anestesia: this.formaEdicion?.get('Anestesia')?.value!,
+    residente: this.formaEdicion?.get('Ayudante')?.value!,
+    area_registro: this.formaEdicion?.get('Registro')?.value!,
+    enfermero: this.formaEdicion?.get('Enfermera')?.value!,
+    notas: this.formaEdicion?.get('Notas')?.value!,
+    estatus: 'pendiente',
+    prioridad: this.prioridad,
+    activo: true
   };
   console.log(tickerCapturado)
-  
+  return tickerCapturado;
   // ***********************************************************
 }
 elementoElegido(recibido: User) {
