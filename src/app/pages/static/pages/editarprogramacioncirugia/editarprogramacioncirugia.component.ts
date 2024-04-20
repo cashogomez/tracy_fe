@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Inject, Input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -15,12 +16,21 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
-import { TicketRequest } from '@app/models/backend/ticket';
+import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/router';
+import { Instrumento } from '@app/models/backend/instrumento';
+import { SetEnviado } from '@app/models/backend/set';
+import { Ticket, TicketRequest } from '@app/models/backend/ticket';
+import { DynamicDialogService } from '@app/services/emergente/emergente.service';
+import { InstrumentoService } from '@app/services/instrumento/instrumento.service';
+import { NotificationService } from '@app/services/notification/notification.service';
+import { SetService } from '@app/services/set/set.service';
 import { TicketService } from '@app/services/ticket/ticket.service';
+import { TicketinstrumentoService } from '@app/services/ticketinstrumento/ticketinstrumento.service';
+import { TicketsetService } from '@app/services/ticketset/ticketset.service';
+import { Observable, from, map, startWith } from 'rxjs';
 
 @Component({
   selector: 'app-editarprogramacioncirugia',
@@ -52,6 +62,7 @@ import { TicketService } from '@app/services/ticket/ticket.service';
     MatDivider,
     MatTooltipModule,
     ReactiveFormsModule,
+    MatAutocompleteModule,
   ],
   templateUrl: './editarprogramacioncirugia.component.html',
   styleUrl: './editarprogramacioncirugia.component.scss'
@@ -63,34 +74,279 @@ export class EditarprogramacioncirugiaComponent {
   formaEdicion!: FormGroup<TicketForma>;
   fechaElegida: Date = new Date();
   fechaNacimiento: Date = new Date();
-
+  tipoOperacion : number = 0;
+  ELEMENT_DATA: PeriodicElement[] = [];
+  dataSource: MatTableDataSource<PeriodicElement>;
   prioridad: number = 0;
+  elementoRecibido!: User;
+  filteredOptions!: Observable<User[]>;
+  options: User[] = [];
+  noSets: SetEnviado[] = [];
+  instrumentos: Instrumento/*Datosprog*/[] = [];
+  instrumentos_lista: Instrumento[] = [];
+  lista_familia: string[] = [];
+  cantidad: number = 0;
+  borrarRegistro !: PeriodicElement;
+  cantidadCapturada: string='';
+
 
   constructor(
+    private router: Router,
+    private notification: NotificationService,
+    private dataService: DynamicDialogService,
     private _adapter: DateAdapter<any>,
     private _intl: MatDatepickerIntl,
     private ticketServicio: TicketService,
+    private ticketsetServicio: TicketsetService,
+    private setService: SetService,
+    private ticketinstrumentoServicio: TicketinstrumentoService,
+    private instrumentoService : InstrumentoService,
     private fb: FormBuilder,
     @Inject(MAT_DATE_LOCALE) private _locale: string,) {
+      this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
       
+      // ****************** Filtrado de opciones de instrumentos y sets
+      this.filteredOptions = this.myControl.valueChanges.pipe(
+        startWith(''),
+        map(value => {
+          const name = typeof value === 'string' ? value : value?.name;
+          return name ? this._filter(name as string) : this.options.slice();
+        }),
+      );
+        
+        // ************************************* Recibe datos **************************************************
+        this.dataService.data$.subscribe(data => {
+          // console.log(data);
+          
+          if (data==true) {
+            switch(this.tipoOperacion) { 
+              case 1: { 
+                if (this.borrarRegistro != undefined) {
+                  this.ELEMENT_DATA = this.ELEMENT_DATA.filter((data) => data.id != this.borrarRegistro.id)
+                  this.dataSource.data = this.ELEMENT_DATA;
+                  switch(this.borrarRegistro.Tipo) {
+                    case '(S)': {
+                      this.ticketsetServicio.traerticketset(Number(this.ticketAEditar)).subscribe((ticketsetEditar) => {
+                        let tse = ticketsetEditar.filter((data) => data.set.id == this.borrarRegistro.id)
+                        //console.log(tse)
+                        if (tse != null  && tse != undefined) {
+                          this.ticketsetServicio.borrarticketset(tse[0].id).subscribe(data => {
+
+                          });
+                        }
+                        
+                      })
+
+                      break
+                    }
+                    case '(I)':{
+                      this.ticketinstrumentoServicio.traerticketinstrumento(Number(this.ticketAEditar)).subscribe((ticketinstrumentoEditar) => {
+                        let tie = ticketinstrumentoEditar.filter((data) => data.instrumento.id == this.borrarRegistro.id)
+                        if (tie != null && tie != undefined) {
+                          this.ticketinstrumentoServicio.borrarticketinstrumento(tie[0].id).subscribe(data => {
+
+                          });
+                        }
+
+                      })
+                      break
+                    }
+                  }
+                  this.notification.success("Registro Borrado exitosamente");
+                }
+                else {
+                  this.notification.error("Registro no encontrado");
+                }
+                
+                 break; 
+              } 
+              case 2: { 
+                this.notification.success("Ticket generado");
+                this.router.navigate(['/static/quirofanoinformacion']);
+                 //statements;
+                  // ***********************************************************************************
+                  let tickerCapturado = this.capturarProgCirug();
+                  this.ticketServicio.editarticket(tickerCapturado, tickerCapturado.id).subscribe((ticket) => {
+                    console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++')
+                    console.log(ticket)
+                    ticketinstrumentoServicio.traerticketinstrumento(ticket.id).subscribe((ticketinstrumentosReales) => {
+                      ticketsetServicio.traerticketset(ticket.id).subscribe((ticketsetReales) => {
+                        // *************************************************************************************
+                        this.ELEMENT_DATA.forEach((elemento) => {
+                          switch(elemento.Tipo) { 
+                            case '(I)': { 
+                                let instrumentoSeleccionado = this.instrumentos.filter(instru => instru.id == elemento.id)
+                                let indice = ticketinstrumentosReales.findIndex(u => u.instrumento.id === instrumentoSeleccionado[0].id);
+                                
+                                if (indice == -1) {
+                                  let ticketinstrumento = {
+                                    instrumento: instrumentoSeleccionado[0],
+                                    ticket: ticket,
+                                    cantidad: elemento.Cantidad
+                                  }
+                                  this.ticketinstrumentoServicio.altaticketinstrumento(ticketinstrumento).subscribe((ticketinstrumentoR) => {
+                                    //console.log(ticketinstrumentoR)
+                                  })
+                                }
+                                else {
+                                  let ticketInstrumentoR2 = ticketinstrumentosReales.filter(u => u.instrumento.id === instrumentoSeleccionado[0].id);
+                                  let ticketinstrumento = {
+                                    id: ticketInstrumentoR2[0].id,
+                                    instrumento: instrumentoSeleccionado[0],
+                                    ticket: ticket,
+                                    cantidad: elemento.Cantidad
+                                  }
+                                  console.log(ticketinstrumento)
+                                  // *******************************  EDITAR INSTRUMENTO **********************
+                                  this.ticketinstrumentoServicio.editarticketinstrumento(ticketinstrumento, ticketinstrumento.id).subscribe((ticketinstrumentoRes) => {
+
+                                  })
+                                }
+
+                               //statements; 
+                               break; 
+                            } 
+                            case '(S)': { 
+                               //statements; 
+                               let setSeleccionado = this.noSets.filter(setseleccionado => setseleccionado.id == elemento.id)
+                               let indice = ticketsetReales.findIndex(u => u.set.id === setSeleccionado[0].id);
+                                if (indice == -1) {
+                                  let ticketset = {
+                                     set: setSeleccionado[0],
+                                     ticket: ticket,
+                                     cantidad: elemento.Cantidad
+                                   }
+                                  this.ticketsetServicio.altaticketset(ticketset).subscribe((ticketsetR) => {
+                                    //console.log(ticketsetR)
+                                  })
+                                }
+                                else {
+                                  // ********************** EDITAR SET ********************************
+                                  let ticketSetR2 = ticketsetReales.filter(u => u.set.id === setSeleccionado[0].id);
+                                  let ticketsetR3 = {
+                                    id: ticketSetR2[0].id,
+                                    set: setSeleccionado[0],
+                                    ticket: ticket,
+                                    cantidad: elemento.Cantidad
+                                  }
+                                  this.ticketsetServicio.editarticketset(ticketsetR3, ticketsetR3.id).subscribe((ticketsetR) => {
+                                    //console.log(ticketsetR)
+                                  })
+                                }
+                               break; 
+                            } 
+                            default: { 
+                               //statements; 
+                               break; 
+                            } 
+                         }
+                        }) 
+                        // *************************************************************************************
+                      })
+                    })
+
+// Foreach ELEMENT_DATA
+
+                  })  // Editar Ticket
+                  
+                 break; 
+              } 
+              case 3: { 
+                this.notification.error("Operación cancelada");
+                this.router.navigate(['/static/quirofanoinformacion']);
+                //statements; 
+                break; 
+             } 
+              default: { 
+                 //statements; 
+                 break; 
+              } 
+           }
+            
+          }
+          else {
+            this.notification.error("¡Se canceló la operación");
+          }
+        });
+      // ************************************************+*****************************
+      this.noSets = []
+      this.options = []
+     // ******************** CARGA DE LOS SETS ********************
+       this.setService.traersets().subscribe(setRegistrados => {
+         setRegistrados.forEach(setregistrado => {
+           this.noSets.push(setregistrado)
+           this.options.push({name: setregistrado.id.toString()+' '+'(S)'+' '+setregistrado.nombre})
+       
+         })
+       })
+   
+       // ********************* CARGA DE LOS INSTRUMENTOS *******************
+       this.instrumentoService.traerinstrumentos().subscribe(instrumentosRegistrados => {
+         this.instrumentos = instrumentosRegistrados;
+         this.instrumentos.forEach((name, index) => {
+           let indice = this.lista_familia.findIndex(u => u === name.familia);
+           //console.log(indice)
+           if (indice == -1) {
+             this.lista_familia.push(name.familia);
+             //this.ELEMENT_DATA5.push({Elemento: name.id.toString()+' '+name.nombre, Cantidad: name.cantidad, Descripcion: name.descripcion })
+             //console.log(name.id+' '+name.nombre+' ' +name.tipo+' '+name.marca+' '+name.descripcion)
+             this.options.push({name: name.id.toString()+' '+'(I)'+' '+name.nombre+' ' +name.tipo+' '+name.marca+' '+name.descripcion})
+           }
+         })
+         this.filteredOptions = this.myControl.valueChanges.pipe(
+           startWith(''),
+           map(value => {
+             const name = typeof value === 'string' ? value : value?.name;
+             return name ? this._filter(name as string) : this.options.slice();
+           }),
+         );
+         //this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+         this.dataSource.data = this.ELEMENT_DATA;
+   
+       });
+
   }
 
-  labelPosition: 'media' | 'alta' = 'alta';
+  labelPosition: 'baja' | 'media' | 'alta' = 'alta';
   value = 'Clear me';
 
 
   displayedColumns: string[] = ['Elemento', 'Cantidad', 'Descripcion', 'icon'];
-  dataSource = ELEMENT_DATA;
+  
 
 
   ngOnInit() {
     this.updateCloseButtonLabel('Cerrar Calendario');
     let ticket = Number(this.ticketAEditar)
-    console.log(ticket)
         // Assign the data to the data source for the table to render
     this.ticketServicio.traerUNticket(ticket).subscribe(data => {
       this.escribirProgCirug(data);
-      console.log(data);
+      this.ticketsetServicio.traerticketset(data.id).subscribe(conjuntoDeSetsDelTicket => {
+        this.ticketinstrumentoServicio.traerticketinstrumento(data.id).subscribe(conjuntoDeInstrumentosDelTicket => {
+          conjuntoDeSetsDelTicket.forEach((ticketsetObtenido) => {
+            let elementoAgregar: PeriodicElement = {
+              id: ticketsetObtenido.set.id,
+              Elemento: ticketsetObtenido.set.nombre,
+              Cantidad: ticketsetObtenido.cantidad,
+              Descripcion: '',
+              Tipo: '(S)'
+            }
+            this.ELEMENT_DATA.push(elementoAgregar);
+          })
+          conjuntoDeInstrumentosDelTicket.forEach((ticketinstrumentoObtenido) => {
+            let elementoAgregar: PeriodicElement = {
+              id: ticketinstrumentoObtenido.instrumento.id,
+              Elemento: ticketinstrumentoObtenido.instrumento.nombre+ ' '+ticketinstrumentoObtenido.instrumento.marca+ ' '+ticketinstrumentoObtenido.instrumento.tipo,
+              Cantidad: ticketinstrumentoObtenido.cantidad,
+              Descripcion: ticketinstrumentoObtenido.instrumento.descripcion,
+              Tipo: '(I)'
+            }
+            this.ELEMENT_DATA.push(elementoAgregar)
+          })
+          this.dataSource.data = this.ELEMENT_DATA;
+          //console.log(this.ELEMENT_DATA);
+        })
+      })
     })
     this.formaEdicion = this.fb.nonNullable.group({
 
@@ -114,6 +370,12 @@ export class EditarprogramacioncirugiaComponent {
       Prioridad: [''],
 
    });
+
+  }
+  private _filter(name: string): User[] {
+    const filterValue = name.toLowerCase();
+
+    return this.options.filter(option => option.name.toLowerCase().includes(filterValue));
   }
 
   french() {
@@ -126,7 +388,12 @@ export class EditarprogramacioncirugiaComponent {
     this._intl.closeCalendarLabel = label;
     this._intl.changes.next();
   }
-
+  elementoElegido(recibido: User) {
+    this.elementoRecibido = recibido;
+  }
+  displayFn(user: User): string {
+    return user && user.name ? user.name : '';
+  }
   getDateFormatString(): string {
     if (this._locale === 'es-ES') {
       return 'DD/MM/AAAA';
@@ -135,20 +402,67 @@ export class EditarprogramacioncirugiaComponent {
     }
     return '';
   }
-  aceptar() {
-    console.log('acepto');
+  eliminarRegistro(elemento: PeriodicElement) {
+    //console.log(elemento)
   }
-  cancelar() {
-    console.log('cancelar');
-  }
-  eliminarRegistro(elemento: Element) {
-    console.log(elemento)
+  showDate(valor: any) {
+    //console.log('Cambio la fecha')
+    this.fechaElegida = valor.value._d
+    //console.log(this.fechaElegida.toString())
+    //console.log(this.labelPosition)
+    switch(this.labelPosition) { 
+      case 'baja': { 
+         this.prioridad = 1
+         break; 
+      } 
+      case 'media': { 
+        this.prioridad = 2
+         break; 
+      } 
+      case 'alta': { 
+        this.prioridad = 3
+        break; 
+     } 
+      default: { 
+        this.prioridad = 1
+         break; 
+      } 
+   } 
+
   }
   showNacimiento(naci: any) {
     this.fechaNacimiento = naci.value._d
   }
-  capturarProgCirug(): TicketRequest {
-    const tickerCapturado: TicketRequest = {
+  private lazyLoadBeta$ = from(
+    import('@app/services/emergente/components/mensajecontinuar/mensajecontinuar.component').then(
+      (component) => component.MensajecontinuarComponent
+    )
+  );
+  private lazyLoadAceptar$ = from(
+    import('@app/services/emergente/components/mensajeaceptar/mensajeaceptar.component').then(
+      (component) => component.MensajeaceptarComponent
+    )
+  );
+  private lazyLoadCancelar$ = from(
+    import('@app/services/emergente/components/mensajecancelar/mensajecancelar.component').then(
+      (component) => component.MensajecancelarComponent
+    )
+  );
+  onBetaClicked4() {
+    this.dataService.showDialog(this.lazyLoadBeta$);
+    this.tipoOperacion = 1
+  }
+  onAceptarClicked() {
+    this.dataService.showDialog(this.lazyLoadAceptar$);
+    this.tipoOperacion = 2
+  }
+  onCancelarClicked() {
+    this.dataService.showDialog(this.lazyLoadCancelar$);
+    this.tipoOperacion = 3
+  }
+  capturarProgCirug(): Ticket {
+    const tickerCapturado: Ticket = {
+      id:  Number(this.ticketAEditar),
       fecha_cirugia: this.fechaElegida.getTime().toString(),
       paciente: this.formaEdicion?.get('Paciente')?.value!,
       registro: this.formaEdicion?.get('Registro')?.value!,
@@ -171,7 +485,7 @@ export class EditarprogramacioncirugiaComponent {
       prioridad: this.prioridad,
       activo: true
     };
-    console.log(tickerCapturado)
+    //console.log(tickerCapturado)
     return tickerCapturado;
     // ***********************************************************
   }
@@ -217,25 +531,96 @@ export class EditarprogramacioncirugiaComponent {
       this.formaEdicion?.get('Prioridad')?.setValue(prioridadString);
     // ***********************************************************
   }
+  eliminarFila(element: PeriodicElement) {
+    this.borrarRegistro=element;
+  }
+  cambioCantidad() {
+    this.cantidad = Number(this.cantidadCapturada)
+  }
+  capturaAgregar() {
+    if (this.cantidad > 0) {
+      var splitted = this.elementoRecibido.name.split(" ", 5); 
+  
+      if (splitted[1] === '(I)') {
+        //console.log('Instrumento')
+        let instrumentoSeleccionado = this.instrumentos.filter(instrumento => instrumento.id == parseInt(splitted[0]))
+        if (instrumentoSeleccionado.length > 0) {
+          const indice = this.ELEMENT_DATA.findIndex((elemento: PeriodicElement) => elemento.id == instrumentoSeleccionado[0].id)
+          //console.log(instrumentoSeleccionado[0].id)
+          //console.log(indice)
+          //console.log(this.ELEMENT_DATA)
+          if (indice == -1) {
+            var datoAnexo: PeriodicElement = {
+              id: instrumentoSeleccionado[0].id,
+              Elemento: instrumentoSeleccionado[0].nombre+' '+instrumentoSeleccionado[0].tipo,
+              Cantidad: this.cantidad,
+              Descripcion: instrumentoSeleccionado[0].descripcion,
+              Tipo: '(I)',
+            }
+          }
+          else {
+            var datoAnexo: PeriodicElement = {
+              id: instrumentoSeleccionado[0].id,
+              Elemento: instrumentoSeleccionado[0].nombre+' '+instrumentoSeleccionado[0].tipo,
+              Cantidad: this.cantidad+this.ELEMENT_DATA[indice].Cantidad,
+              Descripcion: instrumentoSeleccionado[0].descripcion,
+              Tipo: '(I)'
+            }
+            this.ELEMENT_DATA = this.ELEMENT_DATA.filter(instrumento => instrumento.id != instrumentoSeleccionado[0].id);
+          }
+          
+          this.ELEMENT_DATA.push(datoAnexo);
+          this.dataSource.data = this.ELEMENT_DATA
+          this.notification.success('Instrumento agregado correctamente')
+        }
+        else {
+          this.notification.error('Error al agregar instrumento')
+        }
+      }else if (splitted[1] ==='(S)') {
+          //console.log('Set')
+          let setSeleccionado = this.noSets.filter(setregistrado => setregistrado.id == parseInt(splitted[0]))
+          if (setSeleccionado.length > 0) {
+            const indice = this.ELEMENT_DATA.findIndex((elemento: PeriodicElement) => elemento.id == setSeleccionado[0].id)
+            if (indice == -1) {
+              var datoAnexo: PeriodicElement = {
+                id: setSeleccionado[0].id,
+                Elemento: setSeleccionado[0].nombre,
+                Cantidad: this.cantidad,
+                Descripcion: '',
+                Tipo: '(S)'
+              }
+            }
+            else {
+              var datoAnexo: PeriodicElement = {
+                id: setSeleccionado[0].id,
+                Elemento: setSeleccionado[0].nombre,
+                Cantidad: this.cantidad+this.ELEMENT_DATA[indice].Cantidad,
+                Descripcion: '',
+                Tipo: '(S)'
+              }
+              this.ELEMENT_DATA = this.ELEMENT_DATA.filter(setelegido => setelegido.id != setSeleccionado[0].id);
+            }
+            this.ELEMENT_DATA.push(datoAnexo);
+            this.dataSource.data = this.ELEMENT_DATA
+            this.notification.success('Set agregado correctamente')
+          }
+          else {
+            this.notification.error('Error: El Set seleccionado no se encontró')
+          }
+        }
+      }
+    }
+
 }
 
 
 export interface PeriodicElement {
+  id: number;
   Elemento: string;
   Cantidad: number;
   Descripcion: string;
+  Tipo: string;
 }
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {Elemento: 'Set 1', Cantidad:1, Descripcion: 'Set 1 para quirófano'},
-  {Elemento: 'Set 2', Cantidad:1, Descripcion: 'Set 2 para quirófano'},
-  {Elemento: 'Set 3', Cantidad:1, Descripcion: 'Set 3 para quirófano'},
-  {Elemento: 'Set 4', Cantidad:1, Descripcion: 'Set 4 para quirófano'},
-  {Elemento: 'Set 5', Cantidad:1, Descripcion: 'Set 4 para quirófano'},
-  {Elemento: 'Set 6', Cantidad:1, Descripcion: 'Set 4 para quirófano'},
-];
-
-
 
 interface TicketForma {
   Paciente: FormControl<string>;

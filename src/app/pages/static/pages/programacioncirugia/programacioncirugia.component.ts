@@ -34,6 +34,8 @@ import { Instrumento } from '@app/models/backend/instrumento';
 import { TicketService } from '@app/services/ticket/ticket.service';
 import moment from 'moment';
 import 'moment/locale/es';
+import { TicketsetService } from '@app/services/ticketset/ticketset.service';
+import { TicketinstrumentoService } from '@app/services/ticketinstrumento/ticketinstrumento.service';
 
 @Component({
   selector: 'app-programacioncirugia',
@@ -85,6 +87,7 @@ export class ProgramacioncirugiaComponent implements OnInit {
   fechaNacimiento: Date = new Date();
   options: User[] = [];
 
+
   elementoRecibido!: User;
   filteredOptions!: Observable<User[]>;
   noSets: SetEnviado[] = [];
@@ -95,6 +98,8 @@ export class ProgramacioncirugiaComponent implements OnInit {
   instrumentos_lista: Instrumento[] = [];
   
   constructor(
+    private   ticketsetServicio : TicketsetService,
+    private   ticketinstrumentoServicio : TicketinstrumentoService,
     private fb: FormBuilder,
     private router: Router,
     private _adapter: DateAdapter<any>,
@@ -134,7 +139,42 @@ export class ProgramacioncirugiaComponent implements OnInit {
                   let tickerCapturado = this.capturarProgCirug();
                   this.ticketService.altaticket(tickerCapturado).subscribe((ticket) => {
                     console.log(ticket)
+                    this.ELEMENT_DATA5.forEach((elemento) => {
+                      switch(elemento.Tipo) { 
+                        case '(I)': { 
+                          let instrumentoSeleccionado = this.instrumentos.filter(instrumento => instrumento.id == elemento.id)
+                            let ticketinstrumento = {
+                              instrumento: instrumentoSeleccionado[0],
+                              ticket: ticket,
+                              cantidad: elemento.Cantidad
+                            }
+                            this.ticketinstrumentoServicio.altaticketinstrumento(ticketinstrumento).subscribe((ticketinstrumento) => {
+                              console.log(ticketinstrumento)
+                            })
+                           //statements; 
+                           break; 
+                        } 
+                        case '(S)': { 
+                           //statements; 
+                           let setSeleccionado = this.noSets.filter(setseleccionado => setseleccionado.id == elemento.id)
+                           let ticketset = {
+                             set: setSeleccionado[0],
+                             ticket: ticket,
+                             cantidad: elemento.Cantidad
+                           }
+                           this.ticketsetServicio.altaticketset(ticketset).subscribe((ticketset) => {
+                             console.log(ticketset)
+                           })
+                           break; 
+                        } 
+                        default: { 
+                           //statements; 
+                           break; 
+                        } 
+                     }
+                    })
                   })
+                  
                  break; 
               } 
               case 3: { 
