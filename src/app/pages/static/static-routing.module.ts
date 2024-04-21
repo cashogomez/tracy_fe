@@ -86,6 +86,10 @@ const routes: Routes = [
     path: 'admininstrumental',
     loadChildren: () => import('./pages/instrumental/instrumental.module').then((m) => m.InstrumentalModule),
   },
+  {
+    path: 'lectorqr',
+    loadChildren: () => import('./pages/codigo-qr/codigo-qr.module').then((m) => m.CodigoQRModule),
+  },
 ];
 
 

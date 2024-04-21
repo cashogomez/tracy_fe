@@ -9,6 +9,7 @@ import { NotificationService } from '@app/services';
 import 'moment/locale/es';
 import pdfMake from "pdfmake/build/pdfmake";
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import { AreatrabajoService  } from '@app/services/AreaTrabajo/areatrabajo.service';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
 
@@ -23,21 +24,6 @@ export class EmpaquequirofanoComponent {
   editarRegistro !: Element;
   borrarRegistro !: Element;
   area: AreaTrabajo[]=[
-  {
-    id: 1,
-    tipo: 'interna',
-    nombre: 'Quirófano'
-  },
-  {
-    id: 2,
-    tipo: 'interna',
-    nombre: 'Urgencia'
-  },
-  {
-    id: 3,
-    tipo: 'interna',
-    nombre: 'Ceye'
-  },
 ];
 setmaterial =[
   {
@@ -102,7 +88,7 @@ setmaterial =[
 
   constructor(private notification: NotificationService,
 
-    
+    private areatrabajoService: AreatrabajoService,
     private _adapter: DateAdapter<any>,
     private _intl: MatDatepickerIntl,
     @Inject(MAT_DATE_LOCALE) private _locale: string,) { // Assign the data to the data source for the table to render
@@ -112,6 +98,9 @@ setmaterial =[
 
   ngOnInit() {
     this.updateCloseButtonLabel('Cerrar Calendario');
+    this.areatrabajoService.listaAreasTrabajo().subscribe(data => {
+      this.area = data;
+    })
   }
 
   french() {

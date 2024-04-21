@@ -1,0 +1,170 @@
+<div style="width: 90%; margin-left: 5%; margin-right: 5%;">
+    <div style="display: flex;">
+    
+        <div style="width: 80%; ">
+            <h1>Hístorico {{NoQR}}</h1>
+        </div>
+    
+        <div style="width: 20%; text-align: right; ">
+            <h1>{{Fecha}}</h1>
+        </div>
+    
+     
+    
+    </div>
+    <br>
+    <div style="display: flex; width: 100%;">
+    
+        <div style="width:50%;">
+         
+                <div >
+                  <label>Tipo de Empaque:</label> <br>
+                    <mat-form-field style=" width: 98%">
+                        <input matInput type="text" placeholder="Empaque 1" >
+                    </mat-form-field>
+                </div>
+         
+        </div>
+    
+    
+        <div style="width:50%; ">
+         
+            <div style=" width: 100%; margin-left: 2%;" >
+              <label>Fecha de Empaque:</label> <br>
+                <mat-form-field style=" width: 98%">
+                    <input matInput type="text" placeholder="15/12/2023" >
+                </mat-form-field>
+            </div>
+     
+    </div>
+    
+    </div>
+    <div style="display: flex; width: 100%;">
+    
+        <div style="width:50%;">
+         
+                <div >
+                  <label>Fecha de Esterilización:</label> <br>
+                    <mat-form-field style=" width: 98%">
+                        <input matInput type="text" placeholder="15/12/2023" >
+                    </mat-form-field>
+                </div>
+         
+        </div>
+    
+    
+        <div style="width:50%; ">
+         
+            <div style=" width: 100%; margin-left: 2%;" >
+              <label>Caducidad:</label> <br>
+                <mat-form-field style=" width: 98%">
+                    <input matInput type="text" placeholder="15/01/2024" >
+                </mat-form-field>
+            </div>
+     
+    </div>
+    
+    </div>
+    <br>
+    <div style="display: flex; width: 100%;">
+    
+        <div style="width:25%; text-align: center; ">
+         
+            <h1 >
+                Recepción
+            </h1>  
+              
+       
+          </div>
+    
+          <div style="width:25%; text-align: center; ">
+         
+            <h1>
+              Turno: {{turno}}
+            </h1>
+       
+          </div>
+    
+          <div style="width:25%; text-align: center; ">
+         
+            <h1>
+                {{Fecha}}
+            </h1>
+       
+          </div>
+    
+    
+        <div style="width:25%; text-align: center; ">
+         
+          <h1>
+            Hora: {{Hora}}
+          </h1>
+     
+        </div>
+    
+    </div>
+    
+    
+    <br>
+    
+    
+    <div style="display: flex; width: 100%;">
+    
+        <div style="width:50%;">
+         
+                <div >
+                  <label>Entrega:</label> <br>
+                    <mat-form-field style=" width: 98%">
+                        <input matInput type="text" placeholder="Hugo Rodríguez" >
+                    </mat-form-field>
+                </div>
+         
+        </div>
+    
+    
+        <div style="width:50%; ">
+         
+            <div style=" width: 100%; margin-left: 2%;" >
+              <label>Recibe:</label> <br>
+                <mat-form-field style=" width: 98%">
+                    <input matInput type="text" placeholder="Yazmin Huerta" >
+                </mat-form-field>
+            </div>
+     
+    </div>
+    
+    </div>
+    <div style="display: flex; width: 100%;">
+    
+        <div style="width:50%;">
+         
+                <div >
+                  <label>Ubicación:</label> <br>
+                    <mat-form-field style=" width: 98%">
+                        <input matInput type="text" placeholder="Almacén CEyE Estante A-2" >
+                    </mat-form-field>
+                </div>
+         
+        </div>
+    
+    
+        <div style="width:50%; ">
+            <div style="width: 20%;margin-left: 2%;">
+                <button mat-mini-fab color="" (click)="emergente1()" style="width: 70px; height: 70px; margin-top: 12%;">
+                    <mat-icon style="color:#0f8f95; width: 45px; height: 45px; font-size: 45px;">center_focus_weak</mat-icon>
+                </button>
+            </div>
+     
+    </div>
+    
+    </div>
+    
+    
+    <br><br>
+    <div style="display: flex; justify-content: right;">
+        <button class="botones" style=" margin-right: 2%;">Cancelar</button>
+        <button class="botones" >Confirmar</button>
+      </div>
+    
+    
+    </div>

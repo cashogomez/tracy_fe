@@ -17,7 +17,7 @@ error(message: string): void {
 
 success(message: string): void {
   this.snackBar.openFromComponent(NotificationComponent, {
-    duration: 4000,
+    duration: 3000,
     data: { message },
     panelClass: ['success-snackbar']
   });

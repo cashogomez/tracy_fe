@@ -167,8 +167,8 @@ export class EditarprogramacioncirugiaComponent {
                   // ***********************************************************************************
                   let tickerCapturado = this.capturarProgCirug();
                   this.ticketServicio.editarticket(tickerCapturado, tickerCapturado.id).subscribe((ticket) => {
-                    console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++')
-                    console.log(ticket)
+                    //console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++')
+                    //console.log(ticket)
                     ticketinstrumentoServicio.traerticketinstrumento(ticket.id).subscribe((ticketinstrumentosReales) => {
                       ticketsetServicio.traerticketset(ticket.id).subscribe((ticketsetReales) => {
                         // *************************************************************************************
@@ -196,7 +196,7 @@ export class EditarprogramacioncirugiaComponent {
                                     ticket: ticket,
                                     cantidad: elemento.Cantidad
                                   }
-                                  console.log(ticketinstrumento)
+                                  //console.log(ticketinstrumento)
                                   // *******************************  EDITAR INSTRUMENTO **********************
                                   this.ticketinstrumentoServicio.editarticketinstrumento(ticketinstrumento, ticketinstrumento.id).subscribe((ticketinstrumentoRes) => {
 

@@ -19,6 +19,7 @@ import { RouterOutlet, RouterLink, RouterLinkActive, RouterModule } from '@angul
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 
 
+
 @NgModule({
   declarations: [
     AlmacengeneralComponent
@@ -43,6 +44,8 @@ import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
     RouterLink, 
     RouterLinkActive,
     RouterModule,
+
+
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'es-ES'},

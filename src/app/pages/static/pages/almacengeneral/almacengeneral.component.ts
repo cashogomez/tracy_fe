@@ -4,8 +4,11 @@ import { MatDatepickerIntl } from '@angular/material/datepicker';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { AreaTrabajo } from '@app/models/backend/area';
 import { NotificationService } from '@app/services';
+
+
 import 'moment/locale/es';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -108,9 +111,9 @@ turno =[
 //   });
 // } 
 
-  constructor(private notification: NotificationService,
-
-    
+  constructor(
+    private notification: NotificationService,
+    private router: Router,
     private _adapter: DateAdapter<any>,
     private _intl: MatDatepickerIntl,
     @Inject(MAT_DATE_LOCALE) private _locale: string,) { // Assign the data to the data source for the table to render
@@ -175,10 +178,13 @@ turno =[
   changeArea(valor: AreaTrabajo) { 
     this.areaElegida = valor;
     this.area_id = this.areaElegida.id;
-}
-generarPDF() {
-  createPDF(this.ELEMENT_DATA, this.nombrejefa);
-}
+  }
+  generarPDF() {
+    createPDF(this.ELEMENT_DATA, this.nombrejefa);
+  }
+  leerCodigoQR() {
+    this.router.navigate(['/static/lectorqr'])
+  }
 }
 
 export interface Element {
