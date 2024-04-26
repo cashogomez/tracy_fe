@@ -8,7 +8,7 @@ import { MAT_DATE_LOCALE, MatOptionModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDivider } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIcon } from '@angular/material/icon';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
@@ -39,7 +39,7 @@ import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
     MatButtonModule,
     MatOptionModule,
     MatSelectModule,
-
+    MatIconModule,
     RouterOutlet,
     RouterLink, 
     RouterLinkActive,

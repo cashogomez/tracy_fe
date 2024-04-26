@@ -90,6 +90,10 @@ const routes: Routes = [
     path: 'lectorqr',
     loadChildren: () => import('./pages/codigo-qr/codigo-qr.module').then((m) => m.CodigoQRModule),
   },
+  {
+    path: 'admonempaques',
+    loadChildren: () => import('./pages/admonempaques/admonempaques.module').then((m) => m.AdmonempaquesModule),
+  },
 ];
 
 

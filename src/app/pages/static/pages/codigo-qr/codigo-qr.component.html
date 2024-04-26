@@ -1,5 +1,9 @@
-<p>{{information}}</p>
-<zxing-scanner *ngIf="scannerEnabled" #scanner (scanSuccess)="scanSuccessHandler($event)">
-</zxing-scanner>
-<button (click)="enableScanner()" *ngIf="!scannerEnabled" type="button" class="btn btn-success">LEER
-    OTRO</button>
+<div *ngIf="editar==false" >
+    <p>{{information}}</p>
+    <zxing-scanner *ngIf="scannerEnabled" #scanner (scanSuccess)="scanSuccessHandler($event)">
+    </zxing-scanner>
+    <button (click)="enableScanner()" *ngIf="!scannerEnabled" type="button" class="btn btn-success">LEER OTRO</button>
+</div>
+
+
+<app-recepcionalmacen  [codigoQRleido]="codigoQRleido" *ngIf="editar==true" ></app-recepcionalmacen>

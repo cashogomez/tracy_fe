@@ -1,0 +1,106 @@
+<form [formGroup]="formaEdicion">
+    <div style="width: 90%; margin-left: 5%; margin-right: 5%;">
+        <h1>Información del Tipo de Empaque</h1>
+        <table style="width: 100%;" align="center" >
+            <!------------------------------------------------------------              fila 1                                ----------------------------------------------------------------->
+            <tr style="width: 100%; height: 40px;">
+                <td style="width: 15%;">
+                  <mat-label>Nombre del Empaque:</mat-label>
+                </td>
+            
+                <td style="width: 85%;">
+                  <mat-form-field class="input1">
+                    <input matInput type="text" placeholder="Papel Grado Médico" formControlName="nombre">
+                    </mat-form-field>
+                </td>
+            </tr>
+        
+            <tr style="width: 100%; height: 70px;">
+                <td style="width: 15%;">
+                  <mat-label>Marca:</mat-label>
+                </td>
+            
+                <td style="width: 85%;">
+                  <mat-form-field class="input1">
+                    <input matInput type="text" placeholder="N/A" formControlName="marca" >
+                    </mat-form-field>
+                </td>
+            </tr>
+        
+        </table>    
+        
+        <table style="width: 100%;" align="center">
+        <tr style="width: 100%; height: 70px;">
+            <td style="width: 15%;">
+              <mat-label>Tiempo de vida:</mat-label>
+            </td>
+        
+            <td style="width: 35%;">
+              <mat-form-field class="input2">
+                <input matInput type="number"  min="1" max="100"  formControlName="tiempo_vida" >
+                </mat-form-field>
+            </td>
+        
+            <td style="width: 12%;">
+                <mat-label>Unidad de Tiempo:</mat-label>
+              </td>
+          
+              <td style="width: 38%;">
+                <mat-form-field class="input3" > 
+                    <mat-select formControlName="unidad">
+                    <mat-option value="Días">Dia</mat-option>
+                    <mat-option value="Meses">Mes</mat-option>
+                    <mat-option value="Años">Año</mat-option>
+                  </mat-select>
+                  </mat-form-field>
+              </td>
+        </tr>
+        
+        </table>  
+    
+        <div align="right"><button class="botones"  (click)="onSumar()" >Guardar</button></div> 
+    </div>
+    
+    </form>
+<div>
+        <br>
+        <h1>Histórico</h1>
+        <h1>resultado: {{resultado}}</h1>
+        <!--<p>
+          {{ today.toLocaleDateString()  }}
+        </p>
+        <p>
+          {{ finally.toLocaleDateString() }}
+        </p>--->
+        
+        <br>
+        
+        
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        
+         
+            <ng-container matColumnDef="nombre">
+              <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Nombre </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.nombre}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="marca">
+              <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Marca </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.marca}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="tiempo_vida">
+              <th mat-header-cell *matHeaderCellDef style="text-align: center;">Tiempo de vida </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.tiempo_vida}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="unidad">
+                <th mat-header-cell *matHeaderCellDef style="text-align: center;">Unidad </th>
+                <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.unidad}} </td>
+              </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+

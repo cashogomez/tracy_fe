@@ -118,9 +118,9 @@ export class QuirofanoinformacionComponent {
 
         // ****** Recibe datos ******
         this.dataService.data$.subscribe(data => {
-          console.log(data);
+          //console.log(data);
           if (data==true) {
-            console.log('Va bien');
+            //console.log('Va bien');
             if (this.borrarRegistro != undefined) {
               this.EliminarElementoTabla(this.borrarRegistro.Ticket);
             }
@@ -185,7 +185,7 @@ export class QuirofanoinformacionComponent {
     this.editarRegistro=element;
     this.editar = true;
     this.ticketAEditar = element.id.toString();
-    console.log(this.ticketAEditar);   
+    //console.log(this.ticketAEditar);   
   }
   eliminarFila(element: Element) {
     this.borrarRegistro=element;

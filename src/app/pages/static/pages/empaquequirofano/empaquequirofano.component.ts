@@ -5,7 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AreaTrabajo } from '@app/models/backend/area';
-import { NotificationService } from '@app/services';
+import { NotificationService, SetService } from '@app/services';
 import 'moment/locale/es';
 import pdfMake from "pdfmake/build/pdfmake";
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -23,59 +23,59 @@ export class EmpaquequirofanoComponent {
 
   editarRegistro !: Element;
   borrarRegistro !: Element;
-  area: AreaTrabajo[]=[
-];
-setmaterial =[
-  {
-    nombre: 'Pinzas',
-  },
-  {
-    nombre: 'Set Instrumental',
-  },
-  {
-    nombre: 'set 2',
-  },
-];
+  area: AreaTrabajo[]=[];
+  ELEMENT_DATA: any[] = []
+  setmaterial =[
+    {
+      nombre: 'Pinzas',
+    },
+    {
+      nombre: 'Set Instrumental',
+    },
+    {
+      nombre: 'set 2',
+    },
+  ];
 
   /** Constants used to fill up our data base. */
-  ELEMENT_DATA = [
-    {Prioridad: 'baja', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'baja', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'media', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'baja', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'media', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'media', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'media', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-    {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  // ELEMENT_DATA = [
+  //   {Prioridad: 'baja', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'baja', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'media', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'baja', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'media', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'media', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'media', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
+  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
   
-  ];
+  // ];
 
   areaElegida!: AreaTrabajo;
   area_id!: number;
@@ -87,13 +87,12 @@ setmaterial =[
 // } 
 
   constructor(private notification: NotificationService,
-
+    private setsService: SetService,
     private areatrabajoService: AreatrabajoService,
     private _adapter: DateAdapter<any>,
     private _intl: MatDatepickerIntl,
     @Inject(MAT_DATE_LOCALE) private _locale: string,) { // Assign the data to the data source for the table to render
       this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
-
   }
 
   ngOnInit() {
@@ -101,8 +100,52 @@ setmaterial =[
     this.areatrabajoService.listaAreasTrabajo().subscribe(data => {
       this.area = data;
     })
+    this.setsService.traersets().subscribe(dataSets => {
+      dataSets.forEach(dataSet => {
+        let almacen: Element = {
+          Prioridad: this.calcularprioridad(dataSet.minimo,dataSet.maximo, dataSet.numero),
+          Nombre: dataSet.nombre,
+          Elaborar: (dataSet.maximo - dataSet.numero),
+          Estatus: 'pendiente'
+        }
+        this.ELEMENT_DATA.push(almacen);
+      })
+      this.dataSource.data = this.ELEMENT_DATA
+    });
   }
+  calcularprioridad(minimo: number, maximo: number, actual: number): string {
+      let respuesta: string = ''
+      let valor = 0
+      if (actual != minimo) {
+        if (minimo < actual) {
+          valor = ((actual-minimo)/(maximo-minimo))*100
+        }
+        else {
+          valor = ((minimo - actual)/(maximo-minimo))*100
+        }
+      }
+      else {
+        valor = 0.0
+      }
 
+      switch ( true ) {
+        case valor < 0.0 : 
+            respuesta = 'alta'
+          break
+        case valor < 30.0 :
+              respuesta =  'alta'
+            break;
+        case valor < 70:
+              respuesta =  'media'
+            break;
+        case valor < 100:
+              respuesta =  'baja'
+            break;
+      }
+      return respuesta;
+
+
+  }
   french() {
     this._locale = 'es-ES';
     this._adapter.setLocale(this._locale);

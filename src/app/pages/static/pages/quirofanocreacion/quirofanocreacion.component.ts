@@ -52,6 +52,8 @@ import { SetEnviado, SetRequest } from '@app/models/backend/set';
 import { CantidadInstrumentoService } from '@app/services/cantidadinstrumento/cantidadinstrumento.service';
 import { CantidadInstrumentoEnviado } from '@app/models/backend/cantidadinstrumento';
 
+
+
 @Component({
   selector: 'app-quirofanocreacion',
   standalone: true,
@@ -449,9 +451,10 @@ export class QuirofanocreacionComponent {
         this.notification.error('Operación cancelada: El nombre del set ya existe');
       }
       else {
-        this.setService.altaset(this.envioSet).subscribe((response: SetEnviado) => {
-          console.log(response);
-          this.noSets.push(response)
+        this.setService.altaset(this.envioSet).subscribe((response2: SetEnviado) => {
+          console.log('*** Creación de Set *********')
+          console.log(response2);
+          this.noSets.push(response2)
           this.dataSource_set.data= this.noSets;
           
           this.dataSource4.data.forEach(dataInstrumento  => {
@@ -459,16 +462,17 @@ export class QuirofanocreacionComponent {
             let cantidadinstrumento = {
               cantidad: dataInstrumento.Cantidad,
               instrumento: instrumentoreal[0],
-              set: response,
+              set: response2,
             }
             this.cantidadInstrumentoService.altacantidadinstrumento(cantidadinstrumento).subscribe(response => {
-                console.log('******************')
+                console.log('******* Cantidad de Instrumento ***********')
                 console.log(response)
             });
             // ********************** Aqui crear la cantidad de set en la base de datos **********
           }), 
           this.notification.success('El set fue creado exitosamente');
           this.cancelarOperacion2()
+          
         })
       }
     });
