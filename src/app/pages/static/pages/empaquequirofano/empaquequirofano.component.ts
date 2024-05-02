@@ -11,7 +11,7 @@ import pdfMake from "pdfmake/build/pdfmake";
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { AreatrabajoService  } from '@app/services/AreaTrabajo/areatrabajo.service';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
-
+import { CrearEmpaqueComponent } from '../crear-empaque/crear-empaque.component';
 
 @Component({
   selector: 'app-empaquequirofano',
@@ -19,8 +19,9 @@ import { AreatrabajoService  } from '@app/services/AreaTrabajo/areatrabajo.servi
   templateUrl: './empaquequirofano.component.html',
   styleUrl: './empaquequirofano.component.scss'
 })
-export class EmpaquequirofanoComponent {
-
+export class EmpaquequirofanoComponent { 
+  crear = false;
+  empaqueACrear: string = '';
   editarRegistro !: Element;
   borrarRegistro !: Element;
   area: AreaTrabajo[]=[];
@@ -99,59 +100,65 @@ export class EmpaquequirofanoComponent {
     this.updateCloseButtonLabel('Cerrar Calendario');
     this.areatrabajoService.listaAreasTrabajo().subscribe(data => {
       this.area = data;
+      this.setsService.traersets().subscribe(dataSets => {
+        dataSets.forEach(dataSet => {
+          let almacen: Element = {
+            id: dataSet.id,
+            Prioridad: this.calcularprioridad(dataSet.minimo,dataSet.maximo, dataSet.numero),
+            Nombre: dataSet.nombre,
+            Elaborar: (dataSet.maximo - dataSet.numero),
+            Estatus: 'pendiente'
+          }
+          this.ELEMENT_DATA.push(almacen);
+        })
+        this.dataSource.data = this.ELEMENT_DATA
+      });
     })
-    this.setsService.traersets().subscribe(dataSets => {
-      dataSets.forEach(dataSet => {
-        let almacen: Element = {
-          Prioridad: this.calcularprioridad(dataSet.minimo,dataSet.maximo, dataSet.numero),
-          Nombre: dataSet.nombre,
-          Elaborar: (dataSet.maximo - dataSet.numero),
-          Estatus: 'pendiente'
-        }
-        this.ELEMENT_DATA.push(almacen);
-      })
-      this.dataSource.data = this.ELEMENT_DATA
-    });
+
   }
+
   calcularprioridad(minimo: number, maximo: number, actual: number): string {
-      let respuesta: string = ''
-      let valor = 0
-      if (actual != minimo) {
-        if (minimo < actual) {
-          valor = ((actual-minimo)/(maximo-minimo))*100
-        }
-        else {
-          valor = ((minimo - actual)/(maximo-minimo))*100
-        }
+    let respuesta: string = ''
+    let valor = 0
+    if (actual != minimo) {
+      if (minimo < actual) {
+        valor = ((actual-minimo)/(maximo-minimo))*100
       }
       else {
-        valor = 0.0
+        valor = ((minimo - actual)/(maximo-minimo))*100
       }
+    }
+    else {
+      valor = 0.0
+    }
 
-      switch ( true ) {
-        case valor < 0.0 : 
-            respuesta = 'alta'
-          break
-        case valor < 30.0 :
-              respuesta =  'alta'
-            break;
-        case valor < 70:
-              respuesta =  'media'
-            break;
-        case valor < 100:
-              respuesta =  'baja'
-            break;
-      }
-      return respuesta;
+    switch ( true ) {
+      case valor < 0.0 : 
+          respuesta = 'alta'
+        break
+      case valor < 30.0 :
+            respuesta =  'alta'
+          break;
+      case valor < 70:
+            respuesta =  'media'
+          break;
+      case valor < 100:
+            respuesta =  'baja'
+          break;
+    }
+    return respuesta;
 
 
-  }
+}
   french() {
     this._locale = 'es-ES';
     this._adapter.setLocale(this._locale);
     this.updateCloseButtonLabel('Cerrar el calendario');
   }
-
+  inicioEmpaquetar(Aempaquetar: Element) {  
+    this.empaqueACrear = Aempaquetar.id.toString()
+    this.crear = true
+  }
   updateCloseButtonLabel(label: string) {
     this._intl.closeCalendarLabel = label;
     this._intl.changes.next();
@@ -207,6 +214,7 @@ changeSetmaterial(valor: {nombre: string}) {
 
 
 export interface Element {
+  id: number;
   Prioridad: string;
   Nombre: string;
   Elaborar: number;

@@ -1,0 +1,136 @@
+<div style="width: 90%; margin-left: 5%; margin-right: 5%;">
+    <div style="display: flex; width: 100%;">
+        <div style="width: 80%;">
+            <h1 >{{letreroSet}}</h1>
+        </div>
+        <div style="width: 20%; text-align: right;">
+            <h1>{{fecha}}</h1>
+        </div>
+        <div style="width: 20%;text-align: right;">
+            <h1>Turno: {{turno}}</h1>
+        </div>
+    </div>
+
+    
+
+    <h1>Componentes:</h1>
+
+
+
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+        <!--- Note that these columns can be defined in any order.
+              The actual rendered columns are set as a property on the row definition" -->
+      
+        <!-- Position Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef style="font-weight: bold; text-align: center;"> Identificación </th>
+          <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.id}} </td>
+        </ng-container>
+      
+        <!-- Name Column -->
+        <ng-container matColumnDef="Nombre">
+          <th mat-header-cell *matHeaderCellDef style="font-weight: bold; text-align: center;"> Nombre </th>
+          <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.Nombre}} </td>
+        </ng-container>
+      
+        <!-- Weight Column -->
+        <ng-container matColumnDef="Marca">
+          <th mat-header-cell *matHeaderCellDef style="font-weight: bold; text-align: center;"> Marca </th>
+          <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.Marca}} </td>
+        </ng-container>
+      
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="Cantidad">
+          <th mat-header-cell *matHeaderCellDef style="font-weight: bold; text-align: center;"> Cantidad</th>
+          <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.Cantidad}} </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      
+
+
+<form [formGroup]="form" (ngSubmit)="submitted()">
+    
+    <br><h1>Tipo de Empaque:</h1><br>
+        
+        <div  style="display: flex;  align-items: center;">
+            <div style=" width: 50%; margin-left:5%;">
+              <label>Elemento:</label><br>
+              <mat-form-field  style=" width: 50%">
+                  <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
+                  <mat-autocomplete #auto="matAutocomplete" (optionSelected)='instrumentoElegido($event.option.value)' [displayWith]="displayFn">
+                    @for (option of filteredOptions | async; track option) {
+                      <mat-option [value]="option">{{option.name}}</mat-option>
+                    }
+                  </mat-autocomplete>
+              </mat-form-field>
+            </div>
+        </div>
+
+    <br>
+        <div style=" width: 100%; display: flex;  align-items: center; align-content: center; ">
+
+            
+            <div style=" width: 20%;"> <h1 for="Cantidad">Imprimir QR: </h1></div>
+                
+            <div style=" width: 13%; ">
+                <label for="Cantidad">Cantidad:</label><br>
+                <mat-form-field style=" width: 100%">
+                <input matInput (input)="change2($event)" type="number" min="1"  step="1" value="1" formControlName="Cantidad">
+                </mat-form-field>
+            </div>
+        
+
+        <div style=" width: 67%; margin-left:1%; ">
+            <button (click)="generarQRImprimir()"  class="botones">Imprimir</button>
+        </div>
+    </div>
+
+    <br>
+
+        <div style=" width: 100%; display: flex;  align-items: center; align-content: center; ">
+
+            
+            <div style=" width: 30%;"> <h1>Empaques Realizados: </h1></div>
+                
+            <div style=" width: 60%; ">
+                <label  for="EmpaquesR">Cantidad:</label><br>
+                <mat-form-field style=" width: 30%">
+                <input matInput (input)="change($event)" type="number" min="1"  step="1" value="1" formControlName="EmpaquesR">
+                </mat-form-field>
+            </div>
+    </div>
+
+    <div  class="qrcodeImage" *ngFor="let codigo of codigos">
+      <qrcode
+        [qrdata]="codigo"
+        [allowEmptyString]="true"
+        [ariaLabel]="'QR Code image with the following content...'"
+        [cssClass]="'center'"
+        [colorDark]="'#000000ff'"
+        [colorLight]="'#ffffffff'"
+        [elementType]="'canvas'"
+        [errorCorrectionLevel]="'M'"
+        [imageSrc]="'./assets/angular-logo.png'"
+        [imageHeight]="250"
+        [imageWidth]="250"
+        [margin]="4"
+        [scale]="1"
+        [title]="'A custom title attribute'"
+        [width]="300"
+      ></qrcode>
+    </div>
+
+    <div style="display: flex; justify-content: right;">
+        <button class="botones" style=" margin-right: 20px;">Cancelar</button>
+        <button  type="submit" class="botones" style=" margin-right: 20px;" (click)="crearEmpaques()" >Guardar</button>
+      </div>
+
+ 
+</form>
+
+ <br><br>
+</div>

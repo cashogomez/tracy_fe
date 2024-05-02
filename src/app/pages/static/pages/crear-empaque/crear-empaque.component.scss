@@ -1,0 +1,39 @@
+
+
+.botones {
+    width: 100px;
+    height: 40px;
+    text-align: center;
+    background-color: #0f8f95;
+    border: none;
+    color: white;
+    font-weight: 700;
+    border-radius: 15px;
+}
+
+
+.botones:hover {
+    text-align: center;
+    background-color: #38b6ff;
+    border: none;
+    color: white;
+    font-weight: 700;
+}
+h1{
+    color: #0f8f95;
+}
+
+/* Put this code in your CSS file */
+
+/* The div container */
+.qrcodeImage {
+    display: flex;
+    flex: 1;
+  }
+  
+  /* Add custom styles here */
+  .center {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+  }

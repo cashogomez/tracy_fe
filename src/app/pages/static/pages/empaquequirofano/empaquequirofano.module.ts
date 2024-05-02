@@ -17,6 +17,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterOutlet, RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
+import { CrearEmpaqueComponent } from '../crear-empaque/crear-empaque.component';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
     EmpaquequirofanoComponent
   ],
   imports: [
+    CrearEmpaqueComponent,
     CommonModule,
     EmpaquequirofanoRoutingModule,
     MatFormFieldModule,
