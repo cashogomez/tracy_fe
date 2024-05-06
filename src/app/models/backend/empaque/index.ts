@@ -1,4 +1,5 @@
 import { MaterialEmpaque } from "../admonempaques";
+import { SetEnviado } from "../set";
 
 export interface Empaque {
     id: number;

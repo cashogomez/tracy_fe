@@ -31,4 +31,13 @@ export class AdmonempaquesService {
     console.log(`${environment.url}ceye/materialempaque/`);
     return  this.http.get<MaterialEmpaque[]>(`${environment.url}ceye/materialempaque/`, httpOptions)
   }
+  traerUNempaque(pk:number): Observable<MaterialEmpaque> {
+    var token = this.getToken();
+    
+    var httpOptions = {
+      headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`})
+    };
+    console.log(`${environment.url}ceye/materialempaque/${pk}`);
+    return  this.http.get<MaterialEmpaque>(`${environment.url}ceye/materialempaque/${pk}`, httpOptions)
+  }
 }

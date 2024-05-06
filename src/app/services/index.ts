@@ -6,3 +6,4 @@ export * from './AreaTrabajo/areatrabajo.service';
 export * from './set/set.service';
 export * from './cantidadinstrumento/cantidadinstrumento.service';
 export * from './cantidadset/cantidadset.service';
+export * from './turno/turno.service';

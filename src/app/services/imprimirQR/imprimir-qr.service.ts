@@ -41,7 +41,7 @@ export class ImprimirQRService {
       });
     }
     
-    async createPDF(Nombre: string, Set: string, preparacion: string, caducidad: string, codigo: string){
+    async createPDF(Nombre: string, Set: string, preparacion: string, caducidad: string, codigo2: string){
    
       const pdfDefinition: any = {
       pageSize: {
@@ -72,7 +72,9 @@ export class ImprimirQRService {
         {text: 'Fecha de Caducidad:', style: 'titulo1'},
         {text: caducidad, style: 'titulo2'},
   
-        { qr: codigo, fit: '65' ,position:'fixed',   margin: [43, -60, 0, 0],},
+
+        { qr: codigo2, fit: '70', eccLevel: 'L', position:'fixed', mode: 'octet',  margin: [48, -60, 0, 0],},
+        {text: codigo2, style: 'titulo3'},
       ],
       
     images:{
@@ -111,6 +113,15 @@ export class ImprimirQRService {
           fontSize: 3.5,
           bold: false,
           margin: [120, 1, 0, 0],
+          alignment: "left",
+          color: 'black',
+          position:'fixed',
+        },
+
+        titulo3: {
+          fontSize: 3.0,
+          bold: false,
+          margin: [55, 2, 0, 0],
           alignment: "left",
           color: 'black',
           position:'fixed',

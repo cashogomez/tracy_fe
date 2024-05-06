@@ -130,4 +130,4 @@
 
 </div>
 
-<app-crear-empaque  [empaqueACrear]="empaqueACrear" *ngIf="crear==true" ></app-crear-empaque>
+<app-crear-empaque  [empaqueACrear]="empaqueACrear" (valorHijo)="itemEnviado($event)" *ngIf="crear==true" ></app-crear-empaque>

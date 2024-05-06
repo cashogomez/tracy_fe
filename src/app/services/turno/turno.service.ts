@@ -1,59 +1,60 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Empaque, EmpaqueRequest } from '@app/models/backend/empaque';
+import { Turno, TurnoRequest } from '@app/models/backend/turno';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
 })
-export class EmpaqueService {
+export class TurnoService {
   constructor(private http: HttpClient) { }
 
   getToken(): string | null{
     return localStorage.getItem('token');
   }
-  altaempaque(empaque: EmpaqueRequest, pk:number): Observable<any> {
+  altaturno(registrarTurno: TurnoRequest): Observable<any> {
     var token = this.getToken();
     
     var httpOptions = {
       headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`})
     };
-    console.log(`${environment.url}ceye/empaque/materialempaque/${pk}`);
-    return this.http.post<Empaque>(`${environment.url}ceye/empaque/materialempaque/${pk}`, empaque, httpOptions)
+    console.log(`${environment.url}ceye/turno/`);
+    return this.http.post<Turno>(`${environment.url}ceye/turno/`, registrarTurno, httpOptions)
   }
-  traerempaques(): Observable<Empaque[]> {
+  traerturnos(): Observable<Turno[]> {
     var token = this.getToken();
     
     var httpOptions = {
       headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`})
     };
-    console.log(`${environment.url}ceye/empaque/`);
-    return  this.http.get<Empaque[]>(`${environment.url}ceye/empaque/`, httpOptions)
+    console.log(`${environment.url}ceye/turno/`);
+    return  this.http.get<Turno[]>(`${environment.url}ceye/turno/`, httpOptions)
   }
-  traerUNempaque(pk:number): Observable<Empaque> {
+  traerUNturno(pk:number): Observable<Turno> {
     var token = this.getToken();
     
     var httpOptions = {
       headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`})
     };
-    console.log(`${environment.url}ceye/empaque/${pk}`);
-    return  this.http.get<Empaque>(`${environment.url}ceye/empaque/${pk}`, httpOptions)
+    console.log(`${environment.url}ceye/turno/${pk}`);
+    return  this.http.get<Turno>(`${environment.url}ceye/turno/${pk}`, httpOptions)
   }
-  borrarempaque(pk:number): Observable<any> {
+  borrarturno(pk:number): Observable<any> {
     var token = this.getToken();
     var httpOptions = {
       headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`})
     };
-    console.log(`${environment.url}ceye/empaque/${pk}`);
-    return  this.http.delete<Empaque>(`${environment.url}ceye/empaque/${pk}`, httpOptions)
+    console.log(`${environment.url}ceye/turno/${pk}`);
+    return  this.http.delete<Turno>(`${environment.url}ceye/turno/${pk}`, httpOptions)
   }
-  editarempaque(empaque: Empaque, pk:number): Observable<any> {
+  editarturno(editarTurno: Turno, pk:number): Observable<any> {
     var token = this.getToken();
     var httpOptions = {
       headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`})
     };
-    console.log(`${environment.url}ceye/empaque/${pk}`);
-    return  this.http.put<Empaque>(`${environment.url}ceye/empaque/${pk}`, empaque, httpOptions)
+    console.log(`${environment.url}ceye/turno/${pk}`);
+    return  this.http.put<Turno>(`${environment.url}ceye/turno/${pk}`, editarTurno, httpOptions)
   }
 }

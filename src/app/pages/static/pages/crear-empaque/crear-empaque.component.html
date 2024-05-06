@@ -3,9 +3,7 @@
         <div style="width: 80%;">
             <h1 >{{letreroSet}}</h1>
         </div>
-        <div style="width: 20%; text-align: right;">
-            <h1>{{fecha}}</h1>
-        </div>
+
         <div style="width: 20%;text-align: right;">
             <h1>Turno: {{turno}}</h1>
         </div>
@@ -85,7 +83,7 @@
         
 
         <div style=" width: 67%; margin-left:1%; ">
-            <button (click)="generarQRImprimir()"  class="botones">Imprimir</button>
+            <button (click)="generarQRImprimir()"  class="botones"  [disabled]="false" >Imprimir</button>
         </div>
     </div>
 
@@ -104,29 +102,10 @@
             </div>
     </div>
 
-    <div  class="qrcodeImage" *ngFor="let codigo of codigos">
-      <qrcode
-        [qrdata]="codigo"
-        [allowEmptyString]="true"
-        [ariaLabel]="'QR Code image with the following content...'"
-        [cssClass]="'center'"
-        [colorDark]="'#000000ff'"
-        [colorLight]="'#ffffffff'"
-        [elementType]="'canvas'"
-        [errorCorrectionLevel]="'M'"
-        [imageSrc]="'./assets/angular-logo.png'"
-        [imageHeight]="250"
-        [imageWidth]="250"
-        [margin]="4"
-        [scale]="1"
-        [title]="'A custom title attribute'"
-        [width]="300"
-      ></qrcode>
-    </div>
-
     <div style="display: flex; justify-content: right;">
         <button class="botones" style=" margin-right: 20px;">Cancelar</button>
-        <button  type="submit" class="botones" style=" margin-right: 20px;" (click)="crearEmpaques()" >Guardar</button>
+        <button  type="submit" class="botones" style=" margin-right: 20px;" (click)="crearEmpaques()" 
+        (click)="router.navigate(['static/empaquequirofano']);" [disabled]="!imprimir">Guardar</button>
       </div>
 
  

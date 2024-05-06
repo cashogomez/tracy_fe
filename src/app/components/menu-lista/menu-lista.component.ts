@@ -31,7 +31,6 @@ import * as fromUser from '@app/store/user';
     MatIconModule,
     MatButtonModule,
 
-    CommonModule,
     RouterOutlet,
     RouterLink, 
     RouterLinkActive,

@@ -22,7 +22,9 @@
 h1{
     color: #0f8f95;
 }
-
+.botones:disabled {
+    background-color: gray;
+ }
 /* Put this code in your CSS file */
 
 /* The div container */

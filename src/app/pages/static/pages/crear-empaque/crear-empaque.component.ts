@@ -1,6 +1,6 @@
 import { DataSource } from '@angular/cdk/collections';
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,10 +26,21 @@ import { Buffer } from "buffer";
 import { EmpaqueService } from '@app/services/empaque/empaque.service';
 import { EmpaqueRequest } from '@app/models/backend/empaque';
 import { ImprimirQRService } from '@app/services/imprimirQR/imprimir-qr.service';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '@app/store';
+import * as fromUser from '@app/store/user';
+import { UserResponse } from '@app/store/user';
+import { TurnoService } from '@app/services/turno/turno.service';
+import { DatePipe } from '@angular/common';
+import { RouterLink, RouterLinkActive, Router, RouterOutlet } from '@angular/router';
+
 
 @Component({
   selector: 'app-crear-empaque',
   standalone: true,
+  providers: [
+    DatePipe,
+  ],
   imports: [
     CommonModule,
     MatTableModule,
@@ -50,15 +61,25 @@ import { ImprimirQRService } from '@app/services/imprimirQR/imprimir-qr.service'
     MatRadioModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
-    QRCodeModule
+    QRCodeModule,
+    RouterOutlet,
+    RouterLink, 
+    RouterLinkActive,
   ],
   templateUrl: './crear-empaque.component.html',
   styleUrl: './crear-empaque.component.scss'
 })
 export class CrearEmpaqueComponent {
+
   
   @Input()  empaqueACrear!: string;
+  @Output() creacionEmpaque = new EventEmitter<string>();
+  estaCreado: string = ' ';
 
+postData (valorEnviado: string) {
+  this.creacionEmpaque.emit(valorEnviado);
+}
+  turno: number = 0;
   imprimir: boolean = false;
   options: User[] = [];
   instrumentoRecibido!: User;
@@ -70,17 +91,38 @@ export class CrearEmpaqueComponent {
   letreroSet: string = '';
   text: string = ''
   codigos: string[]=[];
+  usuario: UserResponse | null = null;
+  totalPiezas: number = 0;
+  horaActual: string  | null = '';
+  fechaActual: string | null ='';
   
   constructor(private instrumentosSet: CantidadInstrumentoService,
               private admonempaquesService: AdmonempaquesService,
               private setService: SetService,
               private empaqueService: EmpaqueService,
-              private imprimirQR: ImprimirQRService
+              private imprimirQR: ImprimirQRService,
+              private store: Store<fromRoot.State>,
+              private turnoService: TurnoService,
+              private datePipe: DatePipe,
+              public router: Router
   ) {
     
     this.dataSource = new MatTableDataSource(this.empaque);
+    this.fechaActual = this.datePipe.transform(new Date(), 'dd/MM/yyyy');
+    this.horaActual = this.datePipe.transform(new Date(), 'HH:mm:ss');  
+    this.turnoService.traerturnos().subscribe(turnosCreados => {
+      turnosCreados.forEach(turnocreado => {
+        let inicio = turnocreado.inicio;
+        let final = turnocreado.fin;
+        let numero = turnocreado.numero
+        if (this.horaActual! > inicio && this.horaActual!<final) {
+          this.turno = numero
+        }
+      })
+    })
   }
   ngOnInit() {
+    this.recargar()
     this.setService.traerUNset(Number(this.empaqueACrear)).subscribe(setElegido => {
       this.setActual= setElegido
       this.letreroSet = this.setActual.nombre
@@ -88,7 +130,7 @@ export class CrearEmpaqueComponent {
     // ********************* CARGA DE LOS DATOS *******************
     this.admonempaquesService.traeradmonempaques().subscribe(matEmpaque => {
       matEmpaque.forEach(material => this.options.push({name: material.id+' '+material.nombre+' '+material.marca}))
-      
+      console.log(matEmpaque)
     })
 
 
@@ -109,7 +151,7 @@ export class CrearEmpaqueComponent {
           Marca: elemento.instrumento.marca,
           Cantidad: elemento.cantidad
         }
-        console.log(empaquePA)
+        this.totalPiezas = this.totalPiezas+elemento.cantidad
         this.empaque.push(empaquePA);
       })
       this.dataSource.data = this.empaque
@@ -128,7 +170,41 @@ export class CrearEmpaqueComponent {
     else {
       this.imprimir = false;
     }
-    this.imprimirQR.createPDF('Casimiro Gomez', this.setActual.nombre, new Date().toLocaleString(), new Date().toLocaleString(), this.codigos[0])
+    let empaqueID = this.traerMaterialEmpaque(this.instrumentoRecibido.name)
+    let cantidadDias = 0
+    this.admonempaquesService.traerUNempaque(empaqueID).subscribe(empaqueseleccionado => {
+      console.log(empaqueseleccionado)
+      switch ( empaqueseleccionado.unidad ) {
+        case 'dia':
+            // statement 1
+            cantidadDias = empaqueseleccionado.tiempo_vida
+            break;
+        case 'mes':
+            // statement 2
+            cantidadDias = empaqueseleccionado.tiempo_vida*30
+            break;
+        case 'año':
+            // statement N
+            cantidadDias = empaqueseleccionado.tiempo_vida*365
+            break;
+        default: 
+            // 
+            cantidadDias = empaqueseleccionado.tiempo_vida
+            break;
+     }
+    
+     let numerodeQR = this.form.get('Cantidad')?.value;
+     this.generadorQR(numerodeQR!, this.setActual)
+     let nn=0
+     this.codigos.forEach((value) => {
+       let caducidadEmpaque: Date = new Date();
+       caducidadEmpaque.setDate(caducidadEmpaque.getDate() + cantidadDias);
+       this.imprimirQR.createPDF(this.usuario?.nombre!+' '+this.usuario?.paterno!+' '+this.usuario?.materno!, this.setActual.nombre + ' ('+this.totalPiezas.toString()+' piezas)', new Date().toLocaleString(), caducidadEmpaque.toLocaleString(), this.codigos[nn])
+       nn++
+     })
+    })
+
+    
   }
   instrumentoElegido(recibido: User) {
     this.instrumentoRecibido = recibido;
@@ -139,35 +215,34 @@ export class CrearEmpaqueComponent {
   traerMaterialEmpaque(seleccionado: string) {
     var splitted = seleccionado.split(" ", 4); 
     let numeroID = Number(splitted[0])
-    return splitted[0]
+    return numeroID
+  }
+  recargar(): void {
+    this.store.select(fromUser.getUserState).subscribe( rs => {
+        const indexOfM = Object.keys(rs).indexOf( 'user' );
+        const s:fromUser.UserState  = Object.values(rs)[indexOfM];
+        this.usuario = JSON.parse(JSON.stringify(s.entity));   
+    });
   }
   crearEmpaques() {
     let numerodeQR = this.form.get('Cantidad')?.value;
-    console.log(this.instrumentoRecibido)
-    this.traerMaterialEmpaque(this.instrumentoRecibido.name)
     this.admonempaquesService.traeradmonempaques().subscribe((materialempaque)=> {
-      console.log(materialempaque)
-      console.log(this.form.get('EmpaquesR')?.value)
-      console.log(this.form.get('Cantidad')?.value)
-      this.generadorQR(numerodeQR!, this.setActual)
       this.codigos.forEach((codigo)=> {
         let registrarEmpaqueRequest: EmpaqueRequest = {
           realizados: numerodeQR!,
           codigo_qr: codigo,
           created: new Date().toLocaleString(),
           update: new Date().toLocaleString(),
-          materialempaque: materialempaque[0]
+          materialempaque: materialempaque[0],
         }
         console.log(registrarEmpaqueRequest)
-        this.empaqueService.altaempaque(registrarEmpaqueRequest).subscribe((empaqueSubido)=> {
-          console.log(empaqueSubido)
+        this.empaqueService.altaempaque(registrarEmpaqueRequest, materialempaque[0].id).subscribe((empaqueSubido)=> {
+         console.log(empaqueSubido)
         })
       })
-
     })
-    
-    
-
+    this.estaCreado='true'
+    this.postData (this.estaCreado)
   }
   generadorQR(valor: number, setUsado: SetEnviado) {
     let familia = Buffer.from(
@@ -186,11 +261,9 @@ export class CrearEmpaqueComponent {
   }
   now = new Date();
   fecha = this.now.toLocaleDateString();
-  turno = 2;
-  
+
   
   displayedColumns: string[] = ['id', 'Nombre', 'Marca', 'Cantidad'];
- 
   
   form = new FormGroup({
     seleccion: new FormControl(''),
@@ -225,4 +298,8 @@ export interface Element {
 }
 export interface User {
   name: string;
+}
+export interface EmpaqueElegido {
+  estaCreado: boolean;
+
 }

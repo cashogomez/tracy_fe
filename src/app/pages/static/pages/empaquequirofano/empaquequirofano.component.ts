@@ -38,54 +38,11 @@ export class EmpaquequirofanoComponent {
     },
   ];
 
-  /** Constants used to fill up our data base. */
-  // ELEMENT_DATA = [
-  //   {Prioridad: 'baja', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'baja', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'media', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'baja', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'media', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'media', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'media', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  //   {Prioridad: 'alta', Nombre: 'Set de Angiocardio', Elaborar:1, Estatus: 'Pendiente'},
-  
-  // ];
 
   areaElegida!: AreaTrabajo;
   area_id!: number;
 
-// EliminarElementoTabla(key: number) {
-//   this.ELEMENT_DATA.forEach((value,index)=>{
-//       if(value.recepcion==key) this.ELEMENT_DATA.splice(index,1);
-//   });
-// } 
+
 
   constructor(private notification: NotificationService,
     private setsService: SetService,
@@ -95,7 +52,9 @@ export class EmpaquequirofanoComponent {
     @Inject(MAT_DATE_LOCALE) private _locale: string,) { // Assign the data to the data source for the table to render
       this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
   }
-
+  itemEnviado(valorRecibido: any) {
+    console.log(valorRecibido)
+  }
   ngOnInit() {
     this.updateCloseButtonLabel('Cerrar Calendario');
     this.areatrabajoService.listaAreasTrabajo().subscribe(data => {
