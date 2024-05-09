@@ -1,0 +1,234 @@
+<!--------------------------------------------------------------------------------------------------------------------------------------->
+<!--------------------------------------------------------- fila buscar ----------------------------------------------------------------->
+<!--------------------------------------------------------------------------------------------------------------------------------------->
+
+<div align="center" style="align-items: center; align-content: center; ">
+    <mat-label>Buscar:</mat-label>
+    <mat-form-field class="input1">
+      <input matInput type="text" >
+      
+        <button matSuffix mat-icon-button aria-label="Clear" >
+          <mat-icon>close</mat-icon>
+        </button>
+      
+    </mat-form-field>
+    
+    <button mat-icon-button style="height: 50px; width: 50px; margin: auto;"
+        matTooltip="Buscar"
+        matTooltipClass="example-tooltip-uppercase"
+        aria-label="Button that shows a red tooltip">
+      <mat-icon style="font-size: 30px;" matTooltip="Buscar">search</mat-icon>
+    </button>
+
+
+</div>
+
+<!--------------------------------------------------------------------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------------------------------- fila 2 ----------------------------------------------------------------->
+<!--------------------------------------------------------------------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------------------------------------------------------------------->
+<form [formGroup]="Esterilizador" (ngSubmit)="submitted()">
+    <div style="display: flex; align-items: center;">
+        <div style=" width: 80%; margin-left:10%; margin-right: 10%;">
+          <label>Nombre:</label> <br>
+            <mat-form-field style=" width: 100%">
+        
+              <input matInput type="text"  placeholder="ESTERILIZADOR 1" formControlName="Nombre">
+
+              <button matSuffix mat-icon-button aria-label="Clear" >
+                <mat-icon>close</mat-icon>
+              </button>
+                          
+            </mat-form-field>  </div>
+    </div>
+
+    <!--------------------------------------------------------------------------------------------------------------------------------------->
+    <!--------------------------------------------------------------------------------------------------------------------------------------->
+    <!-------------------------------------------------------------- fila 3 ----------------------------------------------------------------->
+    <!--------------------------------------------------------------------------------------------------------------------------------------->
+    <!--------------------------------------------------------------------------------------------------------------------------------------->
+
+    <div style="display: flex; align-items: center;">
+        <div style=" width: 80%; margin-left:10%; margin-right: 1%;">
+          <label>Marca:</label> <br>
+            <mat-form-field style=" width: 100%">
+        
+              <input matInput type="text"  formControlName="Marca">
+         
+              <button matSuffix mat-icon-button aria-label="Clear" >
+                <mat-icon>close</mat-icon>
+              </button>
+                          
+            </mat-form-field>  
+        </div>
+
+    <!--------------------------------------------------------------------------------------------------------------------------------------->
+    <!--------------------------------------------------------------------------------------------------------------------------------------->
+
+    <div style=" width: 100%; margin-left:1%; margin-right: 1%;">
+          <label>Modelo:</label> <br>
+            <mat-form-field style=" width: 100%">
+              
+                <input matInput type="text"  formControlName="Modelo">
+            
+                <button matSuffix mat-icon-button aria-label="Clear" >
+                    <mat-icon>close</mat-icon>
+                </button>
+                                
+            </mat-form-field>  
+        </div>
+
+    <!--------------------------------------------------------------------------------------------------------------------------------------->
+    <!--------------------------------------------------------------------------------------------------------------------------------------->
+
+        <div style=" width: 100%; margin-left:1%; margin-right: 10%;">
+          <label>Número de serie:</label> <br>
+            <mat-form-field style=" width: 100%">
+              
+                <input matInput type="text"  formControlName="NumSerie">
+           
+                <button matSuffix mat-icon-button aria-label="Clear" >
+                    <mat-icon>close</mat-icon>
+                </button>
+                                
+            </mat-form-field>  
+        </div>
+    </div>
+
+
+
+    <!--------------------------------------------------------------------------------------------------------------------------------------->
+    <!--------------------------------------------------------------------------------------------------------------------------------------->
+    <!-------------------------------------------------------------- fila 4 ----------------------------------------------------------------->
+    <!--------------------------------------------------------------------------------------------------------------------------------------->
+    <!--------------------------------------------------------------------------------------------------------------------------------------->
+
+    <div style="display: flex; align-items: center;">
+      <div style=" width: 80%; margin-left:10%; margin-right: 1%;">
+
+        <mat-form-field>
+            <mat-label>Ciclo esterilizador</mat-label>
+            <mat-select (selectionChange)="showPlayers($event)" name="ciclo" formControlName="Cicloest">
+              @for (opcion of opciones; track opcion) {
+                <mat-option [value]="opcion.nombre">{{opcion.nombre}}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+      </div>
+
+    <!--------------------------------------------------------------------------------------------------------------------------------------->
+    <!--------------------------------------------------------------------------------------------------------------------------------------->
+
+    <div style=" width: 100%; margin-left:1%; margin-right: 1%;">
+        <label>Tiempo del Ciclo:</label> <br>
+
+        
+          <mat-form-field style=" width: 100%">
+              <input matInput type="text"  formControlName="TiempCiclo">
+              <button matSuffix mat-icon-button aria-label="Clear" >
+                  <mat-icon>close</mat-icon>
+              </button>             
+          </mat-form-field>  
+      </div>
+
+      <div style=" width: 100%; margin-left:1%; margin-right: 1%;">
+        <label>Temperatura:</label> <br>
+
+        
+          <mat-form-field style=" width: 100%">
+            
+              <input matInput type="text"  formControlName="Temperatura">
+             
+              <button matSuffix mat-icon-button aria-label="Clear" >
+                  <mat-icon>close</mat-icon>
+              </button>
+                              
+          </mat-form-field>  
+      </div>
+    <!--------------------------------------------------------------------------------------------------------------------------------------->
+    <!--------------------------------------------------------------------------------------------------------------------------------------->
+
+      <div style=" width: 100%; margin-left:1%; margin-right: 10%; text-align: center;">
+        <button class="botones" style=" margin-right: 20px; margin:auto;"  (click)="agregarCicloE()" >Agregar al esterilizador</button>
+      </div>
+    </div>
+
+<!--------------------------------------------------------------------------------------------------------------------------------------->
+    <!--------------------------------------------------------------------------------------------------------------------------------------->
+    <!-------------------------------------------------------------- fila 5 ----------------------------------------------------------------->
+    <!--------------------------------------------------------------------------------------------------------------------------------------->
+    <!--------------------------------------------------------------------------------------------------------------------------------------->
+
+    <div style="display: flex; align-items: center;">
+      <div style=" width: 80%; margin-left:10%; margin-right: 1%;">
+        <label>Ciclo del esterilizador:</label> <br>
+ 
+          <mat-form-field style=" width: 100%">
+              <input matInput type="text"  formControlName="nombreCrear">
+              <button matSuffix mat-icon-button aria-label="Clear" >
+                  <mat-icon>close</mat-icon>
+              </button>
+                              
+          </mat-form-field>  
+      </div>
+
+    <!--------------------------------------------------------------------------------------------------------------------------------------->
+    <!--------------------------------------------------------------------------------------------------------------------------------------->
+
+    <div style=" width: 100%; margin-left:1%; margin-right: 1%;">
+        <label>Tiempo del Ciclo:</label> <br>
+
+        
+          <mat-form-field style=" width: 100%">
+            
+              <input matInput type="text"  formControlName="TiempoCicloCrear">
+        
+              <button matSuffix mat-icon-button aria-label="Clear" >
+                  <mat-icon>close</mat-icon>
+              </button>
+                              
+          </mat-form-field>  
+      </div>
+
+      <div style=" width: 100%; margin-left:1%; margin-right: 1%;">
+        <label>Temperatura:</label> <br>
+
+        
+          <mat-form-field style=" width: 100%">
+            
+              <input matInput type="text"  formControlName="TemperaturaCrear">
+             
+              <button matSuffix mat-icon-button aria-label="Clear" >
+                  <mat-icon>close</mat-icon>
+              </button>
+                              
+          </mat-form-field>  
+      </div>
+    <!--------------------------------------------------------------------------------------------------------------------------------------->
+    <!--------------------------------------------------------------------------------------------------------------------------------------->
+
+      <div style=" width: 100%; margin-left:1%; margin-right: 10%; text-align: center;">
+        <button class="botones" style=" margin-right: 20px; margin:auto;"  (click)="agregarCiclo()" >Agregar ciclo</button>
+      </div>
+    </div>
+
+
+    <div style="display: flex; align-items: center;">
+        <div style=" width: 80%; margin-left:10%; margin-right: 10%;">
+          <label>Tiempo de Activación Prueba Bowie and Dick:</label> <br>
+            <mat-form-field style=" width: 100%">
+                <mat-select disableRipple  formControlName="TiempoActBD">
+                    <mat-option value="8" >8 hrs</mat-option>
+                    <mat-option value="12" >12 hrs</mat-option>
+                    <mat-option value="24" >24 hrs</mat-option>
+                  </mat-select>
+            </mat-form-field>  </div>
+    </div>
+
+
+    <div style="display: flex; justify-content: right; padding-top: 20px; padding-right: 15%;">
+      <button class="botones" style=" margin-right: 20px;">Cancelar</button>
+      <button class="botones" style=" margin-right: 20px;">Guardar</button>
+    </div>
+</form>    

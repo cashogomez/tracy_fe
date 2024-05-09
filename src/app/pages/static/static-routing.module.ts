@@ -94,6 +94,10 @@ const routes: Routes = [
     path: 'admonempaques',
     loadChildren: () => import('./pages/admonempaques/admonempaques.module').then((m) => m.AdmonempaquesModule),
   },
+  {
+    path: 'crearequipos',
+    loadChildren: () => import('./pages/crear-equipos/crear-equipos.module').then((m) => m.CrearEquiposModule),
+  },
 ];
 
 

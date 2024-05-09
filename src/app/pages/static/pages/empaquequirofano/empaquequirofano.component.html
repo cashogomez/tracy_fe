@@ -101,16 +101,11 @@
         <mat-cell *matCellDef="let element"> {{element.Estatus}} </mat-cell>
       </ng-container>
 
-
-
-
   <!-- Symbol Column -->
   <ng-container matColumnDef="Accion">
       <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
       <mat-cell *matCellDef="let element">  <button class="botones" style=" margin-right: 20px;" matTooltip="Empaquetar material" (click)="inicioEmpaquetar(element)" >Empaquetar</button> </mat-cell>
     </ng-container>
-
-
 
       <!-- Symbol Column -->
       <ng-container matColumnDef="Impresion">
