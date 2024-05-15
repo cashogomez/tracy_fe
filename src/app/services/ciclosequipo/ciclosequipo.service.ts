@@ -19,7 +19,7 @@ export class CiclosequipoService {
     var httpOptions = {
       headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`})
     };
-    var direccion = `${environment.url}ceye/equipo/${registrarCiclosEquipo.equipo.id}/ciclo/${registrarCiclosEquipo.ciclo.id}/`
+    var direccion = `${environment.url}ceye/equipo/${registrarCiclosEquipo.equipo.id}/ciclo/${registrarCiclosEquipo.ciclo.id}`
     console.log(registrarCiclosEquipo);
     return this.http.post<any>(direccion, {'equipo':registrarCiclosEquipo.equipo, 'ciclo': registrarCiclosEquipo.ciclo }, httpOptions)
   }

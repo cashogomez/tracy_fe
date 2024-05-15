@@ -6,7 +6,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { AreaTrabajo } from '@app/models/backend/area';
-import { NotificationService } from '@app/services';
+import { Turno } from '@app/models/backend/turno';
+import { AreatrabajoService, NotificationService, TurnoService } from '@app/services';
 
 
 import 'moment/locale/es';
@@ -24,34 +25,8 @@ export class AlmacengeneralComponent {
   nombrejefa= "María Dolores Rodríguez Ramírez";
   editarRegistro !: Element;
   borrarRegistro !: Element;
-  area: AreaTrabajo[]=[
-  {
-    id: 1,
-    tipo: 'interna',
-    nombre: 'Quirófano'
-  },
-  {
-    id: 2,
-    tipo: 'interna',
-    nombre: 'Urgencia'
-  },
-  {
-    id: 3,
-    tipo: 'interna',
-    nombre: 'Ceye'
-  },
-];
-turno =[
-  {
-    id: 1,
-  },
-  {
-    id: 2,
-  },
-  {
-    id: 3,
-  },
-];
+  area: AreaTrabajo[]=[];
+  turno: Turno[] =[];
 
   /** Constants used to fill up our data base. */
   ELEMENT_DATA = [
@@ -112,13 +87,23 @@ turno =[
 // } 
 
   constructor(
+    private areadetrabajoService: AreatrabajoService,
+    private turnoService: TurnoService,
     private notification: NotificationService,
     private router: Router,
     private _adapter: DateAdapter<any>,
     private _intl: MatDatepickerIntl,
     @Inject(MAT_DATE_LOCALE) private _locale: string,) { // Assign the data to the data source for the table to render
       this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
-
+      this.areadetrabajoService.listaAreasTrabajo().subscribe((data => {
+        data.forEach((area_trabajo) => {
+          this.area.push( area_trabajo)
+        })
+      })
+    )
+    this.turnoService.traerturnos().subscribe((data) => {
+      
+    } )
   }
 
   ngOnInit() {

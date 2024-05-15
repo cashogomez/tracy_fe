@@ -33,6 +33,10 @@ import { UserResponse } from '@app/store/user';
 import { TurnoService } from '@app/services/turno/turno.service';
 import { DatePipe } from '@angular/common';
 import { RouterLink, RouterLinkActive, Router, RouterOutlet } from '@angular/router';
+import { MaterialEmpaque } from '@app/models/backend/admonempaques';
+import { EmpaquesetService } from '@app/services/empaqueset/empaqueset.service';
+import { EmpaqueSetRequest } from '@app/models/backend/empaqueset';
+import { NotificationService } from '@app/services/notification/notification.service';
 
 
 @Component({
@@ -95,6 +99,7 @@ postData (valorEnviado: string) {
   totalPiezas: number = 0;
   horaActual: string  | null = '';
   fechaActual: string | null ='';
+  empaqueElegido!: MaterialEmpaque;
   
   constructor(private instrumentosSet: CantidadInstrumentoService,
               private admonempaquesService: AdmonempaquesService,
@@ -104,7 +109,9 @@ postData (valorEnviado: string) {
               private store: Store<fromRoot.State>,
               private turnoService: TurnoService,
               private datePipe: DatePipe,
-              public router: Router
+              public router: Router,
+              private empaquesetService:  EmpaquesetService,
+              private notificacionServicio: NotificationService
   ) {
     
     this.dataSource = new MatTableDataSource(this.empaque);
@@ -174,16 +181,27 @@ postData (valorEnviado: string) {
     let cantidadDias = 0
     this.admonempaquesService.traerUNempaque(empaqueID).subscribe(empaqueseleccionado => {
       console.log(empaqueseleccionado)
+      this.empaqueElegido = empaqueseleccionado
       switch ( empaqueseleccionado.unidad ) {
         case 'dia':
+        case 'dias':
+        case 'Dia':
+        case 'Días':
+        case 'días':
             // statement 1
             cantidadDias = empaqueseleccionado.tiempo_vida
             break;
         case 'mes':
+        case 'meses':
+        case 'Mes':
+        case 'Meses':
             // statement 2
             cantidadDias = empaqueseleccionado.tiempo_vida*30
             break;
         case 'año':
+        case 'Año':
+        case 'años':
+        case 'Años':
             // statement N
             cantidadDias = empaqueseleccionado.tiempo_vida*365
             break;
@@ -225,37 +243,47 @@ postData (valorEnviado: string) {
     });
   }
   crearEmpaques() {
-    let numerodeQR = this.form.get('Cantidad')?.value;
-    this.admonempaquesService.traeradmonempaques().subscribe((materialempaque)=> {
+      let numerodeQR = this.form.get('Cantidad')?.value;
       this.codigos.forEach((codigo)=> {
         let registrarEmpaqueRequest: EmpaqueRequest = {
           realizados: numerodeQR!,
           codigo_qr: codigo,
           created: new Date().toLocaleString(),
           update: new Date().toLocaleString(),
-          materialempaque: materialempaque[0],
+          materialempaque: this.empaqueElegido,
         }
         console.log(registrarEmpaqueRequest)
-        this.empaqueService.altaempaque(registrarEmpaqueRequest, materialempaque[0].id).subscribe((empaqueSubido)=> {
-         console.log(empaqueSubido)
+        this.empaqueService.altaempaque(registrarEmpaqueRequest, this.empaqueElegido.id).subscribe((empaqueSubido)=> {
+          console.log(empaqueSubido)
+          let registrarEmpaqueSet: EmpaqueSetRequest = {
+            empaque: empaqueSubido,
+            set: this.setActual,
+            cantidad: 1
+          }
+          this.empaquesetService.altaempaqueset(registrarEmpaqueSet).subscribe((empaquesetRecibido) => {
+            this.notificacionServicio.success('El empaque fue creado exitosamente')
+          })
         })
       })
-    })
+      if (numerodeQR != null) {
+        this.setActual.numero = this.setActual.numero+numerodeQR;
+      }      
+      this.setService.editarset(this.setActual, this.setActual.id).subscribe((setActualizado) => {
+            console.log(setActualizado)  
+      })
     this.estaCreado='true'
     this.postData (this.estaCreado)
+
   }
   generadorQR(valor: number, setUsado: SetEnviado) {
     let familia = Buffer.from(
-      setUsado.id.toString() +
-      setUsado.nombre +
-      
-      setUsado.maximo.toString() +
-      setUsado.minimo.toString()).toString('base64')
+      setUsado.id.toString()).toString('base64')
+    let pos_familia = Buffer.from( this.horaActual! +' '+ this.fechaActual ).toString('base64')
       if (this.codigos.length > 0) {
         this.codigos = []
       }
     for (let i = 1; i < valor+1; i++) {
-      this.codigos.push(familia+','+i.toString())
+      this.codigos.push(familia+'.'+pos_familia+'.'+i.toString())
     }
     console.log(this.codigos)
   }

@@ -26,17 +26,8 @@ export class EmpaquequirofanoComponent {
   borrarRegistro !: Element;
   area: AreaTrabajo[]=[];
   ELEMENT_DATA: any[] = []
-  setmaterial =[
-    {
-      nombre: 'Pinzas',
-    },
-    {
-      nombre: 'Set Instrumental',
-    },
-    {
-      nombre: 'set 2',
-    },
-  ];
+  setmaterial : Opcion[] =[]
+  
 
 
   areaElegida!: AreaTrabajo;
@@ -51,6 +42,14 @@ export class EmpaquequirofanoComponent {
     private _intl: MatDatepickerIntl,
     @Inject(MAT_DATE_LOCALE) private _locale: string,) { // Assign the data to the data source for the table to render
       this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+      this.setsService.traersets().subscribe((setsCreados => {
+        setsCreados.forEach((setCreado) => {
+          let dato = {
+            nombre: setCreado.nombre,
+          }
+          this.setmaterial.push(dato);
+        })
+      }))
   }
   itemEnviado(valorRecibido: any) {
     console.log(valorRecibido)
@@ -66,7 +65,7 @@ export class EmpaquequirofanoComponent {
             Prioridad: this.calcularprioridad(dataSet.minimo,dataSet.maximo, dataSet.numero),
             Nombre: dataSet.nombre,
             Elaborar: (dataSet.maximo - dataSet.numero),
-            Estatus: 'pendiente'
+            Estatus: this.calcularStatus(dataSet.minimo,dataSet.maximo, dataSet.numero),
           }
           this.ELEMENT_DATA.push(almacen);
         })
@@ -75,7 +74,16 @@ export class EmpaquequirofanoComponent {
     })
 
   }
-
+  calcularStatus(minimo:number, maximo: number, actual:number) {
+    let salida: string = '';
+    if (actual < maximo) {
+      salida = 'pendiente'
+    }
+    else {
+      salida = 'completo'
+    }
+    return salida
+  }
   calcularprioridad(minimo: number, maximo: number, actual: number): string {
     let respuesta: string = ''
     let valor = 0
@@ -364,4 +372,8 @@ images:{
   //pdf.download('Reporte Empaque Material De Quirófano Y CEyE '+ dia + '/'+mes2+'/'+año + ' ('+ hora + '/'+ minutos + 'hr)');
 
   pdf.open()  
+}
+
+export interface Opcion {
+  nombre: string;
 }

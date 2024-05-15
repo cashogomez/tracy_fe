@@ -25,7 +25,7 @@
   <mat-form-field class="menu_desplegable">
     <mat-label>Área</mat-label>
     <mat-select (selectionChange)="changeArea($event.value)">
-      <mat-option *ngFor="let x of area; let i = index" [value]="area[i]">{{area[i].nombre}}</mat-option>
+      <mat-option *ngFor="let x of area; let i = index" [value]="area[i].tipo">{{area[i].tipo}}</mat-option>
     </mat-select>
   </mat-form-field> 
 

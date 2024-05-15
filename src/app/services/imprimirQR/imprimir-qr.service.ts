@@ -7,14 +7,7 @@ import pdfMake from 'pdfmake/build/pdfmake';
   providedIn: 'root'
 })
 export class ImprimirQRService {
-  Nombre='José Lino Santos García';
-  Set='Set de Laparotomia';
-  Fechacad='12/02/2023';
-  Fechaprep='02/02/2023';
-  
-  infQR='pinzas lavadas';
-  
-  
+
     getBase64ImageFromURL(url: string) {
       return new Promise((resolve, reject) => {
         var img = new Image();
@@ -121,7 +114,7 @@ export class ImprimirQRService {
         titulo3: {
           fontSize: 3.0,
           bold: false,
-          margin: [55, 2, 0, 0],
+          margin: [45, 2, 0, 0],
           alignment: "left",
           color: 'black',
           position:'fixed',

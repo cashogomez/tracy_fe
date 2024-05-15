@@ -20,7 +20,7 @@ export class CantidadInstrumentoService {
     var httpOptions = {
       headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`})
     };
-    var direccion = `${environment.url}ceye/set/${registrarCantidadInstrumento.set.id}/instrumento/${registrarCantidadInstrumento.instrumento.id}/`
+    var direccion = `${environment.url}ceye/set/${registrarCantidadInstrumento.set.id}/instrumento/${registrarCantidadInstrumento.instrumento.id}`
     console.log(registrarCantidadInstrumento);
     return this.http.post<any>(direccion, {'instrumento':registrarCantidadInstrumento.instrumento, 'set': registrarCantidadInstrumento.set, 'cantidad': registrarCantidadInstrumento.cantidad }, httpOptions)
   }

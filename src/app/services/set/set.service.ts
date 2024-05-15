@@ -37,8 +37,8 @@ export class SetService {
     var httpOptions = {
       headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`})
     };
-    console.log(`${environment.url}ceye/set/${pk}`);
-    return  this.http.get<SetEnviado>(`${environment.url}ceye/set/${pk}`, httpOptions)
+    console.log(`${environment.url}ceye/set/${pk}/`);
+    return  this.http.get<SetEnviado>(`${environment.url}ceye/set/${pk}/`, httpOptions)
   }
   borrarset(pk:number): Observable<any> {
     var token = this.getToken();
@@ -53,7 +53,7 @@ export class SetService {
     var httpOptions = {
       headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`})
     };
-    console.log(`${environment.url}ceye/set/${pk}`);
-    return  this.http.put<SetEnviado>(`${environment.url}ceye/set/${pk}`, editarSet, httpOptions)
+    console.log(`${environment.url}ceye/set/${pk}/`);
+    return  this.http.put<SetEnviado>(`${environment.url}ceye/set/${pk}/`, editarSet, httpOptions)
   }
 }
