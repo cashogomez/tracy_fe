@@ -1,8 +1,15 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Ciclo, CicloRequest } from '@app/models/backend/ciclo';
+import { CiclosEquipo, CiclosEquipoRequest } from '@app/models/backend/ciclosequipo';
+import { Equipo, EquipoRequest } from '@app/models/backend/equipo';
 import { Estatus } from '@app/models/backend/estatus';
 import { CicloService } from '@app/services/ciclo/ciclo.service';
+import { CiclosequipoService } from '@app/services/ciclosequipo/ciclosequipo.service';
+import { EquipoService } from '@app/services/equipo/equipo.service';
+import { NotificationService } from '@app/services/notification/notification.service';
+import { ActivatedRoute, Router} from '@angular/router';
+
 
 
 @Component({
@@ -13,8 +20,14 @@ import { CicloService } from '@app/services/ciclo/ciclo.service';
 })
 export class CrearEquiposComponent {
   opciones: Opcion[]=[];
+  ciclosEquipo: Ciclo[] = [];
 
-  constructor(private cicloServicio: CicloService) {
+  constructor(
+    private router: Router,
+    private notificationService: NotificationService,
+    private equipoService: EquipoService,
+    private cicloServicio: CicloService,
+    private ciclosequipoServicio: CiclosequipoService) {
     this.cicloServicio.traerciclos().subscribe(ciclos => {
       this.ciclosReales = ciclos;
       ciclos.forEach((cicloRe) => {
@@ -22,7 +35,6 @@ export class CrearEquiposComponent {
       })
     })
   }
-
   selectedValue: string = '';
   varCiclo: boolean = false;
   ciclosL: CicloRequest = {
@@ -30,6 +42,7 @@ export class CrearEquiposComponent {
     duracion: ' ',
     temperatura: 0,
   };
+  
   ciclosReales!: Ciclo[]; 
   Esterilizador = new FormGroup({
     Nombre: new FormControl(''),
@@ -46,38 +59,40 @@ export class CrearEquiposComponent {
   });
   
   capturarValores () {
-    let estatusL = {
-      nombre: 'pendiente'
-    }
+    let esterilizadorR: EquipoRequest;
     if (this.varCiclo==false) {
-      let ciclosL: CicloRequest = {
-        nombre: this.Esterilizador?.get('Cicloest')?.value!,
-        duracion: this.Esterilizador?.get('TiempCiclo')?.value!,
-        temperatura: Number(this.Esterilizador?.get('Temperatura')?.value!),
-      }
-      this.cicloServicio.altaciclo(ciclosL).subscribe(cicloR => {
-        this.varCiclo = true
-        let esterilizador = {
-          nombre: this.Esterilizador?.get('Nombre')?.value!,
-          marca: this.Esterilizador?.get('Marca')?.value!,
-          modelo: this.Esterilizador?.get('Modelo')?.value!,
-          numero_serie: this.Esterilizador?.get('NumSerie')?.value!,
-          ciclos: cicloR,
-          estatus: estatusL,
-        }
-      })
+      this.notificationService.error('Favor de establecer ciclos paa el equipo')
+      this.varCiclo=false
     }
     else {
-      let esterilizador = {
+      esterilizadorR = {
+        numero: 1,
         nombre: this.Esterilizador?.get('Nombre')?.value!,
         marca: this.Esterilizador?.get('Marca')?.value!,
         modelo: this.Esterilizador?.get('Modelo')?.value!,
         numero_serie: this.Esterilizador?.get('NumSerie')?.value!,
-        ciclos: this.ciclosL,
-        estatus: estatusL,
+        prueba: this.Esterilizador?.get('TiempoActBD')?.value!,
+        estatus:  'disponible',
       }
+      
+      this.equipoService.altaequipo(esterilizadorR).subscribe(equipoCreado => {
+        console.log(this.ciclosEquipo)
+        this.ciclosEquipo.forEach((ciclo) => {
+          console.log(ciclo)
+          let cicloequipo: CiclosEquipoRequest = {
+            ciclo: ciclo,
+            equipo: equipoCreado,
+          }
+          this.ciclosequipoServicio.altaciclosequipo(cicloequipo).subscribe( cicloequipocreado => {
+            console.log(cicloequipocreado)
+          })
+        })
+        
+      })
+      console.log(this.selectedValue);
+      this.yaVamonos()
     }
-    console.log(this.selectedValue);
+
   }
   showPlayers(evento: any) {
     console.log(evento.value)
@@ -114,26 +129,33 @@ export class CrearEquiposComponent {
 
   }
   agregarCicloE() {
-    let ciclosL : CicloRequest= {
-      nombre: this.Esterilizador?.get('Cicloest')?.value!,
+    let cadena = this.Esterilizador?.get('Cicloest')?.value!
+    var splitted = cadena.split(" ", 2); 
+    let valorId = Number(splitted[0])
+    let ciclosL : Ciclo= {
+      id: valorId,
+      nombre: splitted[1],
       duracion: this.Esterilizador?.get('TiempCiclo')?.value!,
       temperatura: Number(this.Esterilizador?.get('Temperatura')?.value!),
     }
-    this.cicloServicio.altaciclo(ciclosL).subscribe(ciclo => {
-      this.varCiclo = true
-    })
+    this.ciclosEquipo.push(ciclosL);
+    console.log(this.ciclosEquipo)
+    this.varCiclo=true
   }
+  yaVamonos () {
+    this.router.navigate(['/']);
+}
 }
 
-export interface esterilizador {
-  id: number;
-  nombre: string;
-  marca: string;
-  modelo: string;
-  numero_serie: string;
-  estatus: Estatus;
-  ciclos: Ciclo; 
-}
+// export interface esterilizador {
+//   id: number;
+//   nombre: string;
+//   marca: string;
+//   modelo: string;
+//   numero_serie: string;
+//   estatus: Estatus;
+//   ciclos: Ciclo; 
+// }
 export interface Opcion {
   nombre: string;
 }

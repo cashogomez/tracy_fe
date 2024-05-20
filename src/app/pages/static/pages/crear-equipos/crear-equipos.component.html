@@ -219,6 +219,7 @@
           <label>Tiempo de Activación Prueba Bowie and Dick:</label> <br>
             <mat-form-field style=" width: 100%">
                 <mat-select disableRipple  formControlName="TiempoActBD">
+                    <mat-option value="N/A" >N/A</mat-option>
                     <mat-option value="8" >8 hrs</mat-option>
                     <mat-option value="12" >12 hrs</mat-option>
                     <mat-option value="24" >24 hrs</mat-option>
@@ -229,6 +230,6 @@
 
     <div style="display: flex; justify-content: right; padding-top: 20px; padding-right: 15%;">
       <button class="botones" style=" margin-right: 20px;">Cancelar</button>
-      <button class="botones" style=" margin-right: 20px;">Guardar</button>
+      <button class="botones" style=" margin-right: 20px;" (click)="capturarValores()" >Guardar</button>
     </div>
 </form>    

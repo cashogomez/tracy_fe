@@ -27,6 +27,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { DetalleesterilizadorComponent } from '../detalleesterilizador/detalleesterilizador.component';
 
 
 @NgModule({
@@ -60,12 +62,13 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     MatRadioModule,
     FormsModule ,
     ReactiveFormsModule,
-
+    MatAutocompleteModule,
     RouterOutlet,
     RouterLink, 
     RouterLinkActive,
     RouterModule,
-
+    MatSelectModule,
+    DetalleesterilizadorComponent
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'es-ES'},

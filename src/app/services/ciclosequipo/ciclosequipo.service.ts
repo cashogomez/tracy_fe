@@ -21,7 +21,8 @@ export class CiclosequipoService {
     };
     var direccion = `${environment.url}ceye/equipo/${registrarCiclosEquipo.equipo.id}/ciclo/${registrarCiclosEquipo.ciclo.id}`
     console.log(registrarCiclosEquipo);
-    return this.http.post<any>(direccion, {'equipo':registrarCiclosEquipo.equipo, 'ciclo': registrarCiclosEquipo.ciclo }, httpOptions)
+    let ciclosequipo: CiclosEquipoRequest = {'equipo':registrarCiclosEquipo.equipo, 'ciclo': registrarCiclosEquipo.ciclo };
+    return this.http.post<any>(direccion,ciclosequipo , httpOptions)
   }
 
   traerciclosequipo(pk:number): Observable<CiclosEquipo[]> {
@@ -30,8 +31,8 @@ export class CiclosequipoService {
     var httpOptions = {
       headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`})
     };
-    console.log(`${environment.url}ceye/equipo/${pk}/ciclos/`);
-    return  this.http.get<CiclosEquipo[]>(`${environment.url}ceye/equipo/${pk}ciclos/`, httpOptions)
+    console.log(`${environment.url}ceye/equipo/${pk}/ciclosequipo/`);
+    return  this.http.get<CiclosEquipo[]>(`${environment.url}ceye/equipo/${pk}/ciclosequipo/`, httpOptions)
   }
   
   traerUNcicloequipo(pk:number): Observable<CiclosEquipo> {
