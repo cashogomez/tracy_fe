@@ -26,6 +26,7 @@ export class CodigoQRComponent {
   constructor() {}
 
   ngOnInit() {
+    
   }
 
   public scanSuccessHandler($event: any) {

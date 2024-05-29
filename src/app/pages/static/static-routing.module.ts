@@ -98,6 +98,14 @@ const routes: Routes = [
     path: 'crearequipos',
     loadChildren: () => import('./pages/crear-equipos/crear-equipos.module').then((m) => m.CrearEquiposModule),
   },
+  {
+    path: 'detalledistribucionquirofano',
+    loadComponent: () => import('./pages/detalledistribucionquirofano/detalledistribucionquirofano.component').then((m) => m.DetalledistribucionquirofanoComponent),
+  },
+  {
+    path: 'recibirrecepcionquirofano',
+    loadComponent: () => import('./pages/recibirrecepcionquirofano/recibirrecepcionquirofano.component').then((m) => m.RecibirrecepcionquirofanoComponent),
+  },
 ];
 
 

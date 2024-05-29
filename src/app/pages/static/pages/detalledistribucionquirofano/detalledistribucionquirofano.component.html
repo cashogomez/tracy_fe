@@ -1,0 +1,244 @@
+
+<form [formGroup]="Distribucion_1">
+    <div style="display: flex;">
+    
+        <div style="width: 60%; margin-left: 5%;">
+            <h1>Información de Programación de Cirugía</h1>
+        </div>
+    
+        <div style="width: 20%; text-align: center; ">
+            <h1>Ticket: {{Ticket}}</h1>
+        </div>
+    
+        <div style="width: 20%; text-align: right; margin-right: 5%;">
+            <h1>{{fecha}}</h1>
+        </div>
+    
+    </div><br>
+    
+    
+    <table class="alinear-input" align="center">
+        <!------------------------------------------------------------              fila 1                                ----------------------------------------------------------------->
+        <thead>
+        <tr>
+            <td>
+              <mat-label>Fecha de Cirugía: &nbsp;</mat-label>
+            </td>
+        
+            <td>
+              <mat-form-field class="input1">
+                <input matInput type="text" placeholder="22 de septiembre 2023" formControlName="FechaCirugia">
+                </mat-form-field>
+            </td>
+        
+            <td>
+              <mat-label>Cirugía Programada: &nbsp;</mat-label>
+            </td>
+        
+            <td>
+              <mat-form-field class="input2">
+                <input matInput type="text" placeholder="Hernioplastía Inguinal Laparoscópica" formControlName="CirugíaProgramada">
+              </mat-form-field>
+            </td>
+          </tr>
+        </thead>
+        
+        <!------------------------------------------------------------              fila 2                                ----------------------------------------------------------------->
+        <tbody>
+          <tr>
+            <td>
+              <mat-label>Sala: &nbsp;</mat-label>
+            </td>
+        
+            <td>
+              <mat-form-field class="input1">
+                <input matInput type="text" placeholder="Quirófano 2" formControlName="Sala">
+                </mat-form-field>
+            </td>
+        
+            <td>
+              <mat-label>Área de Registro: &nbsp;</mat-label>
+            </td>
+        
+            <td>
+              <mat-form-field class="input2">
+                <input matInput type="text" placeholder="Jefatura de Quirófano" formControlName="AreaRegistro">
+              </mat-form-field>
+            </td>
+          </tr>
+        
+        <!------------------------------------------------------------              fila 3                                ----------------------------------------------------------------->
+        
+          <tr>
+            <td>
+              <mat-label>Turno: &nbsp;</mat-label>
+            </td>
+        
+            <td>
+              <mat-form-field class="input1">
+                <input matInput type="text" placeholder="1" formControlName="Turno">
+                </mat-form-field>
+            </td>
+        
+            <td>
+              <mat-label>Enfermera (o): &nbsp;</mat-label>
+            </td>
+        
+            <td>
+              <mat-form-field class="input2">
+                <input matInput type="text" placeholder="Susana García" formControlName="Enfermera" >
+              </mat-form-field>
+            </td>
+          </tr>
+        </tbody>
+        <!------------------------------------------------------------              fila 4                                ----------------------------------------------------------------->
+        
+      
+        </table>
+        
+        
+        <table class="alinear-input" align="center"> 
+          <tbody>
+          <tr style="width: 100%;">
+            <td style="width: 12.5%;">
+              <mat-label>Notas Adicionales:</mat-label>
+            </td>
+            <td style="width: 87.5%;">
+              <mat-form-field class="textarea">
+                <textarea matInput placeholder="3 Pinzas H. extras para la cirugía " formControlName="NotasAdd"></textarea>
+              </mat-form-field>
+            </td>
+          </tr>
+        </tbody>
+          
+        </table>
+    
+    
+    
+    <div style="display: flex; align-items: center; ">
+      <div style="width: 50%;">
+        <h1 Style="margin-left: 5%;">
+            Equipamiento Cirugía
+        </h1>  
+      </div>
+      <div style="width: 50%;">
+        <mat-form-field  style=" width: 70% ; margin: 5% 0 0 20%;" >
+          <input matInput type="text" placeholder="Ingresa QR" formControlName="QR1"   [value]="Distribucion_1.value.QR1">
+          <mat-icon style="color:#0f8f95;" matIconSuffix>center_focus_weak</mat-icon>
+        </mat-form-field>
+          <button (click)='Subir2()' hidden="true">Add Row</button>
+    </div>
+    </div>
+    
+    
+    
+     <div style="width: 90%; margin-left: 5%; margin-right: 5%;">
+        <table #tabla1 mat-table [dataSource]="dataSource1"  >
+    
+          <ng-container matColumnDef="ID">
+            <th mat-header-cell *matHeaderCellDef> ID </th>
+            <td mat-cell *matCellDef="let element"> {{element.ID}} </td>
+          </ng-container>
+    
+            <ng-container matColumnDef="Elemento">
+              <th mat-header-cell *matHeaderCellDef  style="text-align: center; width: 20%;"> Elemento </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center; width: 20%;"> {{element.Elemento}} </td>
+            </ng-container>
+          
+    
+            <ng-container matColumnDef="Cantidad">
+              <th mat-header-cell *matHeaderCellDef  style="text-align: center; width: 20%;"> Cantidad </th>
+              <td mat-cell *matCellDef="let element"  style="text-align: center; width: 20%;"> {{element.Cantidad}} </td>
+            </ng-container>
+          
+    
+            <ng-container matColumnDef="Entregados">
+              <th mat-header-cell *matHeaderCellDef style="text-align: center; width: 20%;"> Entregados </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center; width: 20%;"> {{element.Entregados}} </td>
+            </ng-container>
+    
+      
+            
+            <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+          </table>
+          
+        </div> 
+         
+      </form>
+    
+    
+    <form [formGroup]="Distribucion_2">
+    
+    <br><br>
+    <div style="width: 90%; margin-left: 5%; margin-right: 5%;">
+        <mat-accordion>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                   <h1 style="font-size: 20px;">Añadir Elementos Extras</h1>
+                  </mat-panel-title>
+                  
+                </mat-expansion-panel-header>
+              <br><br>
+                
+              <div style=" width: 40%; margin-left:30%; margin-right:30%;">
+                <label >Ingresa QR:</label><br>
+                <mat-form-field  style=" width: 100%" >
+                        <input matInput type="text" placeholder="Ingresa QR" formControlName="QR"  [value]="Distribucion_2.value.QR">
+                        <mat-icon style="color:#0f8f95;" matIconSuffix>center_focus_weak</mat-icon>
+                  </mat-form-field>
+                <button (click)='Subir()' hidden="true">Add Row</button>
+               
+                </div>
+    
+    
+    <br>
+    <div style="width: 90%; margin-left: 5%; margin-right: 5%;">
+      <table #tabla2 mat-table [dataSource]="dataSource2" style="width: 100%;" >
+    
+         <ng-container matColumnDef="ID">
+              <th mat-header-cell *matHeaderCellDef> ID </th>
+              <td mat-cell *matCellDef="let element"> {{element.ID}} </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="Elemento">
+              <th mat-header-cell *matHeaderCellDef> Elemento </th>
+              <td mat-cell *matCellDef="let element"> {{element.Elemento}} </td>
+            </ng-container>
+          
+       
+            <ng-container matColumnDef="Entregados">
+              <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Entregados </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.Entregados}} </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="Accion">
+                <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Acción</th>
+                <td mat-cell *matCellDef="let element; let score; let i = index;" style="text-align: center;"> 
+                  <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="cancel" style="color: red; text-align: center; " (click)="removeAt(i)"></mat-icon> 
+             </td>
+              </ng-container>
+            
+            <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+          </table>
+          
+        </div>
+    <br><br><br>
+    
+    
+    
+              </mat-expansion-panel>
+         
+        </mat-accordion>
+    </div>
+    
+    </form>
+    
+    <br><br>
+    <div style="display: flex; justify-content: right;">
+        <button class="botones" style=" margin-right: 2%;">Cancelar</button>
+        <button class="botones" style=" margin-right: 5%;"  (click)="emergente1()"  [hidden]="estado">Guardar</button>
+        <button class="botones" style=" margin-right: 5%;"  (click)="emergente2()"  [hidden]="estado2">Guardar</button>
+      </div>
