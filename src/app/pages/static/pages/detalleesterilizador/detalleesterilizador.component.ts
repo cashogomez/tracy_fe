@@ -25,6 +25,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { Ciclo } from '@app/models/backend/ciclo';
 import { CommonModule, DatePipe } from '@angular/common';
 import { CuentaregresivaService } from '@app/services/cuentaregresiva/cuentaregresiva.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -76,7 +77,8 @@ export class DetalleesterilizadorComponent implements OnInit {
   constructor ( private dialogService: DialogService,
                 private ciclosequipoService: CiclosequipoService,
                 private cicloService: CicloService,
-                public datePipe: DatePipe
+                public datePipe: DatePipe,
+                private _snackBar: MatSnackBar
   ){
 
     
@@ -84,6 +86,15 @@ export class DetalleesterilizadorComponent implements OnInit {
 
 nombreequipo:string="";
 endTime:any;
+
+stop() {
+  this.remainingTime=0;
+  
+  localStorage.removeItem('est'+ this.EquipoADetallar )
+}
+
+
+tiempof=0;
 start() {
   let terminado = false
   this.endTime = localStorage.getItem('est'+ this.EquipoADetallar) ?? new Date().toString(); 
@@ -93,12 +104,15 @@ start() {
       next : time => {
         this.remainingTime = time;
         terminado = false
-        
+      console.log(this.remainingTime)
       },
       error: (err) => console.error(err),
       complete: () => {
         console.log('Observable completed')
         terminado = true
+        this.bloquear=false
+        this.remainingTime=0;
+        localStorage.removeItem('est'+ this.EquipoADetallar )
         
       }
     })
@@ -125,7 +139,13 @@ start() {
         this.remainingTime = time;
       },
       error: (err) => console.error(err),
-      complete: () => console.log('Observable completed')
+      complete: () => {
+        console.log('Observable completed')
+        console.log('Observable completed')
+        this.bloquear=false
+        this.remainingTime=0;
+        localStorage.removeItem('est'+ this.EquipoADetallar )
+      }
     })
   }
 
@@ -194,7 +214,7 @@ start() {
   dataSource = [...ELEMENT_DATA];
 
   numciclo=10;
-  valuer1=10;
+  valuer1=1;
   valuer=10;
   interval:any;
   bloquear: boolean = false;
@@ -255,11 +275,7 @@ start() {
 
 
 
-      stop() {
-        this.valuer1=0;
-
-        localStorage.removeItem('est'+ this.EquipoADetallar )
-      }
+      
     
       timer(minute: number) {
         // let minute = 1;
@@ -289,10 +305,6 @@ start() {
 
     hacerSubmit() {
       this.bloquear = true;
-      setTimeout( () => {
-        // despues de 2 segundos se volverá a habilitar
-        this.bloquear = false;
-      }, 10000);
   }
 
   //_____________________________________________________________________________________________________________________________________________________________________//
@@ -769,6 +781,22 @@ submit(){
     
         
       }
+
+
+
+      openSnackBar() {
+        this._snackBar.openFromComponent(PizzaPartyComponent, {
+          duration: 1000,
+          panelClass: ['aceptado']
+        });
+      }
+
+      openSnackBar2() {
+        this._snackBar.openFromComponent(PizzaPartyComponent2, {
+          duration: 1000,
+          panelClass: ['rechazado']
+        });
+      }
 }
 
 
@@ -815,7 +843,15 @@ function table(data: { [x: string]: { toString: () => any; }; }[] | { name: stri
       },layout: 'noBorders'
     
   };
+
+
+
+
+  
+  
 }
+
+
 function buildTableBody(data: { [x: string]: { toString: () => any; }; }[], columns: (string | number)[]) {
   var body: any[][] = [];
 
@@ -836,3 +872,27 @@ function addMinutes(date: Date, minutes: number) {
   date.setMinutes(date.getMinutes() + minutes);
   return date;
 }
+
+
+
+
+
+
+
+@Component({
+  selector: 'snack-bar-component-example-snack',
+  templateUrl: 'confirmar.html',
+  styleUrl: './detalleesterilizador.component.scss',
+  standalone: true,
+})
+export class PizzaPartyComponent {}
+
+
+
+@Component({
+  selector: 'snack-bar-component-example-snack2',
+  templateUrl: 'rechazar.html',
+  styleUrl: './detalleesterilizador.component.scss',
+  standalone: true,
+})
+export class PizzaPartyComponent2 {}

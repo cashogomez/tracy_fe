@@ -103,8 +103,32 @@ const routes: Routes = [
     loadComponent: () => import('./pages/detalledistribucionquirofano/detalledistribucionquirofano.component').then((m) => m.DetalledistribucionquirofanoComponent),
   },
   {
+    path: 'detalledistribucionotras',
+    loadComponent: () => import('./pages/detalledistribucionotras/detalledistribucionotras.component').then((m) => m.DetalledistribucionotrasComponent),
+  },
+  {
+    path: 'detalledistribucionentrega',
+    loadComponent: () => import('./pages/detalledistribucionentrega/detalledistribucionentrega.component').then((m) => m.DetalledistribucionentregaComponent),
+  },
+  {
     path: 'recibirrecepcionquirofano',
     loadComponent: () => import('./pages/recibirrecepcionquirofano/recibirrecepcionquirofano.component').then((m) => m.RecibirrecepcionquirofanoComponent),
+  },
+  {
+    path: 'recibirrecepcionotras',
+    loadComponent: () => import('./pages/recibirrecepcionotras/recibirrecepcionotras.component').then((m) => m.RecibirrecepcionotrasComponent),
+  },
+  {
+    path: 'recibirrecepcionotras2',
+    loadComponent: () => import('./pages/recibirrecepcionotras2/recibirrecepcionotras2.component').then((m) => m.Recibirrecepcionotras2Component),
+  },
+  {
+    path: 'recibirrecepcionprov',
+    loadComponent: () => import('./pages/recibirrecepcionprov/recibirrecepcionprov.component').then((m) => m.RecibirrecepcionprovComponent),
+  },
+  {
+    path: 'detallelavado',
+    loadComponent: () => import('./pages/detallelavado/detallelavado.component').then((m) => m.DetallelavadoComponent),
   },
 ];
 

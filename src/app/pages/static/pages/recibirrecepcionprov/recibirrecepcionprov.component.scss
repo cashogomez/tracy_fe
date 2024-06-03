@@ -6,21 +6,7 @@
     display: flex;
     
   }
-  .container {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-  }
-  .line {
-    flex: 1;
-  }
   
-  .text {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
 .example-section {
     display: flex;
     align-content: center;
@@ -51,7 +37,7 @@
 
 
   .textarea {
-    width: 99%;
+    width: 100%;
   }
 
 .listabicolor {
@@ -66,6 +52,7 @@
   }
 
 
+
   .botones {
     width: 100px;
     height: 40px;
@@ -78,6 +65,28 @@
 }
 
 
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.line {
+  flex: 1;
+}
+
+h1{
+  color: #0f8f95;
+}
+
+
+.text {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
 .botones:hover {
     text-align: center;
     background-color: #38b6ff;
@@ -86,7 +95,11 @@
     font-weight: 700;
 }
 
-h1{
-    color: #0f8f95;
-}
+ .icono{
+ width: 50px; height: 50px; font-size: 50px; 
+ }
 
+ .icono2{
+  color:orange;
+  width: 40px; height: 40px; font-size: 40px; 
+  }

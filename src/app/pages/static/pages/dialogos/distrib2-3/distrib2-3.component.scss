@@ -1,4 +1,41 @@
-.alinear {
+.botones {
+    width: 100px;
+    height: 40px;
+    text-align: center;
+    background-color: #0f8f95;
+    border: none;
+    color: white;
+    font-weight: 700;
+    border-radius: 15px;
+}
+
+
+.botones:hover {
+    text-align: center;
+    background-color: #38b6ff;
+    border: none;
+    color: white;
+    font-weight: 700;
+}
+
+.actionBtn {
+    font-size: 4em;
+    cursor: pointer;
+  }
+  
+  .snapshot {
+    text-align: center;
+    img {
+      max-width: 800px;
+      max-height: 800px;
+    }
+  }
+  
+  ul.links {
+    padding-bottom: 20px;
+  }
+  
+  .alinear {
     list-style-type: none;
     overflow: hidden;
     align-items: center; /* Para alinear items flexibles respecto al eje secundario */
@@ -6,21 +43,7 @@
     display: flex;
     
   }
-  .container {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-  }
-  .line {
-    flex: 1;
-  }
   
-  .text {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
 .example-section {
     display: flex;
     align-content: center;
@@ -89,4 +112,3 @@
 h1{
     color: #0f8f95;
 }
-

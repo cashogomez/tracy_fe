@@ -5,7 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { NotificationService } from '@app/services/notification/notification.service';
 import { IncidenciadialogoComponent } from '../incidenciadialogo/incidenciadialogo.component';
-
+import { DialogService } from '@app/services/dialog/dialog.service';
 @Component({
   selector: 'app-lavadomaquina',
   standalone: false,
@@ -44,13 +44,16 @@ numeroSelecciones = 0;
 
 
   MATERIAL_SEGUNDA: Material[] =[]
-  constructor(private notification: NotificationService, public dialog: MatDialog) {
+  constructor(private notification: NotificationService, public dialog: MatDialog, private dialogService: DialogService) {
     
     // Assign the data to the data source for the table to render
       this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
       this.dataSegundaTabla = new MatTableDataSource(this.MATERIAL_SEGUNDA);
 
   }
+  emergente1(){
+    this.dialogService.emergente1()
+   }
   
   abrirDialogo() {
     const dialogo1 = this.dialog.open(IncidenciadialogoComponent, {

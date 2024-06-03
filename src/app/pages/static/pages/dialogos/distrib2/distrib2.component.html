@@ -1,0 +1,21 @@
+<div style="text-align:center; width: 750px;">
+    <br><br>
+        <div style="align-items: center;">
+          <webcam [width]="300" [height]="200" [trigger]="triggerObservable" (imageCapture)="handleImage($event)"></webcam>
+          <br/><br>
+          <button class="botones" (click)="triggerSnapshot();">Captura</button>
+         
+        </div><br>
+        <mat-form-field  style=" width: 70% ;" >
+            <input matInput type="text" placeholder="Nombre" >
+          </mat-form-field>
+       
+      </div>
+      
+    
+      
+    
+    <mat-dialog-actions align="center">
+        <button class="botones"  mat-dialog-close >Cancelar</button>
+        <a href="static/distribucionquirofano" style="margin-left: 2%; "> <button class="botones"  [mat-dialog-close]="true"cdkFocusInitial> Aceptar</button></a>
+      </mat-dialog-actions>

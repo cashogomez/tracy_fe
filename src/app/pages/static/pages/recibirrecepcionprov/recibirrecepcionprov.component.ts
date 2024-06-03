@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatListModule} from '@angular/material/list';
@@ -13,9 +12,12 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatRadioModule} from '@angular/material/radio';
-import { FormsModule }   from '@angular/forms';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatIconModule} from '@angular/material/icon';
+import {FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { DialogService } from '@app/services/dialog/dialog.service';
+
 
 const Instrumental_quirugico_sencillo = [
   {Id: 3829	, Instrumental: 'Mango de Bisturi', Cantidad: 2, Marca_Comercial: 'N/A', Prelavado:'', Completo:'', Funcional:'', Cantidad_Recibida:''},
@@ -25,23 +27,14 @@ const Instrumental_quirugico_sencillo = [
 ];
 
 
-const Instrumental_quirugico = [
-  {Id:' 0001'	, Instrumental: 'Pinza Halsted', Cantidad: 1, Marca_Comercial: 'N/A', Prelavado:'', Completo:'', Funcional:'', Cantidad_Recibida:''},
-  {Id: '0002', Instrumental: 'Tijeras rectas', Cantidad: 2, Marca_Comercial: 'LISTER', Prelavado:'', Completo:'', Funcional:'', Cantidad_Recibida:''},
-  {Id: '0003', Instrumental: 'Pinzas Kelly', Cantidad: 4, Marca_Comercial: 'GUTTEK', Prelavado:'', Completo:'', Funcional:'', Cantidad_Recibida:''},
-  {Id: '0004', Instrumental: 'Succión', Cantidad:8, Marca_Comercial: 'LISTER', Prelavado:'', Completo:'', Funcional:'', Cantidad_Recibida:''},
- 
-];
-
 @Component({
-  selector: 'app-recibirrecepcionquirofano',
+  selector: 'app-recibirrecepcionprov',
   standalone: true,
-  imports: [ MatIconModule,
+  imports: [
     MatToolbarModule,
     MatSidenavModule,
     MatMenuModule,
     MatListModule,
-    MatIconModule,
     MatExpansionModule,
     MatTabsModule,
     MatTableModule,
@@ -50,32 +43,36 @@ const Instrumental_quirugico = [
     MatButtonModule,
     MatCheckboxModule,
     MatRadioModule,
-    FormsModule,
     MatDialogModule,
-    CommonModule],
-  templateUrl: './recibirrecepcionquirofano.component.html',
-  styleUrl: './recibirrecepcionquirofano.component.scss'
+    MatFormFieldModule, 
+    MatSelectModule, 
+    MatIconModule,
+    FormsModule, 
+    ReactiveFormsModule,
+    CommonModule
+  ],
+  templateUrl: './recibirrecepcionprov.component.html',
+  styleUrl: './recibirrecepcionprov.component.scss'
 })
-export class RecibirrecepcionquirofanoComponent {
+export class RecibirrecepcionprovComponent {
+
   constructor ( private dialogService: DialogService){}
 
   emergente1(){
     this.dialogService.emergente1()
   }
 
-ticket =100;
+ticket =36485;
 fecha='17/05/2023';
-turno=2;
+turno='Matutino';
 hora='13:11';
 
 
 
-displayedColumns1: string[] = ['Id', 'Instrumental', 'Cantidad', 'Marca_Comercial', 'Prelavado', 'Completo', 'Funcional', 'Cantidad_Recibida','insidencia'];
+displayedColumns1: string[] = ['Id', 'Instrumental', 'Cantidad', 'Marca_Comercial', 'Prelavado',  'Funcional', 'insidencia'];
 dataSource1 = Instrumental_quirugico_sencillo;
 
 
-displayedColumns2: string[] = ['Id', 'Instrumental', 'Cantidad', 'Marca_Comercial', 'Prelavado', 'Completo', 'Funcional', 'Cantidad_Recibida','insidencia'];
-dataSource2 = Instrumental_quirugico;
 
 disabledInput1: boolean = true;
 
@@ -84,5 +81,7 @@ btnActivate(ionicButton:any) {
     ionicButton.color =  'warn';
   else
     ionicButton.color = 'accent';
+
+
 }
 }

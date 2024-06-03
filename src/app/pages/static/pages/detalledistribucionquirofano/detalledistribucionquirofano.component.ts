@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-//import { DialogService } from '../Service/dialog.service';
+import { DialogService } from '@app/services/dialog/dialog.service';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
@@ -83,11 +83,11 @@ const date = new Date();const año = date.getFullYear();const mes = date.toLocal
 })
 export class DetalledistribucionquirofanoComponent {
   Tabla1:  TablaAñadir2[] = [
-    {ID:'001', Elemento: 'SET lamparoscopia', Cantidad:1, Entregados:0},
-    {ID:'002', Elemento: 'SET lamparoscopia', Cantidad:1, Entregados:0},
-    {ID:'003', Elemento: 'SET lamparoscopia', Cantidad:1, Entregados:0},
-    {ID:'004', Elemento: 'SET lamparoscopia', Cantidad:1, Entregados:0},
-    {ID:'005', Elemento: 'SET lamparoscopia', Cantidad:1, Entregados:0},
+    {ID:'001', Elemento: 'SET lamparoscopia', Cantidad:2, Entregados:0},
+    {ID:'002', Elemento: 'SET lamparoscopia', Cantidad:2, Entregados:0},
+    {ID:'003', Elemento: 'SET lamparoscopia', Cantidad:2, Entregados:0},
+    {ID:'004', Elemento: 'SET lamparoscopia', Cantidad:2, Entregados:0},
+    {ID:'005', Elemento: 'SET lamparoscopia', Cantidad:2, Entregados:0},
     
   ];
 
@@ -119,14 +119,16 @@ fecha = dia + '/' + mes + '/' + año
 
   
 
-  //constructor ( private dialogService: DialogService){}
+  constructor ( private dialogService: DialogService){}
 
   emergente1(){
-   // this.dialogService.emergente1()
+    this.dialogService.ditribucion1emergente()
   }
   emergente2(){
-  //  this.dialogService.emergente2()
+  this.dialogService.ditribucion2emergente()
   }
+
+
 
 
   submitted() {

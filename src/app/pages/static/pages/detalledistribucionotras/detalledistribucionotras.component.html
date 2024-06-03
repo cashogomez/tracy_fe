@@ -1,0 +1,183 @@
+
+<h2 align="center">Distribución Otras Áreas Hospitalarias</h2>
+
+<div class="container">
+  <div class="line"><mat-divider></mat-divider></div>
+  <div class="text mat-typography">Distribución</div>
+  <div class="line"><mat-divider></mat-divider></div>
+</div><br>
+
+
+
+
+<form [formGroup]="Distribucion_Otras_1">
+    <div class="alinear" style="margin-left: 5%; margin-right:5% ;">
+    
+        <h1>
+          Información de Solicitud
+        </h1>  
+      
+        <section class="example-section">
+          <label class="example-margin">Prioridad de la Solicitud:</label>
+          <mat-radio-group  formControlName="Prioridad">
+            <mat-radio-button class="example-margin" value="Alta">Alta</mat-radio-button>
+            <mat-radio-button class="example-margin" value="Media">Media</mat-radio-button>
+            <mat-radio-button class="example-margin" value="Baja">Baja</mat-radio-button>
+          </mat-radio-group>
+        </section>
+      </div><br>
+    
+    
+    
+    
+    <table class="alinear-input" align="center">
+        <!------------------------------------------------------------              fila 1                                ----------------------------------------------------------------->
+        <tbody> 
+        <tr>
+            <td>
+              <mat-label>Área:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</mat-label>
+            </td>
+        
+            <td>
+              <mat-form-field class="input1">
+                <mat-select formControlName="Area">
+                    <mat-option value="Set Laparoscopia">Set de Laparoscopia</mat-option>
+                    <mat-option value="Pinza Forester">Pinza Forester</mat-option>
+                    <mat-option value="Bisturi Quirurgico">Bisturí Quirúrgico</mat-option>
+                  </mat-select>
+                </mat-form-field>
+            </td>
+        
+            <td>
+              <mat-label>Fecha de Préstamo: &nbsp;</mat-label>
+            </td>
+        
+            <td>
+              <mat-form-field class="input2">
+                <input matInput type="text" placeholder="22 de septiembre 2023"formControlName="FechaPrestamo" >
+              </mat-form-field>
+            </td>
+          </tr>
+        
+        <!------------------------------------------------------------              fila 2                                ----------------------------------------------------------------->
+        
+          <tr>
+            <td>
+              <mat-label>Recepción: &nbsp;</mat-label>
+            </td>
+        
+            <td>
+              <mat-form-field class="input1">
+                <input matInput type="text" placeholder="Casimiro Gómez" formControlName="Recepcion">
+                </mat-form-field>
+            </td>
+        
+            <td>
+              <mat-label>Entrega: &nbsp;</mat-label>
+            </td>
+        
+            <td>
+              <mat-form-field class="input2">
+                <input matInput type="text" placeholder="José Lino" formControlName="Entrega">
+              </mat-form-field>
+            </td>
+          </tr>
+        </tbody>
+        </table>
+    
+            <table class="alinear-input" align="center"> 
+                <tbody>
+          <tr style="width: 100%;">
+            <td style="width: 12.5%;">
+              <mat-label>Notas Adicionales:</mat-label>
+            </td>
+            <td style="width: 87.5%;">
+              <mat-form-field class="textarea">
+                <textarea matInput placeholder="3 Pinzas H. extras para la cirugía " formControlName="NotasAdd"></textarea>
+              </mat-form-field>
+            </td>
+          </tr>
+        </tbody>
+        </table>
+    
+    </form>
+    
+    
+        
+        <h1 Style="margin-left: 5%;">
+            Ingresa la Información del Equipamiento
+        </h1>  <br>
+          
+        <p align="center">
+            Requisición de Instrumental e Insumos
+          </p><br>
+    
+    
+    
+    
+    
+    <form [formGroup]="Distribucion_Otras_2">
+    
+    
+    
+      <div style=" width: 40%; margin-left:30%; margin-right:30%;">
+        <label >Ingresa QR:</label><br>
+        <mat-form-field  style=" width: 100%" >
+                <input matInput type="text" placeholder="Ingresa QR" formControlName="QR"  [value]="Distribucion_Otras_2.value.QR">
+                <mat-icon style="color:#0f8f95;" matIconSuffix>center_focus_weak</mat-icon>
+          </mat-form-field>
+        <button (click)='Subir()' hidden="true">Add Row</button>
+       
+        </div>
+    
+    
+            <br>
+    
+    
+    </form>
+    
+    
+        <h1 Style="margin-left: 5%;">
+            Equipamiento
+        </h1>  
+    
+    
+        <br>
+    <div style="width: 90%; margin-left: 5%; margin-right: 5%;">
+      <table #tabla2 mat-table [dataSource]="dataSource" style="width: 100%;" >
+    
+        <ng-container matColumnDef="ID">
+             <th mat-header-cell *matHeaderCellDef> ID </th>
+             <td mat-cell *matCellDef="let element"> {{element.ID}} </td>
+           </ng-container>
+    
+           <ng-container matColumnDef="Elemento">
+             <th mat-header-cell *matHeaderCellDef> Elemento </th>
+             <td mat-cell *matCellDef="let element"> {{element.Elemento}} </td>
+           </ng-container>
+         
+      
+           <ng-container matColumnDef="Entregados">
+             <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Entregados </th>
+             <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.Entregados}} </td>
+           </ng-container>
+    
+           <ng-container matColumnDef="Accion">
+               <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Acción</th>
+               <td mat-cell *matCellDef="let element; let score; let i = index;" style="text-align: center;"> 
+                 <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="cancel" style="color: red; text-align: center; " (click)="removeAt(i)"></mat-icon> 
+            </td>
+             </ng-container>
+           
+           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+         </table>
+        </div>
+    
+    
+        
+    <br><br>
+    <div style="display: flex; justify-content: right;">
+        <button class="botones" style=" margin-right: 2%;">Cancelar</button>
+        <button class="botones" style=" margin-right: 5%;" (click)="emergente3()">Confirmar</button>
+      </div>

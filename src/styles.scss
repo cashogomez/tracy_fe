@@ -5,3 +5,12 @@
 //@import "styles/prueba.scss";
 @import "styles/main.scss";
 
+.aceptado{
+    --mdc-snackbar-container-color:green;
+    justify-content: center;
+}
+
+.rechazado{
+    --mdc-snackbar-container-color:red;
+    justify-content: center;
+}

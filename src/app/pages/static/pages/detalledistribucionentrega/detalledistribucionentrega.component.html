@@ -1,0 +1,147 @@
+<h2 align="center">Distribución</h2>
+
+<div class="container">
+  <div class="line"><mat-divider></mat-divider></div>
+  <div class="text mat-typography">Entrega</div>
+  <div class="line"><mat-divider></mat-divider></div>
+</div><br>
+
+
+
+
+
+<form [formGroup]="Distribucion_Entrega">
+
+    <div style="display: flex;">
+    
+        <div style="width: 65%; margin-left: 5%;">
+            <h1>Información de Solicitud</h1>
+        </div>
+    
+        <div style="width: 20%; text-align: right; ">
+            <h1>Ticket: {{Ticket}}</h1>
+        </div>
+    
+        <div style="width: 20%; text-align: right; margin-right: 5%;">
+           <h1>{{fecha}}</h1>
+        </div>
+    
+    </div>
+    
+    
+    <table class="alinear-input" align="center">
+        <!------------------------------------------------------------              fila 1                                ----------------------------------------------------------------->
+      <tbody>
+        <tr>
+            <td>
+              <mat-label>Fecha de Solicitud: &nbsp;</mat-label>
+            </td>
+        
+            <td>
+              <mat-form-field class="input1">
+                <input matInput type="text" placeholder="22 de septiembre 2023" formControlName="FechaSolicitud">
+                </mat-form-field>
+            </td>
+        
+            <td>
+              <mat-label>Solicitante: &nbsp;</mat-label>
+            </td>
+        
+            <td>
+              <mat-form-field class="input2">
+                <input matInput type="text" placeholder="Urgencias" formControlName="Solicitante">
+              </mat-form-field>
+            </td>
+          </tr>
+        
+        <!------------------------------------------------------------              fila 2                                ----------------------------------------------------------------->
+        
+          <tr>
+            <td>
+              <mat-label>No. QR: &nbsp;</mat-label>
+            </td>
+        
+            <td>
+              <mat-form-field class="input1">
+                <input matInput type="text" placeholder="6575" formControlName="NumeroQR">
+                </mat-form-field>
+            </td>
+        
+            <td>
+              <mat-label>Ubicación: &nbsp;</mat-label>
+            </td>
+        
+            <td>
+              <mat-form-field class="input2">
+                <input matInput type="text" placeholder="Estante A-2" formControlName="Ubicacion">
+              </mat-form-field>
+            </td>
+          </tr>
+        
+        </tbody>
+        </table>
+    </form>
+    
+    
+    
+    <form [formGroup]="Distribucion_Entrega2">
+    <div style="display: flex; align-items: center; ">
+      <div style="width: 50%;">
+        <h1 Style="margin-left: 5%;">
+            Equipamiento
+        </h1>  
+      </div>
+      <div style="width: 50%;">
+        <mat-form-field  style=" width: 70% ; margin: 5% 0 0 20%;" >
+          <input matInput type="text" placeholder="Ingresa QR" formControlName="QR1"   [value]="Distribucion_Entrega2.value.QR1">
+          <mat-icon style="color:#0f8f95;" matIconSuffix>center_focus_weak</mat-icon>
+        </mat-form-field>
+          <button (click)='Subir2()' hidden="true">Add Row</button>
+    </div>
+    </div>
+    
+    
+    
+     <div style="width: 90%; margin-left: 5%; margin-right: 5%;">
+        <table #tabla1 mat-table [dataSource]="dataSource"  >
+    
+          <ng-container matColumnDef="ID">
+            <th mat-header-cell *matHeaderCellDef> ID </th>
+            <td mat-cell *matCellDef="let element"> {{element.ID}} </td>
+          </ng-container>
+    
+            <ng-container matColumnDef="Elemento">
+              <th mat-header-cell *matHeaderCellDef  style="text-align: center; width: 20%;"> Elemento </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center; width: 20%;"> {{element.Elemento}} </td>
+            </ng-container>
+          
+    
+            <ng-container matColumnDef="Cantidad">
+              <th mat-header-cell *matHeaderCellDef  style="text-align: center; width: 20%;"> Cantidad </th>
+              <td mat-cell *matCellDef="let element"  style="text-align: center; width: 20%;"> {{element.Cantidad}} </td>
+            </ng-container>
+          
+    
+            <ng-container matColumnDef="Entregados">
+              <th mat-header-cell *matHeaderCellDef style="text-align: center; width: 20%;"> Entregados </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center; width: 20%;"> {{element.Entregados}} </td>
+            </ng-container>
+    
+      
+            
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+          
+        </div> 
+         
+      </form>
+    
+    
+    
+    
+        <br><br>
+    <div style="display: flex; justify-content: right;" >
+        <button class="botones" style=" margin-right: 2%;">Cancelar</button>
+        <button class="botones" style=" margin-right: 5%;" (click)="emergente3()" [disabled]="estado" >Confirmar</button>
+      </div>

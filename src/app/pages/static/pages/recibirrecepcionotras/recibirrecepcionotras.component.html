@@ -1,6 +1,4 @@
-
-<!------------------------------ INICIO DE ENCABEZADO -------------------------------->
-<h2 align="center">Recepción Material de Quirófano</h2>
+<h2 align="center">Recepción Otras Áreas Hospitalarias</h2>
 
 <div class="container">
   <div class="line"><mat-divider></mat-divider></div>
@@ -9,15 +7,9 @@
 </div><br>
 
 
-
-
-
-<div style="display: flex; width: 90%; margin-left: 5%; margin-right: 5%;">
-</div>
-
 <div style="display: flex; width: 90%; margin-left: 5%; margin-right: 5%;">
     <div style="width: 50%; text-align: left;">
-        <h1>Registro</h1>
+      <h1>Registro</h1>
     </div>
     <div style="width: 50%; text-align: right;">
         <h1>Ticket: {{ticket}}</h1>
@@ -29,83 +21,33 @@
 
 <table class="alinear-input" align="center">
     <!------------------------------------------------------------              fila 1                                ----------------------------------------------------------------->
-    <thead>  
-    <tr>
+      <tbody><tr>
         <td>
-          <mat-label>Fecha de Cirugía: &nbsp;</mat-label>
+          <mat-label>Área: &nbsp;</mat-label>
         </td>
     
         <td>
           <mat-form-field class="input1">
-            <input matInput type="text" placeholder="22 de septiembre 2023" >
-            </mat-form-field>
+            <input matInput type="text" >
+          </mat-form-field>
         </td>
     
         <td>
-          <mat-label>Hora: &nbsp;</mat-label>
+          <mat-label>Fecha de Préstamo: &nbsp;</mat-label>
         </td>
     
         <td>
           <mat-form-field class="input2">
-            <input matInput type="text" placeholder="13:11" >
+            <input matInput type="text" placeholder="22 de septiembre 2023" >
           </mat-form-field>
         </td>
       </tr>
-    </thead>
     
     <!------------------------------------------------------------              fila 2                                ----------------------------------------------------------------->
-    <tbody>
-      <tr>
-        <td>
-          <mat-label>Dx Pre Operatorio: &nbsp;</mat-label>
-        </td>
-    
-        <td>
-          <mat-form-field class="input1">
-            <input matInput type="text" placeholder="" >
-            </mat-form-field>
-        </td>
-    
-        <td>
-          <mat-label>No.Qx: &nbsp;</mat-label>
-        </td>
-    
-        <td>
-          <mat-form-field class="input2">
-            <input matInput type="text" placeholder="2" >
-          </mat-form-field>
-        </td>
-      </tr>
-    
-    <!------------------------------------------------------------              fila 3                                ----------------------------------------------------------------->
     
       <tr>
         <td>
-          <mat-label>Entrega: &nbsp;</mat-label>
-        </td>
-    
-        <td>
-          <mat-form-field class="input1">
-            <input matInput type="text" placeholder="Casimiro Gomez" >
-            </mat-form-field>
-        </td>
-    
-        <td>
-          <mat-label>ID: &nbsp;</mat-label>
-        </td>
-    
-        <td>
-          <mat-form-field class="input2">
-            <input matInput type="text" placeholder="123452" >
-          </mat-form-field>
-        </td>
-      </tr>
-    
-    <!------------------------------------------------------------              fila 4                                ----------------------------------------------------------------->
-    
-      <tr>
-        <td>
-          <mat-label>Recepción: &nbsp;</mat-label>
+          <mat-label>Recepción: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</mat-label>
         </td>
     
         <td>
@@ -115,44 +57,42 @@
         </td>
     
         <td>
-          <mat-label>ID: &nbsp;</mat-label>
+          <mat-label>Entrega: &nbsp;</mat-label>
         </td>
     
         <td>
           <mat-form-field class="input2">
-            <input matInput type="text" placeholder="783516" >
+            <input matInput type="text" placeholder="Casimiro Gomez" >
           </mat-form-field>
         </td>
       </tr>
-    
-    <!------------------------------------------------------------              fila 5                                ----------------------------------------------------------------->
-    <tr>
-      <td>
-        <mat-label>Devolución: &nbsp;</mat-label>
-      </td>
-    
-      <td>
-        <mat-form-field class="input1">
-          <input matInput type="text" placeholder="Yaz Huerta" >
+    </tbody>
+  </table><br>
+
+  <table class="alinear-input" align="center"> 
+  <tbody>
+        <tr style="width: 100%;">
+        <td style="width: 14%;">
+          <mat-label>Devolución:</mat-label>
+        </td>
+        <td style="width: 86%;">
+          <mat-form-field class="textarea">
+            <input matInput type="text" placeholder="José Lino" >
           </mat-form-field>
+        </td>
+      </tr>
+    <tr style="width: 100%;">
+      <td style="width: 14%;">
+        <mat-label>Notas Adicionales:</mat-label>
       </td>
-    
-      <td>
-        <mat-label>ID: &nbsp;</mat-label>
-      </td>
-    
-      <td>
-        <mat-form-field class="input2">
-          <input matInput type="text" placeholder="561432" >
+      <td style="width: 86%;">
+        <mat-form-field class="textarea">
+          <textarea matInput placeholder="3 Pinzas H. extras para la cirugía "></textarea>
         </mat-form-field>
       </td>
     </tr>
 </tbody>
-    
-
-</table><br>
-
-
+  </table>
 
 <!------------------------------------------------------- TARJETA DE INDENTIFICACION ------------------------------------->
     <div style="text-align: center;">
@@ -165,12 +105,12 @@
        <div style="width: 70%; text-align: right;"> <h1>Fecha: {{fecha}}</h1></div>
        <div style="width: 17%; text-align: right;"> <h1>Hora: {{hora}}</h1></div>
        <div style="width: 13%; text-align: right;"> <h1>Turno: {{turno}}</h1></div>
-   </div><br>
+   </div><br><br>
 
 
 
     <div style="display: flex; width: 90%; margin-left: 5%; margin-right: 5%;">
-        <h1>Instrumental Quirúrgico Sencillo</h1>
+        <h2>Proceso de Recepción, Clasificación y Lavado de Dispositivos e Instrumental.</h2>
     </div>
 
 
@@ -251,7 +191,7 @@
 
 
 <div style="display: flex; width: 90%; margin-left: 5%; margin-right: 5%;">
-    <h1>Set de Instrumental Quirúrgico</h1>
+    <h2>Proceso de Recepción, Clasificación y Lavado de Dispositivos e Instrumental por Set</h2>
 </div>
 
 <div style="display: flex; width: 90%; margin-left: 5%; margin-right: 5%;">
@@ -339,7 +279,7 @@
 
     <div style="display: flex; justify-content: right; width: 90%; margin-left: 5%; margin-right: 5%;">
           <button class="botones" style=" margin-right: 20px;">Cancelar</button>
-          <a href="/static/recepcionquirofano">  <button class="botones" style=" margin-right: 20px;">Guardar</button> </a>
+          <button class="botones" style=" margin-right: 20px;">Guardar</button>
         </div>
 
 

@@ -117,7 +117,7 @@
         <ng-container matColumnDef="incidencia">
             <mat-header-cell *matHeaderCellDef> Incidencias </mat-header-cell>
             <mat-cell *matCellDef="let material">  <mat-icon class="botonwarning"  fontIcon="warning" 
-                style="color: orange"  (click)="abrirDialogo(); incidencia(material)" 
+                style="color: orange"  (click)="emergente1(); incidencia(material)" 
                 matTooltip="Generar Advertencia" ></mat-icon> </mat-cell>
         </ng-container>
 
@@ -130,7 +130,7 @@
 
 <p align="end">
     <button class="botones" style=" margin-right: 20px;" matTooltip="Cancelar Lavado">Cancelar</button>
-    <button class="botones" style=" margin-right: 20px;" matTooltip="">Siguiente</button>
+    <a href="/static/detallelavado"> <button class="botones" style=" margin-right: 20px;" matTooltip="">Siguiente</button></a>
 </p>
 
 
