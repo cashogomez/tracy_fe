@@ -130,6 +130,10 @@ const routes: Routes = [
     path: 'detallelavado',
     loadComponent: () => import('./pages/detallelavado/detallelavado.component').then((m) => m.DetallelavadoComponent),
   },
+  {
+    path: 'historico-qr',
+    loadComponent: () => import('./pages/historicoqr/historicoqr.component').then((m) => m.HistoricoqrComponent),
+  },
 ];
 
 

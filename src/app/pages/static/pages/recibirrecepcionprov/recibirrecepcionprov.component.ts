@@ -15,7 +15,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
-import {FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import { DialogService } from '@app/services/dialog/dialog.service';
 
 
@@ -26,6 +26,14 @@ const Instrumental_quirugico_sencillo = [
  
 ];
 
+export interface Recepcion{
+  Proveedor: string;
+  FechaIngreso: string;
+  Recepcion: string;
+  Entrega: string;
+  NotasAdd: string;
+ }
+ 
 
 @Component({
   selector: 'app-recibirrecepcionprov',
@@ -84,4 +92,20 @@ btnActivate(ionicButton:any) {
 
 
 }
+
+
+Recepcion = new FormGroup({
+  Proveedor: new FormControl(''),
+  FechaIngreso: new FormControl(''),
+  Recepcion: new FormControl(''),
+  Entrega: new FormControl(''),
+  NotasAdd: new FormControl(''),
+});
+
+submitted() {
+    
+  window.alert(JSON.stringify(this.Recepcion.value, null, 2));
+}
+
+
 }

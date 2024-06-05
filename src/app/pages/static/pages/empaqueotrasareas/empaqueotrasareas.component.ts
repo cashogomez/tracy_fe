@@ -4,6 +4,7 @@ import { MatDatepickerIntl } from '@angular/material/datepicker';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { AreaTrabajo } from '@app/models/backend/area';
 import { NotificationService } from '@app/services';
 import 'moment/locale/es';
@@ -116,6 +117,7 @@ setmaterial =[
 // } 
 
   constructor(private notification: NotificationService,
+    private router:Router,
 
     
     private _adapter: DateAdapter<any>,
@@ -124,7 +126,9 @@ setmaterial =[
       this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
 
   }
-
+  goPlaces(){
+    this.router.navigate(['static/historico-qr'])
+  }
   ngOnInit() {
     this.updateCloseButtonLabel('Cerrar Calendario');
   }
@@ -139,6 +143,8 @@ setmaterial =[
     this._intl.closeCalendarLabel = label;
     this._intl.changes.next();
   }
+
+  
 
   getDateFormatString(): string {
     if (this._locale === 'es-ES') {

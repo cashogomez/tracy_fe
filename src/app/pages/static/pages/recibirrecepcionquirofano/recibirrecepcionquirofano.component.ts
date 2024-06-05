@@ -13,7 +13,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatRadioModule} from '@angular/material/radio';
-import { FormsModule }   from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import {MatDialogModule} from '@angular/material/dialog';
 import { DialogService } from '@app/services/dialog/dialog.service';
 
@@ -33,6 +33,24 @@ const Instrumental_quirugico = [
  
 ];
 
+
+export interface Recepcion{
+ FechaCirugia:String;
+ Hora:string;
+ DxOperatorio:string;
+ NoQx:string;
+ Entrega:string;
+ IDEntrega:string;
+ Recepcion:string;
+ IDRecepcion:String;
+ Devolucion:string
+ IDDevolucion:string;
+ NotasAdd:string;
+ Cantidad1:number;
+ Cantidad2:number;
+}
+
+
 @Component({
   selector: 'app-recibirrecepcionquirofano',
   standalone: true,
@@ -43,6 +61,7 @@ const Instrumental_quirugico = [
     MatListModule,
     MatIconModule,
     MatExpansionModule,
+    ReactiveFormsModule,
     MatTabsModule,
     MatTableModule,
     MatSelectModule,
@@ -57,6 +76,30 @@ const Instrumental_quirugico = [
   styleUrl: './recibirrecepcionquirofano.component.scss'
 })
 export class RecibirrecepcionquirofanoComponent {
+
+  form!: FormGroup;
+
+  Recepcion = new FormGroup({
+    FechaCirugia: new FormControl(''),
+    Hora: new FormControl(''),
+    DxOperatorio: new FormControl(''),
+    NoQx: new FormControl(''),
+    Entrega: new FormControl(''),
+    IDEntrega: new FormControl(''),
+    Recepcion: new FormControl(''),
+    IDRecepcion: new FormControl(''),
+    Devolucion: new FormControl(''),
+    IDDevolucion: new FormControl(''),
+    NotasAdd: new FormControl(''),
+    Cantidad1: new FormControl(0),
+    Cantidad2: new FormControl(0),
+  });
+
+  submitted() {
+    
+    window.alert(JSON.stringify(this.Recepcion.value, null, 2));
+  }
+
   constructor ( private dialogService: DialogService){}
 
   emergente1(){

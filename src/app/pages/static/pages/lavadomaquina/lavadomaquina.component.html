@@ -9,12 +9,12 @@
 </div>
 
 <!------------------------------ FILTRO -------------------------------->
-<p align="end">
+<div align="end">
   <mat-form-field>
     <mat-label>Filtro</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Búsqueda" #input>
   </mat-form-field>
-</p>
+</div>
 <!------------------------------ FIN DE ENCABEZADO -------------------------------->
 
 <div class="mat-elevation-z8" id="page-1" class="page">
@@ -130,7 +130,7 @@
 
 <p align="end">
     <button class="botones" style=" margin-right: 20px;" matTooltip="Cancelar Lavado">Cancelar</button>
-    <a href="/static/detallelavado"> <button class="botones" style=" margin-right: 20px;" matTooltip="">Siguiente</button></a>
+    <button class="botones" style=" margin-right: 20px;" matTooltip="" (click)="goPlaces()">Siguiente</button>
 </p>
 
 

@@ -10,6 +10,7 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
 import 'moment/locale/es';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-recepcionotrasareas',
@@ -77,15 +78,19 @@ export class RecepcionotrasareasComponent {
 
   constructor(private notification: NotificationService,
 
-    
+    private router:Router,
     private _adapter: DateAdapter<any>,
     private _intl: MatDatepickerIntl,
     @Inject(MAT_DATE_LOCALE) private _locale: string,) { // Assign the data to the data source for the table to render
       this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
 
   }
-
-
+  goPlaces(){
+    this.router.navigate(['static/recibirrecepcionotras'])
+  }
+  goPlaces2(){
+    this.router.navigate(['static/recibirrecepcionotras2'])
+  }
   ngOnInit() {
     this.updateCloseButtonLabel('Cerrar Calendario');
   }

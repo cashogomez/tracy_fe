@@ -15,9 +15,16 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
-import {FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import { DialogService } from '@app/services/dialog/dialog.service';
 
+export interface Recepcion{
+  Area:string;
+  FechaIngreso:string;
+  Recepcion:string;
+  Entrega:string;
+  NotasAdd:string;
+ }
 
 const Instrumental_quirugico_sencillo = [
   {Id: 3829	, Instrumental: 'Mango de Bisturi', Cantidad: 2, Marca_Comercial: 'N/A', Prelavado:'', Completo:'', Funcional:'', Cantidad_Recibida:''},
@@ -82,11 +89,18 @@ btnActivate(ionicButton:any) {
 }
 
 
-selectedValue: string='';
 
-foods = [
-  {value: 'Urgencias', viewValue: 'Urgencias'},
-  {value: 'UCI', viewValue: 'UCI'},
-  {value: 'Pediatría', viewValue: 'Pediatría'},
-];
+Recepcion = new FormGroup({
+  Area:new FormControl(''),
+  FechaIngreso:new FormControl(''),
+  Recepcion:new FormControl(''),
+  Entrega:new FormControl(''),
+  NotasAdd:new FormControl(''),
+});
+
+submitted() {
+    
+  window.alert(JSON.stringify(this.Recepcion.value, null, 2));
+}
+
 }

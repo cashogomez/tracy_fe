@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AreaTrabajo } from '@app/models/backend/area';
+import { Router } from '@angular/router';
 import { NotificationService, SetService } from '@app/services';
 import 'moment/locale/es';
 import pdfMake from "pdfmake/build/pdfmake";
@@ -36,6 +37,7 @@ export class EmpaquequirofanoComponent {
 
 
   constructor(private notification: NotificationService,
+    private router:Router,
     private setsService: SetService,
     private areatrabajoService: AreatrabajoService,
     private _adapter: DateAdapter<any>,
@@ -51,6 +53,11 @@ export class EmpaquequirofanoComponent {
         })
       }))
   }
+
+  goPlaces(){
+    this.router.navigate(['static/historico-qr'])
+  }
+
   itemEnviado(valorRecibido: any) {
     console.log(valorRecibido)
   }

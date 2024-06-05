@@ -186,7 +186,7 @@ export class DetallelavadoComponent {
 
 
   numciclo=10;
-  value1=10;
+  value1:any=10;
 
   value2=10;
 
@@ -244,7 +244,13 @@ export class DetallelavadoComponent {
   display: any =10;
   public timerInterval: any;
 
- 
+
+  
+
+     
+
+
+
   start() {
     this.timer(this.display);
   }

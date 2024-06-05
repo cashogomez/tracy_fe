@@ -121,7 +121,7 @@
     <!-- Symbol Column -->
     <ng-container matColumnDef="accion">
       <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
-      <mat-cell *matCellDef="let element">  <button class="botones" style=" margin-right: 20px;" matTooltip="Transferir a otro almacén">Transferir</button> </mat-cell>
+      <mat-cell *matCellDef="let element">  <button class="botones" style=" margin-right: 20px;" matTooltip="Transferir a otro almacén" (click)="emergente()">Transferir</button> </mat-cell>
     </ng-container>
 
 

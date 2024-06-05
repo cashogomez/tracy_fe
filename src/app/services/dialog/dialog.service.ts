@@ -5,6 +5,7 @@ import { Distrib1Component } from '@app/pages/static/pages/dialogos/distrib1/dis
 import { Distrib22Component } from '@app/pages/static/pages/dialogos/distrib2-2/distrib2-2.component';
 import { Distrib23Component } from '@app/pages/static/pages/dialogos/distrib2-3/distrib2-3.component';
 import { Distrib2Component } from '@app/pages/static/pages/dialogos/distrib2/distrib2.component';
+import { TransfAlmacenComponent } from '@app/pages/static/pages/dialogos/transf-almacen/transf-almacen.component';
 @Injectable({
   providedIn: 'root'
 })
@@ -30,6 +31,10 @@ export class DialogService {
 
   ditribucion2emergente3(){
     this.matDialog.open(Distrib23Component)
+  }
+
+  transfalmacen(){
+    this.matDialog.open(TransfAlmacenComponent)
   }
 
 }

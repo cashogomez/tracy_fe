@@ -15,7 +15,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
-import {FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import { DialogService } from '@app/services/dialog/dialog.service';
 
 
@@ -33,6 +33,16 @@ const Instrumental_quirugico = [
   {Id: '0004', Instrumental: 'Succión', Cantidad:8, Marca_Comercial: 'LISTER', Prelavado:'', Completo:'', Funcional:'', Cantidad_Recibida:''},
  
 ];
+
+
+export interface Recepcion{
+  Area:string;
+  FechaPrestamo:string;
+  Recepcion:string;
+  Entrega:string;
+  Devolucion:string;
+  NotasAdd:string;
+ }
 
 
 @Component({
@@ -93,14 +103,21 @@ btnActivate(ionicButton:any) {
 }
 
 
-selectedValue: string='';
-
-foods = [
-  {value: 'Urgencias', viewValue: 'Urgencias'},
-  {value: 'UCI', viewValue: 'UCI'},
-  {value: 'Pediatría', viewValue: 'Pediatría'},
-];
 
 
+
+
+Recepcion = new FormGroup({
+  Area:new FormControl(''),
+  FechaPrestamo:new FormControl(''),
+  Recepcion:new FormControl(''),
+  Entrega:new FormControl(''),
+  Devolucion: new FormControl(''),
+  NotasAdd:new FormControl(''),
+});
+submitted() {
+    
+  window.alert(JSON.stringify(this.Recepcion.value, null, 2));
+}
 
 }

@@ -89,7 +89,7 @@ endTime:any;
 
 stop() {
   this.remainingTime=0;
-  
+  this.endTime=0;
   localStorage.removeItem('est'+ this.EquipoADetallar )
 }
 

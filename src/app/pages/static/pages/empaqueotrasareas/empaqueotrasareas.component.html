@@ -10,7 +10,7 @@
 
 <p align="end">
   <button class="botones"  (click)="generarPDF()" style=" margin: 5px;" matTooltip="Generar reporte">Reporte</button>
-  <button class="botones" style=" margin: 5px;" matTooltip="Consulta QR">QR</button>
+  <button class="botones" style=" margin: 5px;" matTooltip="Consulta QR" (click)="goPlaces()">QR</button>
 </p>
 
 <div class="container">
@@ -20,7 +20,7 @@
 </div>
 
 
-<p align="begin">
+<div align="begin">
 
   <mat-form-field class="menu_desplegable">
     <mat-label>Área</mat-label>
@@ -37,7 +37,7 @@
     <mat-datepicker #dp></mat-datepicker>
   </mat-form-field>
   <button class="botones" style=" margin: 10px;" matTooltip="Aplicar buscador">Aplicar</button>
-</p>
+</div>
 
 
 <div class="container">
@@ -46,12 +46,12 @@
   <div class="line"><mat-divider></mat-divider></div>
 </div>
 <!------------------------------ FILTRO -------------------------------->
-<p align="end">
+<div align="end">
   <mat-form-field>
     <mat-label>Filtro</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Búsqueda" #input>
   </mat-form-field>
-</p>
+</div>
 <!------------------------------ FIN DE ENCABEZADO -------------------------------->
 
 <div class="mat-elevation-z8" id="page-1" class="page">

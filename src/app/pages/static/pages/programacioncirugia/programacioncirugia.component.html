@@ -320,10 +320,11 @@
     
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
+    </table><br>
+
     <div align="center">
-      <button mat-raised-button  style="margin-right: 5%;" (click)="onCancelarClicked()">Cancelar</button>
-      <button mat-raised-button  style="margin-right: 5%;" (click)="onAceptarClicked()">Aceptar</button> 
+      <button  class="botones" style="margin-right: 5%;" (click)="onCancelarClicked()">Cancelar</button>
+      <button  class="botones" style="margin-right: 5%;" (click)="onAceptarClicked()">Aceptar</button> 
     </div>
  
   </div>

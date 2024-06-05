@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { AreaTrabajo } from '@app/models/backend/area';
 import { Turno } from '@app/models/backend/turno';
 import { AreatrabajoService, NotificationService, TurnoService } from '@app/services';
-
+import { DialogService } from '@app/services/dialog/dialog.service';
 
 import 'moment/locale/es';
 import pdfMake from 'pdfmake/build/pdfmake';
@@ -87,6 +87,7 @@ export class AlmacengeneralComponent {
 // } 
 
   constructor(
+    private dialog:DialogService,
     private areadetrabajoService: AreatrabajoService,
     private turnoService: TurnoService,
     private notification: NotificationService,
@@ -104,6 +105,10 @@ export class AlmacengeneralComponent {
     this.turnoService.traerturnos().subscribe((data) => {
       
     } )
+  }
+
+  emergente(){
+    this.dialog.transfalmacen()
   }
 
   ngOnInit() {

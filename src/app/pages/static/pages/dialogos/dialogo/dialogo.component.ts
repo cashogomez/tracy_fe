@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -8,25 +7,58 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule }   from '@angular/forms';
+
+import { IncidenciaRequest } from '@app/models/backend/incidencia';
+
+
+export interface incidencias {
+  valor:string;
+  comentario:string;
+}
 
 @Component({
   selector: 'app-dialogo',
   standalone: true,
   imports: [
     MatDialogModule,
-    MatRadioModule,
-    FormsModule,
-    MatCheckboxModule,
+    MatFormFieldModule,
     MatSelectModule,
-    MatButtonModule,
     MatInputModule,
-    MatFormFieldModule, FormsModule, MatInputModule, MatButtonModule
+    MatButtonModule,
+    MatCheckboxModule,
+    MatRadioModule,
+    FormsModule ,
+    ReactiveFormsModule,
   ],
   templateUrl: './dialogo.component.html',
   styleUrl: './dialogo.component.scss'
 })
 export class DialogoComponent {
  
+valor='';
+comentario='';
+
+subir (): IncidenciaRequest{
+  this.valor = this.incidencias.get('valor')?.value!
+  this.comentario = this.incidencias.get('comentario')?.value!
+
+  console.log(this.valor);
+  console.log(this.comentario);
+  let incidencia: IncidenciaRequest = {
+    opcion: this.valor,
+    nota: this.comentario,
+  }
+  return incidencia
+}
+
+
+  incidencias= new FormGroup({
+  valor: new FormControl(''),
+  comentario: new FormControl('')
+})
+
+
   durationInSeconds =1 ;
 
   constructor(private _snackBar: MatSnackBar) {}

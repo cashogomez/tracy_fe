@@ -6,6 +6,8 @@
   <div class="line"><mat-divider></mat-divider></div>
 </div><br>
 
+<form [formGroup]="Recepcion" >
+
 
 <div style="display: flex; width: 90%; margin-left: 5%; margin-right: 5%;">
     <div style="width: 33%; text-align: left;">
@@ -32,10 +34,10 @@
     
         <td>
           <mat-form-field class="input1">
-            <mat-select [(ngModel)]="selectedValue" name="food">
-              @for (food of foods; track food) {
-                <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
-              }
+            <mat-select formControlName="Area">
+              <mat-option value="option1">Option 1</mat-option>
+              <mat-option value="option2">Option 2 (disabled)</mat-option>
+              <mat-option value="option3">Option 3</mat-option>
             </mat-select>
             </mat-form-field>
         </td>
@@ -46,7 +48,7 @@
     
         <td>
           <mat-form-field class="input2">
-            <input matInput type="text" placeholder="22 de septiembre 2023" >
+            <input matInput type="text" placeholder="22 de septiembre 2023" formControlName="FechaIngreso" >
           </mat-form-field>
         </td>
       </tr>
@@ -60,7 +62,7 @@
     
         <td>
           <mat-form-field class="input1">
-            <input matInput type="text" placeholder="José Lino" >
+            <input matInput type="text" placeholder="José Lino" formControlName="Recepcion">
             </mat-form-field>
         </td>
     
@@ -70,7 +72,7 @@
     
         <td>
           <mat-form-field class="input2">
-            <input matInput type="text" placeholder="Casimiro Gomez" >
+            <input matInput type="text" placeholder="Casimiro Gomez" formControlName="Entrega">
           </mat-form-field>
         </td>
       </tr>
@@ -85,7 +87,7 @@
       </td>
       <td style="width: 86%;">
         <mat-form-field class="textarea">
-          <textarea matInput placeholder="3 Pinzas H. extras para la cirugía "></textarea>
+          <textarea matInput placeholder="3 Pinzas H. extras para la cirugía " formControlName="NotasAdd"></textarea>
         </mat-form-field>
       </td>
     </tr>
@@ -201,11 +203,11 @@
       </table>
 </div><br>
 
-
+</form>
 
     <div style="display: flex; justify-content: right; width: 90%; margin-left: 5%; margin-right: 5%;">
           <button class="botones" style=" margin-right: 20px;">Cancelar</button>
-          <button class="botones" style=" margin-right: 20px;">Guardar</button>
+          <button class="botones" style=" margin-right: 20px;" (click)="submitted()">Guardar</button>
         </div>
 
 

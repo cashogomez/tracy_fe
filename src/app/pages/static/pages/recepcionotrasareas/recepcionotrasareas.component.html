@@ -7,7 +7,7 @@
   <div class="line"><mat-divider></mat-divider></div>
 </div>
 
-<p align="end">
+<div align="end">
   <mat-form-field>
     <mat-label>Elige la fecha</mat-label>
     <input matInput [matDatepicker]="dp">
@@ -15,10 +15,10 @@
     <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
     <mat-datepicker #dp></mat-datepicker>
   </mat-form-field>
-
+  
   <button mat-raised-button color="primary" class="button-text" (click)="generarPDF()" class="botones" style=" margin: 10px;" matTooltip="Generar reporte">Reporte</button>
-  <button mat-raised-button color="primary" class="button-text" class="botones" style=" margin: 10px;" matTooltip="Nueva recepción">Recepción</button>
-</p>
+  <button mat-raised-button color="primary" class="button-text" class="botones" style=" margin: 10px;" matTooltip="Nueva recepción" (click)="goPlaces2()">Recepción</button>
+</div>
 <!------------------------------ FILTRO -------------------------------->
 <mat-form-field>
   <mat-label>Filtro</mat-label>
@@ -73,7 +73,7 @@
     <!-- Symbol Column -->
     <ng-container matColumnDef="accion">
       <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
-      <mat-cell *matCellDef="let element">  <button class="botones" style=" margin-right: 20px;" matTooltip="Recibir material">Recibir</button> </mat-cell>
+      <mat-cell *matCellDef="let element">  <button class="botones" style=" margin-right: 20px;" matTooltip="Recibir material" (click)="goPlaces()">Recibir</button> </mat-cell>
     </ng-container>
 
 

@@ -4,6 +4,7 @@ import { MatDatepickerIntl } from '@angular/material/datepicker';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { NotificationService } from '@app/services';
 import 'moment/locale/es';
 import pdfMake from "pdfmake/build/pdfmake";
@@ -153,6 +154,7 @@ export class DistribucionquirofanoComponent {
 // } 
 
   constructor(private notification: NotificationService,
+    private router:Router,
     private _adapter: DateAdapter<any>,
     private _intl: MatDatepickerIntl,
     @Inject(MAT_DATE_LOCALE) private _locale: string,) { // Assign the data to the data source for the table to render
@@ -160,6 +162,9 @@ export class DistribucionquirofanoComponent {
 
   }
 
+  goPlaces(){
+    this.router.navigate(['/static/detalledistribucionquirofano'])
+  }
 
   ngOnInit() {
     this.updateCloseButtonLabel('Cerrar Calendario');

@@ -8,13 +8,13 @@
               <label style="margin-left:10%;">Ciclo:</label><br>
               <div  align="center">
               <mat-form-field  style=" width: 80%">
-                <mat-select disableRipple [(ngModel)]="display"  formControlName="ciclo1">
-                  <mat-option value="20" (click)="VOF1 = false" (click)="VOF2 = true" >Rápido</mat-option>
-                  <mat-option value="36" (click)="VOF1 = false" (click)="VOF2 = true">Corto</mat-option>
-                  <mat-option value="56" (click)="VOF1 = false" (click)="VOF2 = true">Estándar 134° C</mat-option>
-                  <mat-option value="65" (click)="VOF1 = false" (click)="VOF2 = true">Estándar 121° C</mat-option>
-                  <mat-option value="50" (click)="VOF1 = false" (click)="VOF2 = true">Especial Priones</mat-option>
-                  <mat-option value="0" (click)="VOF1 = true" (click)="VOF2 = false">Manual</mat-option>
+                <mat-select disableRipple   [(value)]="display" [(value)]="value1">
+                  <mat-option [value]="20" (click)="VOF1 = false" (click)="VOF2 = true" >Rápido</mat-option>
+                  <mat-option [value]="36" (click)="VOF1 = false" (click)="VOF2 = true">Corto</mat-option>
+                  <mat-option [value]="56" (click)="VOF1 = false" (click)="VOF2 = true">Estándar 134° C</mat-option>
+                  <mat-option [value]="65" (click)="VOF1 = false" (click)="VOF2 = true">Estándar 121° C</mat-option>
+                  <mat-option [value]="50" (click)="VOF1 = false" (click)="VOF2 = true">Especial Priones</mat-option>
+                  <mat-option [value]="0" (click)="VOF1 = true" (click)="VOF2 = false">Manual</mat-option>
                 </mat-select>
                 </mat-form-field>
               </div> 
@@ -38,7 +38,7 @@
               <label style="margin-left:10%;">Ciclo:</label><br>
               <div  align="center">
               <mat-form-field  style=" width: 80%">
-                <mat-select [(ngModel)]="display2"  formControlName="ciclo2">
+                <mat-select formControlName="ciclo2"  [(value)]="display2" [(value)]="value2">
                   <mat-option value="20" (click)="VOF3 = false" (click)="VOF4 = true" >Rápido</mat-option>
                   <mat-option value="36" (click)="VOF3 = false" (click)="VOF4 = true">Corto</mat-option>
                   <mat-option value="56" (click)="VOF3 = false" (click)="VOF4 = true">Estándar 134° C</mat-option>
@@ -70,7 +70,7 @@
               <label style="margin-left:10%;">Ciclo:</label><br>
               <div  align="center">
               <mat-form-field  style=" width: 80%">
-                <mat-select disableRipple [(ngModel)]="display3"  formControlName="ciclo3">
+                <mat-select disableRipple  formControlName="ciclo3"  [(value)]="display3" [(value)]="value3">
                   <mat-option value="20" (click)="VOF5 = false" (click)="VOF6 = true" >Rápido</mat-option>
                   <mat-option value="36" (click)="VOF5 = false" (click)="VOF6 = true">Corto</mat-option>
                   <mat-option value="56" (click)="VOF5 = false" (click)="VOF6 = true">Estándar 134° C</mat-option>

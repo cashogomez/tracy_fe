@@ -1,19 +1,24 @@
 import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
-import {MatSort, MatSortModule} from '@angular/material/sort';
-import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-import {MatDatepickerModule, MatDatepickerIntl} from '@angular/material/datepicker';
-import {DateAdapter, MAT_DATE_LOCALE} from '@angular/material/core';
-import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatDatepickerModule, MatDatepickerIntl } from '@angular/material/datepicker';
+import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
+import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
+
+import 'moment/locale/ja';
+import 'moment/locale/fr';
 import 'moment/locale/es';
+
+
 import { MatDivider } from '@angular/material/divider';
 import { NotificationService } from '@app/services/notification/notification.service';
 import { CommonModule } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { RouterLink, RouterLinkActive, RouterModule, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterModule, RouterOutlet } from '@angular/router';
 
 import pdfMake from "pdfmake/build/pdfmake";
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -23,7 +28,7 @@ import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 @Component({
   selector: 'app-recepcionquirofano',
   providers: [
-    {provide: MAT_DATE_LOCALE, useValue: 'es-ES'},
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
     provideMomentDateAdapter(),
   ],
   standalone: true,
@@ -118,15 +123,17 @@ export class RecepcionquirofanoComponent implements AfterViewInit, OnInit {
 
   constructor(private notification: NotificationService,
 
-    
+    private router:Router,
     private _adapter: DateAdapter<any>,
     private _intl: MatDatepickerIntl,
-    @Inject(MAT_DATE_LOCALE) private _locale: string,) { // Assign the data to the data source for the table to render
+    @Inject(MAT_DATE_LOCALE) private _locale: string,) {// Assign the data to the data source for the table to render
       this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
 
   }
 
-
+  goPlaces(){
+    this.router.navigate(['static/recibirrecepcionquirofano'])
+  }
   ngOnInit() {
     this.updateCloseButtonLabel('Cerrar Calendario');
   }

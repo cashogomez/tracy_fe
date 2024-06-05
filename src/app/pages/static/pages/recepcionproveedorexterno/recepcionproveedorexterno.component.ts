@@ -9,6 +9,7 @@ import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
 import 'moment/locale/es';
 import pdfMake from "pdfmake/build/pdfmake";
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import { Router } from '@angular/router';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -65,7 +66,7 @@ export class RecepcionproveedorexternoComponent {
 
   constructor(private notification: NotificationService,
 
-    
+    private router:Router,
     private _adapter: DateAdapter<any>,
     private _intl: MatDatepickerIntl,
     @Inject(MAT_DATE_LOCALE) private _locale: string,) { // Assign the data to the data source for the table to render
@@ -73,7 +74,9 @@ export class RecepcionproveedorexternoComponent {
 
   }
 
-
+  goPlaces(){
+    this.router.navigate(['static/recibirrecepcionprov'])
+  }
   ngOnInit() {
     this.updateCloseButtonLabel('Cerrar Calendario');
   }

@@ -5,7 +5,9 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { NotificationService } from '@app/services/notification/notification.service';
 import { IncidenciadialogoComponent } from '../incidenciadialogo/incidenciadialogo.component';
+import { Incidencia, IncidenciaRequest } from '@app/models/backend/incidencia';
 import { DialogService } from '@app/services/dialog/dialog.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-lavadomaquina',
   standalone: false,
@@ -44,20 +46,30 @@ numeroSelecciones = 0;
 
 
   MATERIAL_SEGUNDA: Material[] =[]
-  constructor(private notification: NotificationService, public dialog: MatDialog, private dialogService: DialogService) {
+  constructor(private notification: NotificationService, public dialog: MatDialog, 
+    private dialogService: DialogService,
+    private router: Router) {
     
     // Assign the data to the data source for the table to render
+
       this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
       this.dataSegundaTabla = new MatTableDataSource(this.MATERIAL_SEGUNDA);
 
+  }
+  goPlaces(){
+    this.router.navigate(['static/detallelavado'])
   }
   emergente1(){
     this.dialogService.emergente1()
    }
   
   abrirDialogo() {
+    let incidencia: IncidenciaRequest = {
+      opcion: '',
+      nota: ''
+    }
     const dialogo1 = this.dialog.open(IncidenciadialogoComponent, {
-      data: new Incidencia('')
+      data: incidencia
     });
 
     dialogo1.afterClosed().subscribe(art => {
@@ -247,7 +259,4 @@ const MATERIAL_DATA1: Material[] = [
   {id: 66, nombre: 'Sonda acanalada 13 cm', cantidad: 1, lavadora1: false, lavadora2: false, lavadora3: false},
 ];
 // ****************************** DIALOGO *************
-export class Incidencia{
-  constructor(public descripcion: string) {
-  }
-}
+
