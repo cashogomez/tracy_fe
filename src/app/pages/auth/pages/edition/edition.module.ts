@@ -15,6 +15,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 
+import { FormControl, FormGroup, FormBuilder, NgForm } from '@angular/forms';
+import { ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -36,6 +38,7 @@ import { MatRadioModule } from '@angular/material/radio';
     MatCheckboxModule,
     MatDividerModule, 
     MatRadioModule,
+    ReactiveFormsModule,
   ]
 })
 export class EditionModule { }

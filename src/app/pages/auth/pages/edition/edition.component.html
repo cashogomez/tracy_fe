@@ -10,80 +10,76 @@
         <button mat-button appFilesUpload [multiple]="true" (changed)="onFilesChanged($event)">Subir Imagen</button>
         <mat-card-content>
 
-        <form #f="ngForm" (ngSubmit)="editarUsuario(f)" >
+        <form (ngSubmit)="datosUsuario()" [formGroup]="formaEdicion">
 
             <mat-form-field>
                 <mat-label>Nombre</mat-label>
-                <input type="tex" matInput placeholder="Nombre" name="nombre" ngModel required>
+                <input type="tex" matInput placeholder="Nombre"  formControlName="nombre"  required>
                 <mat-error>Debe ingresar un nombre</mat-error>
             </mat-form-field>
 
             <mat-form-field>
                 <mat-label>Apellido Paterno</mat-label>
-                <input type="tex" matInput placeholder="Apellido Paterno" name="paterno" ngModel required>
+                <input type="tex" matInput placeholder="Apellido Paterno" formControlName="paterno"  required>
                 <mat-error>Debe ingresar apellido paterno</mat-error>
             </mat-form-field>
 
             <mat-form-field>
                 <mat-label>Apellido Materno</mat-label>
-                <input type="tex" matInput placeholder="Apellido Materno" name="materno" ngModel required>
+                <input type="tex" matInput placeholder="Apellido Materno" formControlName="materno"  required>
                 <mat-error>Debe ingresar un apellido materno</mat-error>
             </mat-form-field>
 
             <mat-form-field>
                 <mat-label>Username</mat-label>
-                <input type="tex" matInput placeholder="Username" name="username" ngModel required>
+                <input type="tex" matInput placeholder="Username" formControlName="username"  required>
                 <mat-error>Debe ingresar un username</mat-error>
             </mat-form-field>
 
             <mat-form-field>
                 <mat-label>Número telefónico</mat-label>
-                <input type="tex" matInput placeholder="Teléfono" name="telefono" ngModel required>
+                <input type="tex" matInput placeholder="Teléfono" formControlName="telefono"  required>
                 <mat-error>Debe ingresar un número telefónico</mat-error>
             </mat-form-field>
 
             <mat-form-field>
                 <mat-label>E-Mail</mat-label>
-                <input type="email" matInput placeholder="E-Mail" name="email" ngModel required>
+                <input type="email" matInput placeholder="E-Mail" formControlName="email"  required>
                 <mat-error>Debe ingresar un E-Mail</mat-error>
             </mat-form-field>
 
             <mat-form-field>
                 <mat-label>Empresa</mat-label>
-                <input type="tex" matInput placeholder="Empresa" name="empresa" ngModel required>
+                <input type="tex" matInput placeholder="Empresa" formControlName="empresa_id"  required>
                 <mat-error>Debe ingresar la empresa a la que pertenece</mat-error>
             </mat-form-field>
 
             <mat-form-field>
                 <mat-label>Número de Empleado</mat-label>
-                <input type="tex" matInput placeholder="Numero de Empleado" name="noempleado" ngModel required>
+                <input type="tex" matInput placeholder="Numero de Empleado" formControlName="numeroEmpleado"  required>
                 <mat-error>Debe ingresar la empresa a la que pertenece</mat-error>
             </mat-form-field>
 
             <mat-form-field>
                 <mat-label>Password</mat-label>
-                <input type="password" matInput placeholder="Password" name="password" ngModel required minlength="7">
+                <input type="password" matInput placeholder="Password" formControlName="password"  required minlength="7">
                 <mat-error>El password debe tener más de 7 caracteres</mat-error>
             </mat-form-field>
 
             <mat-form-field>
                 <mat-label>Confirme Password</mat-label>
-                <input type="password" matInput placeholder="Confirme Password" name="passwordConfirme" ngModel required minlength="7">
+                <input type="password" matInput placeholder="Confirme Password" formControlName="password2"  required minlength="7">
                 <mat-error>El password debe tener más de 7 caracteres</mat-error>
             </mat-form-field>
 
             <mat-form-field>
                 <mat-label>Puesto</mat-label>
-                <mat-select (selectionChange)="changePuesto($event.value)">
-                  <mat-option *ngFor="let x of puesto; let i = index" [value]="puesto[i]">{{puesto[i].tipo}}</mat-option>
-                </mat-select>
+                <input type="tex" matInput placeholder="Puesto" formControlName="puesto"  >
             </mat-form-field>
 
             <mat-form-field>
                 <mat-label>Área de trabajo</mat-label>
-                <mat-select (selectionChange)="changeArea($event.value)">
-                  <mat-option *ngFor="let x of area; let i = index" [value]="area[i]">{{area[i].tipo}}</mat-option>
-                </mat-select>
+                <input type="tex" matInput placeholder="Area" formControlName="area"  r>
             </mat-form-field>
 
 
@@ -91,14 +87,14 @@
 
             <section class="example-section" >
                 <label >Nivel de acceso:</label>
-                <mat-radio-group [(ngModel)]="selectedRadio" name="radioOpt1" (change)="radioButtonChange($event)" >
+                <mat-radio-group formControlName="selectedRadio" name="radioOpt1" (change)="radioButtonChange($event)" >
                   <mat-radio-button  *ngFor="let permiso of permisos"  [value]="permiso"  >{{permiso}}</mat-radio-button>
                 </mat-radio-group>
               </section>
 
             <mat-divider vertical style="height:30px"></mat-divider>
 
-            <button mat-raised-button color="primary" type="submit">Enviar</button>
+            <button mat-raised-button color="primary" type="submit" >Enviar</button>
         </form>
     </mat-card-content>
     </mat-card>

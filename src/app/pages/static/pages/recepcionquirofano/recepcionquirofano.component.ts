@@ -22,6 +22,8 @@ import { Router, RouterLink, RouterLinkActive, RouterModule, RouterOutlet } from
 
 import pdfMake from "pdfmake/build/pdfmake";
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import { TicketService } from '@app/services/ticket/ticket.service';
+import { DynamicDialogService } from '@app/services/emergente/emergente.service';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
 
@@ -57,62 +59,7 @@ export class RecepcionquirofanoComponent implements AfterViewInit, OnInit {
   editarRegistro !: Element;
   borrarRegistro !: Element;
   /** Constants used to fill up our data base. */
-  ELEMENT_DATA = [
-    {Ticket: 1, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 2, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 3, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 4, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 5, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 6, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 7, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 8, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 9, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 10, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-  
-    {Ticket: 11, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 12, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 13, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 14, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 15, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 16, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 17, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 18, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 19, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 20, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-  
-    {Ticket: 21, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 22, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 23, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 24, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 25, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 26, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 27, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 28, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 29, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 30, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    
-    {Ticket: 31, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 32, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 33, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 34, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 35, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 36, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 37, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 38, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 39, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 40, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-  
-    {Ticket: 41, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 42, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 43, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 44, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 45, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 46, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 47, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 48, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 49, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-    {Ticket: 50, Fecha: '27/05/2023', Cirugia:'Estenosis Aórtica', Sala:1, Turno: 2, Estatus:'pendiente'},
-  ];
+  ELEMENT_DATA: any[]=[]
   
 
 // EliminarElementoTabla(key: number) {
@@ -125,9 +72,44 @@ export class RecepcionquirofanoComponent implements AfterViewInit, OnInit {
 
     private router:Router,
     private _adapter: DateAdapter<any>,
+    private ticketService: TicketService,
+    private dataService: DynamicDialogService,
     private _intl: MatDatepickerIntl,
     @Inject(MAT_DATE_LOCALE) private _locale: string,) {// Assign the data to the data source for the table to render
+      ticketService.traertickets().subscribe(ticketsRecibidos => {
+        ticketsRecibidos.forEach((ticket) => {
+          let elementoAgregar = {
+            id: ticket.id,
+            Fecha: ticket.fecha_cirugia,
+            Ticket: ticket.id,
+            Paciente: ticket.paciente,
+            Edad: ticket.edad,
+            Diagnostico: ticket.diagnostico,
+            Cirugia: ticket.cirugia,
+            Sala: ticket.sala,
+            Turno: ticket.turno,
+            Estatus: ticket.estatus,
+          }
+          this.ELEMENT_DATA.push(elementoAgregar)
+        })
+        this.dataSource.data = this.ELEMENT_DATA
+      })
+
       this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+
+      // ****** Recibe datos ******
+      this.dataService.data$.subscribe(data => {
+        //console.log(data);
+        if (data==true) {
+          //console.log('Va bien');
+       
+          
+        }
+        else {
+          this.notification.error("¡Se canceló la operación");
+        }
+      });
+
 
   }
 
