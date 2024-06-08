@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
@@ -83,7 +83,7 @@ export interface Recepcion{
   styleUrl: './recibirrecepcionquirofano.component.scss'
 })
 export class RecibirrecepcionquirofanoComponent implements OnInit {
-
+  @Input()  ticketAEditar!: string;
   form!: FormGroup;
 
   Recepcion = new FormGroup({
@@ -114,6 +114,8 @@ export class RecibirrecepcionquirofanoComponent implements OnInit {
     private store: Store<fromRoot.State>, 
     
   ){
+   /*  let ticket = Number(this.ticketAEditar)
+
     ticketService.traertickets().subscribe(ticketsRecibidos => {
       ticketsRecibidos.forEach((ticket) => {
         let elementoAgregar = {
@@ -134,7 +136,7 @@ export class RecibirrecepcionquirofanoComponent implements OnInit {
         this.formaEdicion?.get('NoQx')?.setValue(ticket.registro!)
         this.ticketC = ticket.id;
       })
-    })
+    }) */
 
   }
 
@@ -153,6 +155,10 @@ export class RecibirrecepcionquirofanoComponent implements OnInit {
   ngOnInit(): void {
     this.recargar()
    
+
+    
+
+
   this.formaEdicion = this.fb.nonNullable.group({
 
     nombre: [''],

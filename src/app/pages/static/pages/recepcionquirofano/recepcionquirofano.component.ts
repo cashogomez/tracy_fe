@@ -7,7 +7,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatDatepickerModule, MatDatepickerIntl } from '@angular/material/datepicker';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
-
+import { RecibirrecepcionquirofanoComponent } from '../recibirrecepcionquirofano/recibirrecepcionquirofano.component';
 import 'moment/locale/ja';
 import 'moment/locale/fr';
 import 'moment/locale/es';
@@ -45,7 +45,7 @@ import { DynamicDialogService } from '@app/services/emergente/emergente.service'
     MatDivider,
     MatIcon,
     MatTooltipModule,
-
+    RecibirrecepcionquirofanoComponent,
     RouterOutlet,
     RouterLink, 
     RouterLinkActive,
@@ -113,6 +113,16 @@ export class RecepcionquirofanoComponent implements AfterViewInit, OnInit {
 
   }
 
+  editar: boolean = false;
+  ticketAEditar: string = '';
+
+  editarFila(element: Element) {
+    this.editarRegistro=element;
+    this.editar = true;
+    this.ticketAEditar = element.Ticket.toString();
+    //console.log(this.ticketAEditar);   
+  }
+
   goPlaces(){
     this.router.navigate(['static/recibirrecepcionquirofano'])
   }
@@ -161,9 +171,7 @@ export class RecepcionquirofanoComponent implements AfterViewInit, OnInit {
 
   displayedColumns = ['ticket', 'fecha', 'cirugia', 'sala', 'turno', 'estatus', 'accion' ];
 
-  editarFila(element: Element) {
-    this.editarRegistro=element;
-  }
+ 
   eliminarFila(element: Element) {
     this.borrarRegistro=element;
   }

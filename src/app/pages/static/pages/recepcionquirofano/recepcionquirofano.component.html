@@ -1,4 +1,5 @@
-<!------------------------------ INICIO DE ENCABEZADO -------------------------------->
+<div  *ngIf="editar==false">
+  <!------------------------------ INICIO DE ENCABEZADO -------------------------------->
 <h2 align="center">Material de Quirófano</h2>
 
 <div class="container">
@@ -73,7 +74,7 @@
     <!-- Symbol Column -->
     <ng-container matColumnDef="accion">
       <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
-      <mat-cell *matCellDef="let element"> <button class="botones" style=" margin-right: 20px;" matTooltip="Recibir material" (click)="goPlaces()">Recibir</button></mat-cell>
+      <mat-cell *matCellDef="let element"> <button class="botones" style=" margin-right: 20px;" matTooltip="Recibir material"  (click)="editarFila(element)" >Recibir</button></mat-cell>
     </ng-container>
 
 
@@ -85,3 +86,6 @@
 
   <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of elementos"></mat-paginator>
 </div>
+</div>
+
+<app-recibirrecepcionquirofano [ticketAEditar]="ticketAEditar" *ngIf="editar==true" ></app-recibirrecepcionquirofano>
