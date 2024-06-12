@@ -137,19 +137,19 @@ radioButtonChange(data: MatRadioChange) {
           this.is_superuser = false;
         break;
       case this.permisos[1]:
-          this.is_active  = false;
+          this.is_active  = true;
           this.is_staff = true;
           this.is_admin = false;
           this.is_superuser = false;
         break;
         case this.permisos[2]:
-          this.is_active  = false;
+          this.is_active  = true;
           this.is_staff = false;
           this.is_admin = true;
           this.is_superuser = false;
         break;
         case this.permisos[3]:
-          this.is_active  = false;
+          this.is_active  = true;
           this.is_staff = false;
           this.is_admin = false;
           this.is_superuser = true;

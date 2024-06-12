@@ -6,11 +6,12 @@
   <div class="text mat-typography">Solicitudes de Instrumentos</div>
   <div class="line"><mat-divider></mat-divider></div>
 </div>
-
+<form (ngSubmit)="capturarProgCirug()" [formGroup]="formaEdicion">
+      
 <p align="end">
   <mat-form-field>
     <mat-label>Fecha de cirugía</mat-label>
-    <input matInput [matDatepicker]="dp" (dateChange)="showDate($event)"   >
+    <input matInput [matDatepicker]="dp" (dateChange)="showDate($event)"  formControlName="Fechacirugia" >
     <mat-hint>{{getDateFormatString()}}</mat-hint>
     <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
     <mat-datepicker #dp></mat-datepicker>
@@ -22,7 +23,7 @@
   
     <section class="example-section">
       <label class="example-margin">Prioridad de la Cirugía:</label>
-      <mat-radio-group [(ngModel)]="labelPosition">
+      <mat-radio-group  formControlName="Prioridad">
         <mat-radio-button class="example-margin" value="alta">Alta</mat-radio-button>
         <mat-radio-button class="example-margin" value="media">Media</mat-radio-button>
         <mat-radio-button class="example-margin" value="baja">Baja</mat-radio-button>
@@ -31,8 +32,7 @@
   </div>
   
   
-  <form (ngSubmit)="capturarProgCirug()" [formGroup]="formaEdicion">
-      
+
     <table class="alinear-input" align="center">
 
     <!------------------------------------------------------------              fila 1                                ----------------------------------------------------------------->
@@ -117,7 +117,7 @@
     
         <td>
           <mat-form-field>
-            <input matInput [matDatepicker]="dp2" (dateChange)="showNacimiento($event)">
+            <input matInput [matDatepicker]="dp2" (dateChange)="showNacimiento($event)" formControlName="Nacimiento">
             <mat-hint>{{getDateFormatString()}}</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="dp2"></mat-datepicker-toggle>
             <mat-datepicker #dp2></mat-datepicker>
@@ -277,7 +277,7 @@
     <mat-form-field style=" width: 100%">
       <input matInput type="number" min="1"  step="1" value="1" [(ngModel)]="cantidadCapturada" (ngModelChange)="cambioCantidad()">
     </mat-form-field>
-    <button mat-raised-button  style="margin-right: 5%;"  (click)="capturaAgregar()" >Agregar</button>
+    <button class="botones" style="margin-right: 5%;"  (click)="capturaAgregar()" >Agregar</button>
   </div>
     
   </div>
@@ -320,10 +320,11 @@
     
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
+    </table><br>
+    
     <div align="center">
-        <button mat-raised-button  style="margin-right: 5%;" (click)="onAceptarClicked()">Aceptar</button>
-        <button mat-raised-button  style="margin-right: 5%;" (click)="onCancelarClicked()" >Cancelar</button>
+        <button class="botones" style="margin-right: 5%;" (click)="onCancelarClicked()" >Cancelar</button>
+        <button class="botones" style="margin-right: 5%;" (click)="onAceptarClicked()" (click)="Prioridades()">Aceptar</button>
     </div>
  
   </div>

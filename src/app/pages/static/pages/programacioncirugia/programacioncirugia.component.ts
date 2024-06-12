@@ -32,10 +32,19 @@ import { SetService } from '@app/services/set/set.service';
 import { InstrumentoService } from '@app/services/instrumento/instrumento.service';
 import { Instrumento } from '@app/models/backend/instrumento';
 import { TicketService } from '@app/services/ticket/ticket.service';
+import { TurnoService } from '@app/services';
 import moment from 'moment';
 import 'moment/locale/es';
 import { TicketsetService } from '@app/services/ticketset/ticketset.service';
 import { TicketinstrumentoService } from '@app/services/ticketinstrumento/ticketinstrumento.service';
+
+
+const date = new Date();const minutos=date.getMinutes();const segundos = date. getSeconds();
+
+
+
+const horaA =   date.getHours()
+
 
 @Component({
   selector: 'app-programacioncirugia',
@@ -107,6 +116,7 @@ export class ProgramacioncirugiaComponent implements OnInit {
     private notification: NotificationService,
     private dataService: DynamicDialogService,
     private ticketService: TicketService,
+    private turnoService: TurnoService,
     private setService: SetService,
     private instrumentoService : InstrumentoService,
     @Inject(MAT_DATE_LOCALE) private _locale: string,) {
@@ -247,7 +257,30 @@ export class ProgramacioncirugiaComponent implements OnInit {
   //dataSource!: MatTableDataSource<Element>;
 // **********************************************************
 
+  Turno1: number = 0;
+  TurnoAct:number = 0;
+  hora = horaA;
   ngOnInit() {
+    
+//------------------------_______________________-----------------TURNO----------------_______________________-------------------------
+        if (horaA >= 7 && horaA < 14 ) {this.Turno1 = 1;}
+
+        if (horaA >=14  && horaA < 21 ) { this.Turno1 = 2;}
+
+        if (horaA >=21  && horaA < 7 ){this.Turno1 = 3;}
+  
+    this.turnoService.traerUNturno(this.Turno1).subscribe (turnoRecibido => {
+        let turnoAgregar ={
+          Numero: turnoRecibido.id,
+          Inicio: turnoRecibido.inicio,
+          Fin: turnoRecibido.fin,
+          Id: turnoRecibido.id
+        }
+       this.TurnoAct= turnoRecibido.id
+    })
+//------------------------_______________________-----------------TURNO----------------_______________________-------------------------
+    
+
     this.updateCloseButtonLabel('Cerrar Calendario');
 
     this.formaEdicion = this.fb.nonNullable.group({
@@ -300,32 +333,53 @@ export class ProgramacioncirugiaComponent implements OnInit {
   }
   showNacimiento(naci: any) {
     this.fechaNacimiento = naci.value._d
+    console.log(this.fechaNacimiento.toString())
+    const date =this.fechaNacimiento;
+    this.today2 = date.getFullYear() + '-'
+             + ('0' + (date.getMonth() + 1)).slice(-2) + '-'
+             + ('0' + date.getDate()).slice(-2) + ' 08:00:00';
+             console.log(this.today2);
   }
   showDate(valor: any) {
     console.log('Cambio la fecha')
     this.fechaElegida = valor.value._d
     console.log(this.fechaElegida.toString())
-    console.log(this.labelPosition)
-    switch(this.labelPosition) { 
-      case 'baja': { 
-         this.prioridad = 1
-         break; 
-      } 
-      case 'media': { 
-        this.prioridad = 2
-         break; 
-      } 
-      case 'alta': { 
-        this.prioridad = 3
-        break; 
-     } 
-      default: { 
-        this.prioridad = 1
-         break; 
-      } 
-   } 
+    const date =this.fechaElegida;
+    this.today = date.getFullYear() + '-'
+             + ('0' + (date.getMonth() + 1)).slice(-2) + '-'
+             + ('0' + date.getDate()).slice(-2)+ ' 08:00:00';
+             console.log(this.today);
 
   }
+
+ today:any;
+ today2:any;
+
+  Prioridades(){
+    console.log(this.today)
+    console.log(this.today2)
+    console.log(this.prioridad)
+  switch(this.labelPosition) { 
+    case 'baja': { 
+       this.prioridad = 1
+       break; 
+    } 
+    case 'media': { 
+      this.prioridad = 2
+       break; 
+    } 
+    case 'alta': { 
+      this.prioridad = 3
+      break; 
+   } 
+    default: { 
+      this.prioridad = 1
+       break; 
+    } 
+ } 
+
+}
+
   eliminarFila(element: Element) {
     this.borrarRegistro=element;
   }
@@ -371,11 +425,11 @@ cambioCantidad() {
 }
 capturarProgCirug(): TicketRequest {
   const tickerCapturado: TicketRequest = {
-    fecha_cirugia: this.fechaElegida.getTime().toString(),
+    fecha_cirugia: this.today,
     paciente: this.formaEdicion?.get('Paciente')?.value!,
     registro: this.formaEdicion?.get('Registro')?.value!,
     edad: this.formaEdicion?.get('Edad')?.value!,
-    fecha_nacimiento: this.fechaNacimiento.getTime().toString(),
+    fecha_nacimiento: this.today2,
     habitacion: this.formaEdicion?.get('Habitacion')?.value!,
     sala: this.formaEdicion?.get('Sala')?.value!,
     turno: this.formaEdicion?.get('Turno')?.value!,
@@ -386,7 +440,7 @@ capturarProgCirug(): TicketRequest {
     anestesiologo: this.formaEdicion?.get('Anestesiologo')?.value!,
     anestesia: this.formaEdicion?.get('Anestesia')?.value!,
     residente: this.formaEdicion?.get('Ayudante')?.value!,
-    area_registro: this.formaEdicion?.get('Registro')?.value!,
+    area_registro: this.formaEdicion?.get('AreaRegistro')?.value!,
     enfermero: this.formaEdicion?.get('Enfermera')?.value!,
     notas: this.formaEdicion?.get('Notas')?.value!,
     estatus: 'pendiente',

@@ -18,7 +18,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterOutlet, RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 
-
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -44,6 +44,7 @@ import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
     RouterLink, 
     RouterLinkActive,
     RouterModule,
+    ReactiveFormsModule
 
 
   ],

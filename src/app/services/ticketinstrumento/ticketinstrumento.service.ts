@@ -19,7 +19,7 @@ export class TicketinstrumentoService {
     var httpOptions = {
       headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`})
     };
-    var direccion = `${environment.url}ceye/ticket/${registrarTicketInstrumento.ticket.id}/instrumento/${registrarTicketInstrumento.instrumento.id}/`
+    var direccion = `${environment.url}ceye/ticket/${registrarTicketInstrumento.ticket.id}/instrumento/${registrarTicketInstrumento.instrumento.id}`
     console.log(registrarTicketInstrumento);
     return this.http.post<any>(direccion, {'instrumento':registrarTicketInstrumento.instrumento, 'ticket': registrarTicketInstrumento.ticket, 'cantidad': registrarTicketInstrumento.cantidad }, httpOptions)
   }

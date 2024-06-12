@@ -51,3 +51,10 @@
     font-weight: 700;
     margin: 10px;
   }
+  .botones:disabled {
+    text-align: center;
+    background-color: #808080;
+    border: none;
+    color: white;
+    font-weight: 700;
+  }

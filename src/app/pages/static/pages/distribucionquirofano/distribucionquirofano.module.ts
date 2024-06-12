@@ -17,6 +17,8 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { MatButtonModule } from '@angular/material/button';
 
+import { DetalledistribucionquirofanoComponent } from '../detalledistribucionquirofano/detalledistribucionquirofano.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -35,11 +37,12 @@ import { MatButtonModule } from '@angular/material/button';
     MatIcon,
     MatTooltipModule,
     MatButtonModule,
-
+    DetalledistribucionquirofanoComponent ,
     RouterOutlet,
     RouterLink, 
     RouterLinkActive,
     RouterModule,
+    ReactiveFormsModule
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'es-ES'},

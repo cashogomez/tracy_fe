@@ -9,15 +9,15 @@
 </div>
 
 <!------------------------------ FILTRO -------------------------------->
-<div align="end">
+<div style="width: 95%;  margin: auto;">
+  <mat-label>Filtro: &nbsp;&nbsp;&nbsp;</mat-label>
   <mat-form-field>
-    <mat-label>Filtro</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Búsqueda" #input>
   </mat-form-field>
 </div>
 <!------------------------------ FIN DE ENCABEZADO -------------------------------->
 
-<div class="mat-elevation-z8" id="page-1" class="page">
+<div class="mat-elevation-z8" id="page-1" class="page"  style="width: 95%; text-align: center; margin: auto;">
   <mat-table #table [dataSource]="dataSource">
 
     <!--- Note that these columns can be defined in any order.
@@ -32,7 +32,7 @@
     <!-- Symbol Column -->
     <ng-container matColumnDef="fecha">
         <mat-header-cell *matHeaderCellDef matTooltip="Fecha"> Fecha </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.fecha}} </mat-cell>
+        <mat-cell *matCellDef="let element"> {{element.fecha| date: 'dd/MM/yyyy'}} </mat-cell>
     </ng-container>
 
 
@@ -84,7 +84,7 @@
 
 <!-- ================================= SEGUNDA TABLA ================================ ----------------->
 
-<div class="mat-elevation-z8" *ngIf="verSegundaTabla" class="page">
+<div class="mat-elevation-z8" *ngIf="verSegundaTabla" class="page" style="width: 95%; text-align: center; margin: auto;">
     <h2 align="center">Material a asignar por lavadora</h2>
     <mat-table #table [dataSource]="dataSegundaTabla">
 
@@ -126,11 +126,9 @@
     <mat-row *matRowDef="let row; columns: displayedSegundaColumns;" class="element-row"></mat-row>
     
     </mat-table>
-</div>
+</div><br>
 
-<p align="end">
+<div align="end" style="width: 95%;">
     <button class="botones" style=" margin-right: 20px;" matTooltip="Cancelar Lavado">Cancelar</button>
-    <button class="botones" style=" margin-right: 20px;" matTooltip="" (click)="goPlaces()">Siguiente</button>
-</p>
-
-
+    <button class="botones"matTooltip="" (click)="goPlaces()">Siguiente</button>
+</div>

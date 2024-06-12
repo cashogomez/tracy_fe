@@ -7,7 +7,7 @@
   <div class="line"><mat-divider></mat-divider></div>
 </div>
 
-<p align="end">
+<div align="end">
   <mat-form-field>
     <mat-label>Fecha de cirugía</mat-label>
     <input matInput [matDatepicker]="dp" (dateChange)="showDate($event)">
@@ -15,7 +15,7 @@
     <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
     <mat-datepicker #dp></mat-datepicker>
   </mat-form-field>
-
+</div>
 <!--  ------------------------------FIN DE ENCABEZADO ---------------------------------->
 
 <div class="alinear" >
@@ -277,7 +277,7 @@
     <mat-form-field style=" width: 100%">
       <input matInput type="number" min="1"  step="1" value="1" [(ngModel)]="cantidadCapturada" (ngModelChange)="cambioCantidad()">
     </mat-form-field>
-    <button mat-raised-button  style="margin-right: 5%;"  (click)="capturaAgregar()" >Agregar</button>
+    <button class="botones" style="margin-right: 5%;"  (click)="capturaAgregar()" >Agregar</button>
   </div>
     
   </div>
@@ -324,7 +324,7 @@
 
     <div align="center">
       <button  class="botones" style="margin-right: 5%;" (click)="onCancelarClicked()">Cancelar</button>
-      <button  class="botones" style="margin-right: 5%;" (click)="onAceptarClicked()">Aceptar</button> 
+      <button  class="botones" style="margin-right: 5%;" (click)="onAceptarClicked()"  (click)="Prioridades()">Aceptar</button> 
     </div>
  
   </div>

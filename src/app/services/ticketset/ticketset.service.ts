@@ -20,7 +20,7 @@ export class TicketsetService {
     var httpOptions = {
       headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`})
     };
-    var direccion = `${environment.url}ceye/ticket/${registrarTicketSet.ticket.id}/set/${registrarTicketSet.set.id}/`
+    var direccion = `${environment.url}ceye/ticket/${registrarTicketSet.ticket.id}/set/${registrarTicketSet.set.id}`
     console.log(registrarTicketSet);
     return this.http.post<any>(direccion, {'set':registrarTicketSet.set, 'ticket': registrarTicketSet.ticket, 'cantidad': registrarTicketSet.cantidad }, httpOptions)
   }

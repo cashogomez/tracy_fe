@@ -158,7 +158,6 @@ start() {
         this.options.push(listaciclo)
         this.nombreequipo = this.equipoAOperar.nombre
       })
-      console.log(this.ciclosDelEquipo)
       this.filteredOptions = this.myControl.valueChanges.pipe(
         startWith(''),
         map(value => {
@@ -171,7 +170,6 @@ start() {
 
 
     
-    console.log(this.filteredOptions);
   }
 
   private _filter(name: string): listaCiclo[] {

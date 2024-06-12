@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -8,6 +8,11 @@ import { IncidenciadialogoComponent } from '../incidenciadialogo/incidenciadialo
 import { Incidencia, IncidenciaRequest } from '@app/models/backend/incidencia';
 import { DialogService } from '@app/services/dialog/dialog.service';
 import { Router } from '@angular/router';
+import { TicketService } from '@app/services/ticket/ticket.service';
+import { TicketsetService } from '@app/services/ticketset/ticketset.service';
+import { TicketinstrumentoService } from '@app/services/ticketinstrumento/ticketinstrumento.service';
+
+import { CantidadInstrumentoService } from '@app/services/cantidadinstrumento/cantidadinstrumento.service';
 @Component({
   selector: 'app-lavadomaquina',
   standalone: false,
@@ -15,45 +20,62 @@ import { Router } from '@angular/router';
   styleUrl: './lavadomaquina.component.scss'
 })
 
-export class LavadomaquinaComponent {
+export class LavadomaquinaComponent implements OnInit{
 
 verSegundaTabla = false;
 numeroSelecciones = 0;
 
   /** Constants used to fill up our data base. */
-  ELEMENT_DATA: Element[] = [
-    {  fecha: '26/10/24', ticket: 12, cirugia: 'Laparoscopia', turno: 1, sala: 1, area: 'urgencia', estado: false  },
-    {  fecha: '26/10/24',ticket: 13, cirugia: 'Biopsia', turno: 2, sala: 2, area: 'urgencia', estado: false },
-    { fecha: '26/10/24', ticket: 14,cirugia: 'Biopsia', turno: 2, sala: 1, area: 'urgencia', estado: false  },
-    { fecha: '26/10/24', ticket: 15,cirugia: 'Apendiceptomia', turno: 1, sala: 3, area: 'urgencia', estado: false  },
-    { fecha: '26/10/24' , ticket: 16,cirugia: 'Apendiceptomia', turno: 1, sala: 3, area: 'urgencia', estado: false },
-    { fecha: '26/10/24' ,ticket: 17,cirugia: 'Apendiceptomia', turno: 2, sala: 2, area: 'urgencia', estado: false },
-    {  fecha: '26/10/24' , ticket: 18,cirugia: 'Biopsia', turno: 3, sala: 2, area: 'urgencia', estado: false },
-    { fecha: '26/10/24' , ticket: 19,cirugia: 'alta', turno: 3, sala: 1, area: 'urgencia', estado: false },
-    { fecha: '26/10/24' , ticket: 20,cirugia: 'baja', turno: 2, sala: 4, area: 'urgencia', estado: false },
-    { fecha: '26/10/24', ticket: 1,cirugia: 'media', turno: 2, sala: 1, area: 'urgencia', estado: false  },
-    {  fecha: '26/10/24', ticket: 2,cirugia: 'baja', turno: 1, sala: 3, area: 'urgencia', estado: false  },
-    {  fecha: '26/10/24', ticket: 3,cirugia: 'media', turno: 1, sala: 2, area: 'urgencia', estado: false  },
-    { fecha: '26/10/24', ticket: 4,cirugia: 'alta', turno: 1, sala: 5, area: 'urgencia', estado: false  },
-    { fecha: '26/10/24', ticket: 5,cirugia: 'baja', turno: 1, sala: 2, area: 'urgencia', estado: false },
-    {  fecha: '26/10/24', ticket: 6,cirugia: 'baja', turno: 2, sala: 2, area: 'urgencia', estado: false  },
-    {  fecha: '26/10/24' , ticket: 7,cirugia: 'Biopsia', turno: 3, sala: 2, area: 'urgencia', estado: false },
-    {  fecha: '26/10/24' , ticket: 8,cirugia: 'baja', turno: 3, sala: 1, area: 'urgencia', estado: false },
-    {  fecha: '26/10/24' , ticket: 9,cirugia: 'Apendiceptomia', turno: 1, sala: 4, area: 'urgencia', estado: false},
-    { fecha: '26/10/24' , ticket: 10,cirugia: 'media', turno: 1, sala: 2, area: 'urgencia', estado: false},
-    {  fecha: '26/10/24' , ticket: 11,cirugia: 'media', turno: 1, sala: 3, area: 'urgencia', estado: false },
-  ];
+  ELEMENT_DATA: Element[] = [];
 
+  tickets: any;
 
   MATERIAL_SEGUNDA: Material[] =[]
-  constructor(private notification: NotificationService, public dialog: MatDialog, 
+  constructor(
+    private notification: NotificationService, 
+    public dialog: MatDialog, 
     private dialogService: DialogService,
-    private router: Router) {
+    private router: Router,
+      //--------------------pedir tablas set info --------------------------
+
+   //--------------------traer tablas set info --------------------------
+   private Settraer: TicketsetService,
+   private TraerInstSet: CantidadInstrumentoService,
+   //--------------------traer tablas set info --------------------------
+
+   //--------------------traer tablas Inst info --------------------------
+   private Insttraer: TicketinstrumentoService,
+   //--------------------traer tablas Inst info --------------------------
     
-    // Assign the data to the data source for the table to render
+    private ticketService: TicketService,
+  ) 
+    {
+    
+      ticketService.traertickets().subscribe(ticketsRecibidos => {
+        ticketsRecibidos.forEach((ticket) => {
+
+          let elementoAgregar = {
+
+
+            ticket: ticket.id,
+            fecha: ticket.fecha_cirugia,
+            cirugia: ticket.cirugia,
+            sala: ticket.sala,
+            turno: ticket.turno,
+            area: ticket.area_registro,
+            estado: '',
+           
+          }
+          this.ELEMENT_DATA.push(elementoAgregar)
+        })
+        this.dataSource.data = this.ELEMENT_DATA
+      })
 
       this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+
       this.dataSegundaTabla = new MatTableDataSource(this.MATERIAL_SEGUNDA);
+
+      this.dataSourceTemp= new MatTableDataSource(MATERIAL_DATA1);
 
   }
   goPlaces(){
@@ -79,6 +101,12 @@ numeroSelecciones = 0;
     });
   }
   ngOnInit() {
+
+    
+  
+  
+
+
   }
 
   downloadPdf() {
@@ -103,37 +131,172 @@ numeroSelecciones = 0;
   //dataSource: MatTableDataSource<Element>;
   dataSource: MatTableDataSource<Element>;
   dataSegundaTabla: MatTableDataSource<Material>;
+  dataSourceTemp : MatTableDataSource<Material>;
 // **********************************************************
 
   displayedColumns = ['ticket', 'fecha',  'cirugia', 'sala', 'turno', 'area', 'accion'];
   displayedSegundaColumns = ['id', 'nombre',  'cantidad', 'lavadoras', 'incidencia'];
 
   lavarFila(data: Element) {
-    var dataModificar = this.ELEMENT_DATA.filter((u) => u.ticket == data.ticket);
-    if (dataModificar[0].estado==false) {
-      dataModificar[0].estado = true
-      this.numeroSelecciones += 1;
-      this.notification.success('Material agregado para asignación en lavadora')
-      this.MATERIAL_SEGUNDA = this.agregar(dataModificar[0], this.MATERIAL_SEGUNDA);
-    }
-    else {
-      dataModificar[0].estado = false
-      this.numeroSelecciones += -1;
-      if (this.numeroSelecciones <0) {
-        this.numeroSelecciones = 0;
-      }
-      this.notification.error('Material eliminado de la asignación en lavadora');
-      this.MATERIAL_SEGUNDA =  this.eliminar(dataModificar[0], this.MATERIAL_SEGUNDA);
+
+    MATERIAL_DATA1 = []
+
+     this.tickets = data?.ticket
+
+    
+
+    this.Settraer.traerticketset(this.tickets).subscribe(setRecibidos=> {
+
+      if (setRecibidos.length != 0) {   
       
+      setRecibidos.forEach((set)=>{
+        
+        this.TraerInstSet.traercantidadinstrumento(set.set.id).subscribe(instSet =>{
+        instSet.forEach((inst)=>{
+          let instrumento ={
+            id: inst.instrumento.id,
+            nombre: inst.instrumento.nombre,
+            cantidad: inst.cantidad,
+            lavadora1: '',
+            lavadora2: '',
+            lavadora3: '',
+          }
+          MATERIAL_DATA1.push(instrumento)
+
+        }) 
+
+        this.Insttraer.traerticketinstrumento(this.tickets).subscribe(InstRecibidos=> {
+          InstRecibidos.forEach((inst)=>{
+            let instAgregar ={
+              id:inst.instrumento.id,
+              nombre: inst.instrumento.nombre,
+              cantidad:inst.cantidad,
+              lavadora1: '',
+              lavadora2: '',
+              lavadora3: '',
+            }
+            let comparable = MATERIAL_DATA1.filter((IDcomp) => IDcomp.id == instAgregar.id)
+          if (comparable.length > 0 ){
+            let num = 0;
+            MATERIAL_DATA1.forEach(data =>{
+              if (data.id  == instAgregar.id ) {
+                MATERIAL_DATA1[num].cantidad = MATERIAL_DATA1[num].cantidad + instAgregar.cantidad
+              }
+             
+              num++
+            })
+      
+             //  this.dataSource2[indice].Entregados =     this.dataSource2[indice].Entregados + 1
+         
+          
+        }
+            else{
+            MATERIAL_DATA1.push(instAgregar)
+           }
+            
+          })
+
+          var dataModificar = this.ELEMENT_DATA.filter((u) => u.ticket == data.ticket);
+          if (dataModificar[0].estado==false) {
+            dataModificar[0].estado = true
+            this.numeroSelecciones += 1;
+            this.notification.success('Material agregado para asignación en lavadora')
+            this.MATERIAL_SEGUNDA = this.agregar(dataModificar[0], this.MATERIAL_SEGUNDA);
+          }
+          else {
+            dataModificar[0].estado = false
+            this.numeroSelecciones += -1;
+            if (this.numeroSelecciones <0) {
+              this.numeroSelecciones = 0;
+            }
+            this.notification.error('Material eliminado de la asignación en lavadora');
+            this.MATERIAL_SEGUNDA =  this.eliminar(dataModificar[0], this.MATERIAL_SEGUNDA);
+            
+          }
+          //console.log(' Salida Segunda Tabla ${}', this.MATERIAL_SEGUNDA);
+          if (this.numeroSelecciones > 0) {
+            this.verSegundaTabla=true;
+          }
+          else {
+            this.verSegundaTabla=false;
+          }
+          this.dataSegundaTabla = new MatTableDataSource(this.MATERIAL_SEGUNDA);
+    
+          //this.dataSourceTemp.data = MATERIAL_DATA1
+
+        }) //:____________________________
+
+  
+
+
+        })
+
+
+      })
+    }//------------------sadasdasd
+
+
+    else{
+      this.Insttraer.traerticketinstrumento(this.tickets).subscribe(InstRecibidos=> {
+        InstRecibidos.forEach((inst)=>{
+          let instAgregar ={
+            id:inst.instrumento.id,
+            nombre: inst.instrumento.nombre,
+            cantidad:inst.cantidad,
+            lavadora1: '',
+            lavadora2: '',
+            lavadora3: '',
+          }
+          var dataModificar2 = MATERIAL_DATA1.indexOf(instAgregar);
+          if(dataModificar2 !=-1)
+            {
+              MATERIAL_DATA1 [dataModificar2].cantidad = MATERIAL_DATA1 [dataModificar2].cantidad + instAgregar.cantidad
+            }
+
+            else{
+              MATERIAL_DATA1.push(instAgregar)
+            }
+          
+        })
+
+        var dataModificar = this.ELEMENT_DATA.filter((u) => u.ticket == data.ticket);
+        if (dataModificar[0].estado==false) {
+          dataModificar[0].estado = true
+          this.numeroSelecciones += 1;
+          this.notification.success('Material agregado para asignación en lavadora')
+          this.MATERIAL_SEGUNDA = this.agregar(dataModificar[0], this.MATERIAL_SEGUNDA);
+        }
+        else {
+          dataModificar[0].estado = false
+          this.numeroSelecciones += -1;
+          if (this.numeroSelecciones <0) {
+            this.numeroSelecciones = 0;
+          }
+          this.notification.error('Material eliminado de la asignación en lavadora');
+          this.MATERIAL_SEGUNDA =  this.eliminar(dataModificar[0], this.MATERIAL_SEGUNDA);
+          
+        }
+        //console.log(' Salida Segunda Tabla ${}', this.MATERIAL_SEGUNDA);
+        if (this.numeroSelecciones > 0) {
+          this.verSegundaTabla=true;
+        }
+        else {
+          this.verSegundaTabla=false;
+        }
+        this.dataSegundaTabla = new MatTableDataSource(this.MATERIAL_SEGUNDA);
+  
+        //this.dataSourceTemp.data = MATERIAL_DATA1
+
+      }) //:____________________________
     }
-    //console.log(' Salida Segunda Tabla ${}', this.MATERIAL_SEGUNDA);
-    if (this.numeroSelecciones > 0) {
-      this.verSegundaTabla=true;
-    }
-    else {
-      this.verSegundaTabla=false;
-    }
-    this.dataSegundaTabla = new MatTableDataSource(this.MATERIAL_SEGUNDA);
+    
+    }) 
+
+    
+
+
+    console.log ('xcv ' +this.tickets)
+   
   }
   agregar(agregarTicket: Element, listaMaterial: Material[] ): Material[] {
     //console.log('Material entrada de Agregar: ${}',listaMaterial)
@@ -233,30 +396,23 @@ numeroSelecciones = 0;
 }
 
 export interface Element {
-  cirugia: string;
-  ticket: number;
-  fecha: string;
-  sala: number;
-  turno: number;
-  area: string;
-  estado: boolean;
+  cirugia: any;
+  ticket: any;
+  fecha: any;
+  sala: any;
+  turno: any;
+  area: any;
+  estado: any;
 }
 
 export interface Material{
-  id: number,
-  nombre: string;
-  cantidad: number;
-  lavadora1: boolean;
-  lavadora2: boolean;
-  lavadora3: boolean;
+  id:  any;
+  nombre:  any;
+  cantidad:  any;
+  lavadora1:  any;
+  lavadora2:  any;
+  lavadora3: any;
 }
 
-const MATERIAL_DATA1: Material[] = [
-  {id: 100, nombre: 'Pinza Maier 20 cm', cantidad: 10, lavadora1: false, lavadora2: false, lavadora3: false},
-  {id: 10, nombre: 'Separador Farabeuf 20 cm', cantidad: 10, lavadora1: false, lavadora2: false, lavadora3: false},
-  {id: 2, nombre: 'Porta aguja mayo Hegar 20 cm', cantidad: 3, lavadora1: false, lavadora2: false, lavadora3: false},
-  {id: 15, nombre: 'Porta aguja Hegar mayo 14 cm', cantidad: 20, lavadora1: false, lavadora2: false, lavadora3: false},
-  {id: 66, nombre: 'Sonda acanalada 13 cm', cantidad: 1, lavadora1: false, lavadora2: false, lavadora3: false},
-];
-// ****************************** DIALOGO *************
-
+var MATERIAL_DATA1:Material[] = [  ]
+// ********

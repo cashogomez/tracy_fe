@@ -8,10 +8,10 @@
   <div class="line"><mat-divider></mat-divider></div>
 </div>
 
-<p align="end">
+<div align="end" style="width: 95%;  margin: auto;">
   <button class="botones"  (click)="generarPDF()" style=" margin: 5px;" matTooltip="Generar reporte">Reporte</button>
   <button class="botones" style=" margin: 5px;" matTooltip="Recepción de Material" (click)="leerCodigoQR()" >Recepción</button>
-</p>
+</div>
 
 <div class="container">
   <div class="line"><mat-divider></mat-divider></div>
@@ -20,8 +20,8 @@
 </div>
 
 
-<p align="begin">
-
+ <div align="end" style="width: 95%;  margin: auto;">
+  <form class="date-block" [formGroup]="filterForm">
   <mat-form-field class="menu_desplegable">
     <mat-label>Área</mat-label>
     <mat-select (selectionChange)="changeArea($event.value)">
@@ -36,32 +36,42 @@
     </mat-select>
   </mat-form-field> 
 
-  <mat-form-field>
-    <mat-label>Elige fecha</mat-label>
-    <input matInput [matDatepicker]="dp">
-    <mat-hint>{{getDateFormatString()}}</mat-hint>
-    <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
-    <mat-datepicker #dp></mat-datepicker>
-  </mat-form-field>
-  <button class="botones" style=" margin: 10px;" matTooltip="Aplicar buscador">Aplicar</button>
-</p>
 
+<!------------------------------ FILTRO -------------------------------->
+
+ 
+      
+    <mat-form-field  style=" margin: 10px;">
+      <mat-label>Ingresa la Fecha</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate placeholder="Fecha Inicio" formControlName="fromDate">
+        <input matEndDate placeholder="Fecha Final" formControlName="toDate">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+    <button  (click)="applyFilter2()" class="botones" style=" margin: 10px;" matTooltip="Aplicar filtro">Aplicar</button>
+  
+  </form>
+</div>
 
 <div class="container">
   <div class="line"><mat-divider></mat-divider></div>
   <div class="text mat-typography">Resultados</div>
   <div class="line"><mat-divider></mat-divider></div>
 </div>
-<!------------------------------ FILTRO -------------------------------->
-<p align="end">
+
+<div style="width: 95%;  margin: auto;">
+  <mat-label>Filtro: &nbsp;&nbsp;&nbsp;</mat-label>
   <mat-form-field>
-    <mat-label>Filtro</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Búsqueda" #input>
   </mat-form-field>
-</p>
+</div>
+
+
 <!------------------------------ FIN DE ENCABEZADO -------------------------------->
 
-<div class="mat-elevation-z8" id="page-1" class="page">
+<div class="mat-elevation-z8" id="page-1" class="page" style="width: 95%; text-align: center; margin: auto;">
   <mat-table #table [dataSource]="dataSource">
 
     <!--- Note that these columns can be defined in any order.

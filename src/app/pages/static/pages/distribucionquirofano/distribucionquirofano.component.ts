@@ -1,4 +1,6 @@
+import { DatePipe } from '@angular/common';
 import { Component, Inject, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepickerIntl } from '@angular/material/datepicker';
 import { MatPaginator } from '@angular/material/paginator';
@@ -6,10 +8,14 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { NotificationService } from '@app/services';
+import { DynamicDialogService } from '@app/services/emergente/emergente.service';
+import { TicketService } from '@app/services/ticket/ticket.service';
 import 'moment/locale/es';
 import pdfMake from "pdfmake/build/pdfmake";
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
+
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-distribucionquirofano',
@@ -22,152 +28,126 @@ export class DistribucionquirofanoComponent {
   editarRegistro !: Element;
   borrarRegistro !: Element;
   /** Constants used to fill up our data base. */
-  ELEMENT_DATA = [
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'baja', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'media', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'baja', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'media', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'baja', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'media', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'baja', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'media', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'baja', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'media', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'baja', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'media', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'baja', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-    {Prioridad: 'alta', Ticket: 1, Cirugia: 'Estenosis Aórtica', Fecha:'12/05/2023', Sala: 1, Turno: 1},
-  
-  
-  ];
+  ELEMENT_DATA: any[]=[]
 
 // EliminarElementoTabla(key: number) {
 //   this.ELEMENT_DATA.forEach((value,index)=>{
 //       if(value.ticket==key) this.ELEMENT_DATA.splice(index,1);
 //   });
 // } 
-
+nuevoP =''
   constructor(private notification: NotificationService,
     private router:Router,
     private _adapter: DateAdapter<any>,
+    private ticketService: TicketService,
+    private dataService: DynamicDialogService,
     private _intl: MatDatepickerIntl,
     @Inject(MAT_DATE_LOCALE) private _locale: string,) { // Assign the data to the data source for the table to render
+   
+
+
+
       this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+
+      // ****** Recibe datos ******
+      this.dataService.data$.subscribe(data => {
+        //console.log(data);
+        if (data==true) {
+          //console.log('Va bien');
+       
+          
+        }
+        else {
+          this.notification.error("¡Se canceló la operación");
+        }
+      });
+
+
+          //------------------------------------------condicion reloj
+          this.pipe = new DatePipe('en');
+          this.dataSource.filterPredicate = (data3, filter) =>{
+              var cortado = data3.Fecha.split('T').slice(0)
+              var cortado2 = cortado[0]
+            const date =this.fromDate._d; this.today = date.getFullYear()+ '-'  + ('0' + (date.getMonth() + 1)).slice(-2) + '-' +('0' + date.getDate()).slice(-2)  
+    
+            const date2 =this.toDate._d;  this.today2 = date2.getFullYear()+ '-'  + ('0' + (date2.getMonth() + 1)).slice(-2) + '-' +('0' + date2.getDate()).slice(-2)  
+    
+            if (this.today && this.today2 ) {
+              return cortado2  >=  this.today  && cortado2 <= this.today2;
+            }
+            return true;
+          }
+        //------------------------------------------condicion reloj
+    
+
 
   }
 
+
+   //--------------------inicia calendario
+   today:any;
+   today2:any;
+   pipe: DatePipe;
+   filterForm:any = new FormGroup({
+     fromDate: new FormControl(),
+     toDate: new FormControl(),
+   });
+   
+   get fromDate() { return this.filterForm.get('fromDate').value; }
+   get toDate() { return this.filterForm.get('toDate').value; }
+   
+   applyFilter2() {
+     this.dataSource.filter = ''+Math.random();
+   }
+ 
+ //--------------------fincalendario
+  
   goPlaces(){
     this.router.navigate(['/static/detalledistribucionquirofano'])
   }
 
   ngOnInit() {
     this.updateCloseButtonLabel('Cerrar Calendario');
+
+
+    this.ticketService.traertickets().subscribe(ticketsRecibidos => {
+        
+      ticketsRecibidos.forEach((ticket) => {
+        if (ticket.prioridad == 1){
+          this.nuevoP = 'baja'
+        }
+        if (ticket.prioridad == 2){
+          this.nuevoP = 'media'
+        }
+        if (ticket.prioridad == 3){
+          this.nuevoP = 'alta'
+        }
+        let elementoAgregar = {
+          id: ticket.id,
+          Fecha: ticket.fecha_cirugia,
+          Ticket: ticket.id,
+          Paciente: ticket.paciente,
+          Edad: ticket.edad,
+          Diagnostico: ticket.diagnostico,
+          Cirugia: ticket.cirugia,
+          Sala: ticket.sala,
+          Turno: ticket.turno,
+          Estatus: ticket.estatus,
+          Prioridad: this.nuevoP
+          
+        
+
+        }
+        
+        
+      
+          
+
+    console.log (ticket.id +'   '+ticket.prioridad)
+        this.ELEMENT_DATA.push(elementoAgregar)
+      })
+      this.dataSource.data = this.ELEMENT_DATA
+    })
   }
 
   french() {
@@ -212,11 +192,20 @@ export class DistribucionquirofanoComponent {
   dataSource: MatTableDataSource<Element>;
 // **********************************************************
 
-  displayedColumns = ['prioridad', 'ticket', 'cirugia', 'fecha',  'sala', 'turno', 'accion' ];
+  displayedColumns = ['prioridad', 'ticket', 'cirugia', 'fecha',  'sala', 'turno', 'estatus', 'accion' ];
+
+
+
+  editar: boolean = false;
+  ticketAEditar: string = '';
 
   editarFila(element: Element) {
     this.editarRegistro=element;
+    this.editar = true;
+    this.ticketAEditar = element.Ticket.toString();
+    //console.log(this.ticketAEditar);   
   }
+
   eliminarFila(element: Element) {
     this.borrarRegistro=element;
   }

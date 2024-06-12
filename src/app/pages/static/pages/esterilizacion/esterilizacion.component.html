@@ -1,5 +1,5 @@
-<div  *ngIf="editar==false">
-<form [formGroup]="Esterilizador" (ngSubmit)="submitted()">
+<form [formGroup]="Esterilizador" (ngSubmit)="submitted()"><div  *ngIf="editar==false">
+
 
   <div class="contenedor">
 
@@ -39,6 +39,6 @@
       </div>
   </div>
 
-</form>
-</div>
+
+</div></form>
 <app-detalleesterilizador [EquipoADetallar]="EquipoADetallar" *ngIf="editar==true"></app-detalleesterilizador>

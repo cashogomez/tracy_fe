@@ -14,6 +14,9 @@ import { AreatrabajoService  } from '@app/services/AreaTrabajo/areatrabajo.servi
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 import { CrearEmpaqueComponent } from '../crear-empaque/crear-empaque.component';
 
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+
 @Component({
   selector: 'app-empaquequirofano',
   standalone: false,
@@ -52,8 +55,43 @@ export class EmpaquequirofanoComponent {
           this.setmaterial.push(dato);
         })
       }))
+
+
+
+      //------------------------------------------condicion reloj
+      this.pipe = new DatePipe('en');
+      this.dataSource.filterPredicate = (data3, filter) =>{
+          var cortado = data3.Estatus.split('T').slice(0)
+          var cortado2 = cortado[0]
+        const date =this.fromDate._d; this.today = date.getFullYear()+ '-'  + ('0' + (date.getMonth() + 1)).slice(-2) + '-' +('0' + date.getDate()).slice(-2)  
+
+        const date2 =this.toDate._d;  this.today2 = date2.getFullYear()+ '-'  + ('0' + (date2.getMonth() + 1)).slice(-2) + '-' +('0' + date2.getDate()).slice(-2)  
+
+        if (this.today && this.today2 ) {
+          return cortado2  >=  this.today  && cortado2 <= this.today2;
+        }
+        return true;
+      }
+    //------------------------------------------condicion reloj
   }
 
+   //--------------------inicia calendario
+   today:any;
+   today2:any;
+   pipe: DatePipe;
+   filterForm:any = new FormGroup({
+     fromDate: new FormControl(),
+     toDate: new FormControl(),
+   });
+   
+   get fromDate() { return this.filterForm.get('fromDate').value; }
+   get toDate() { return this.filterForm.get('toDate').value; }
+   
+   applyFilter2() {
+     this.dataSource.filter = ''+Math.random();
+   }
+ 
+ //--------------------fincalendario
   goPlaces(){
     this.router.navigate(['static/historico-qr'])
   }

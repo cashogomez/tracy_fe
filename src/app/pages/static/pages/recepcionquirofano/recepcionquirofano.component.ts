@@ -15,7 +15,7 @@ import 'moment/locale/es';
 
 import { MatDivider } from '@angular/material/divider';
 import { NotificationService } from '@app/services/notification/notification.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterLink, RouterLinkActive, RouterModule, RouterOutlet } from '@angular/router';
@@ -24,7 +24,9 @@ import pdfMake from "pdfmake/build/pdfmake";
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { TicketService } from '@app/services/ticket/ticket.service';
 import { DynamicDialogService } from '@app/services/emergente/emergente.service';
+import { FormControl, FormGroup,FormsModule, ReactiveFormsModule } from '@angular/forms';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
+
 
 
 @Component({
@@ -50,6 +52,7 @@ import { DynamicDialogService } from '@app/services/emergente/emergente.service'
     RouterLink, 
     RouterLinkActive,
     RouterModule,
+    ReactiveFormsModule
   ],
   templateUrl: './recepcionquirofano.component.html',
   styleUrl: './recepcionquirofano.component.scss'
@@ -111,7 +114,57 @@ export class RecepcionquirofanoComponent implements AfterViewInit, OnInit {
       });
 
 
+
+    //------------------------------------------condicion reloj
+      this.pipe = new DatePipe('en');
+      this.dataSource.filterPredicate = (data3, filter) =>{
+          var cortado = data3.Fecha.split('T').slice(0)
+          var cortado2 = cortado[0]
+          
+        const date =this.fromDate._d; this.today = date.getFullYear()+ '-'  + ('0' + (date.getMonth() + 1)).slice(-2) + '-' +('0' + date.getDate()).slice(-2)  
+
+        const date2 =this.toDate._d;  this.today2 = date2.getFullYear()+ '-'  + ('0' + (date2.getMonth() + 1)).slice(-2) + '-' +('0' + date2.getDate()).slice(-2)  
+
+        if (this.today && this.today2 ) {
+          return cortado2  >=  this.today  && cortado2 <= this.today2;
+        }
+        return true;
+      }
+    //------------------------------------------condicion reloj
+
+
   }
+
+
+
+  //--------------------inicia calendario
+  today:any;
+  today2:any;
+  pipe: DatePipe;
+  filterForm:any = new FormGroup({
+    fromDate: new FormControl(),
+    toDate: new FormControl(),
+  });
+  
+  get fromDate() { return this.filterForm.get('fromDate').value; }
+  get toDate() { return this.filterForm.get('toDate').value; }
+  
+  applyFilter2() {
+    this.dataSource.filter = ''+Math.random();
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value.toString();
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+//--------------------fincalendario
+
+  Fechas1:any;
+  Fechas2:any;
 
   editar: boolean = false;
   ticketAEditar: string = '';
@@ -123,11 +176,15 @@ export class RecepcionquirofanoComponent implements AfterViewInit, OnInit {
     //console.log(this.ticketAEditar);   
   }
 
+
+
+  
   goPlaces(){
     this.router.navigate(['static/recibirrecepcionquirofano'])
   }
   ngOnInit() {
     this.updateCloseButtonLabel('Cerrar Calendario');
+    console.log(this.Fechas1 + '  sd  ' + this.Fechas2)
   }
 
   french() {
@@ -157,14 +214,7 @@ export class RecepcionquirofanoComponent implements AfterViewInit, OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
   //dataSource: MatTableDataSource<Element>;
   dataSource: MatTableDataSource<Element>;
 // **********************************************************

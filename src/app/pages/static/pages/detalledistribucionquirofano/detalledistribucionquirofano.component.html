@@ -6,19 +6,19 @@
   <div class="line"><mat-divider></mat-divider></div>
 </div><br>
 
-<form [formGroup]="Distribucion_1">
+<form [formGroup]="formaEdicion">
     <div style="display: flex;">
     
-        <div style="width: 60%; margin-left: 5%;">
+        <div style="width: 50%; margin-left: 5%;">
             <h1>Información de Programación de Cirugía</h1>
         </div>
     
-        <div style="width: 20%; text-align: center; ">
-            <h1>Ticket: {{Ticket}}</h1>
+        <div style="width: 25%; text-align: center; ">
+            <h1>Ticket: {{ticketC}}</h1>
         </div>
     
         <div style="width: 20%; text-align: right; margin-right: 5%;">
-            <h1>{{fecha}}</h1>
+            <h1>Fecha: {{fecha}}</h1>
         </div>
     
     </div><br>
@@ -34,7 +34,7 @@
         
             <td>
               <mat-form-field class="input1">
-                <input matInput type="text" placeholder="22 de septiembre 2023" formControlName="FechaCirugia">
+                <input matInput type="text" placeholder="22 de septiembre 2023" value="{{fechaN | date : 'dd/MM/yyyy'}} "  readonly>
                 </mat-form-field>
             </td>
         
@@ -44,7 +44,7 @@
         
             <td>
               <mat-form-field class="input2">
-                <input matInput type="text" placeholder="Hernioplastía Inguinal Laparoscópica" formControlName="CirugíaProgramada">
+                <input matInput type="text" placeholder="Hernioplastía Inguinal Laparoscópica" formControlName="CirugíaProgramada" readonly>
               </mat-form-field>
             </td>
           </tr>
@@ -59,7 +59,7 @@
         
             <td>
               <mat-form-field class="input1">
-                <input matInput type="text" placeholder="Quirófano 2" formControlName="Sala">
+                <input matInput type="text" placeholder="Quirófano 2" formControlName="Sala" readonly>
                 </mat-form-field>
             </td>
         
@@ -69,7 +69,7 @@
         
             <td>
               <mat-form-field class="input2">
-                <input matInput type="text" placeholder="Jefatura de Quirófano" formControlName="AreaRegistro">
+                <input matInput type="text" placeholder="Jefatura de Quirófano" formControlName="AreaRegistro" readonly>
               </mat-form-field>
             </td>
           </tr>
@@ -83,7 +83,7 @@
         
             <td>
               <mat-form-field class="input1">
-                <input matInput type="text" placeholder="1" formControlName="Turno">
+                <input matInput type="text" placeholder="1" formControlName="Turno"  readonly>
                 </mat-form-field>
             </td>
         
@@ -93,7 +93,7 @@
         
             <td>
               <mat-form-field class="input2">
-                <input matInput type="text" placeholder="Susana García" formControlName="Enfermera" >
+                <input matInput type="text" placeholder="Susana García" formControlName="Enfermera" readonly>
               </mat-form-field>
             </td>
           </tr>
@@ -106,13 +106,13 @@
         
         <table class="alinear-input" align="center"> 
           <tbody>
-          <tr style="width: 100%;">
-            <td style="width: 12.5%;">
+          <tr style="width: 90%;">
+            <td style="width: 11.8%;">
               <mat-label>Notas Adicionales:</mat-label>
             </td>
-            <td style="width: 87.5%;">
-              <mat-form-field class="textarea">
-                <textarea matInput placeholder="3 Pinzas H. extras para la cirugía " formControlName="NotasAdd"></textarea>
+            <td style="width: 88.2;">
+              <mat-form-field class="textarea" style="width: 89%;">
+                <textarea matInput placeholder="3 Pinzas H. extras para la cirugía " formControlName="NotasAdd" readonly></textarea>
               </mat-form-field>
             </td>
           </tr>
@@ -130,7 +130,7 @@
       </div>
       <div style="width: 50%;">
         <mat-form-field  style=" width: 70% ; margin: 5% 0 0 20%;" >
-          <input matInput type="text" placeholder="Ingresa QR" formControlName="QR1"   [value]="Distribucion_1.value.QR1">
+          <input matInput type="text" placeholder="Ingresa QR" formControlName="QR1"   [value]="formaEdicion.value.QR1">
           <mat-icon style="color:#0f8f95;" matIconSuffix>center_focus_weak</mat-icon>
         </mat-form-field>
           <button (click)='Subir2()' hidden="true">Add Row</button>
@@ -215,9 +215,9 @@
             </ng-container>
           
        
-            <ng-container matColumnDef="Entregados">
-              <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Entregados </th>
-              <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.Entregados}} </td>
+            <ng-container matColumnDef="Cantidad">
+              <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Cantidad </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.Cantidad}} </td>
             </ng-container>
     
             <ng-container matColumnDef="Accion">

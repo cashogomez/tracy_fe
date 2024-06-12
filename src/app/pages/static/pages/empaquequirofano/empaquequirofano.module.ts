@@ -19,6 +19,7 @@ import { RouterOutlet, RouterLink, RouterLinkActive, RouterModule } from '@angul
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { CrearEmpaqueComponent } from '../crear-empaque/crear-empaque.component';
 
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { CrearEmpaqueComponent } from '../crear-empaque/crear-empaque.component'
     RouterLink, 
     RouterLinkActive,
     RouterModule,
+    ReactiveFormsModule
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'es-ES'},

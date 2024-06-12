@@ -21,6 +21,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const date = new Date();const año = date.getFullYear();const mes = date.toLocaleString('default', { month: 'short' });const mes2 = date.toLocaleString('default', { month: 'long' });const dia = date.getDate(); const hora = date.getHours();const minutos = date.getMinutes();
 
+const fechaA =dia +'/'+ ('0' + (date.getMonth() + 1)).slice(-2)  +'/'+ año ;
 
 const Tabla1= [
   {Nombre:'Pinza 20 CM', Cantidad:'1'},
@@ -482,7 +483,7 @@ getBase64ImageFromURL(url: string) {
       {text: 'Hora:',style: 'content2'},  
       {text: 'Nombre operador:',style: 'content3'},
       {text: 'Firma operador:',style: 'content4'},
-      {text: ' '+this.fechaInicio ,style: 'content1b'},
+      {text: ' '+fechaA ,style: 'content1b'},
       {text: ' '+this.horaInicio ,style: 'content2b'},
       {text: ' '+this.nombreOperador,style: 'content3b'},
       
@@ -531,7 +532,7 @@ images:{
     header: {
       fontSize: 11,
       bold: true,
-      margin: [40, 7, 0, 0],
+      margin: [40, 7, 10, 0],
       alignment: "center",
       color: 'black',
       position:'fixed',
@@ -539,7 +540,7 @@ images:{
     header2: {
       fontSize: 11,
       bold: true,
-      margin: [0, 40, 0, 0],
+      margin: [0, 40, -20, 0],
       alignment: "center",
       color: 'black',
       position:'fixed',
@@ -605,7 +606,7 @@ images:{
     content2b: {
       fontSize: 11,
       bold: false,
-      margin: [120, -12, 0, 0],
+      margin: [130, -12, 0, 0],
       alignment: "left",
       color: 'black',
       position:'fixed',
@@ -735,7 +736,7 @@ images:{
         {text: 'Hora:',style: 'content2'},  
         {text: 'Nombre operador:',style: 'content3'},
         {text: 'Firma operador:',style: 'content4'},
-        {text: ' '+this.fechaInicio ,style: 'content1b'},
+        {text: ' '+fechaA ,style: 'content1b'},
         {text: ' '+this.horaInicio ,style: 'content2b'},
         {text: ' '+this.nombreOperador,style: 'content3b'},
         

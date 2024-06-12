@@ -36,7 +36,7 @@
     
         <td>
           <mat-form-field class="input1">
-            <input matInput type="text" placeholder="22 de septiembre 2023" formControlName="FechaCirugia">
+            <input matInput type="text" placeholder="22 de septiembre 2023" value="{{fechaN | date : 'dd/MM/yyyy'}} " readonly> 
             </mat-form-field>
         </td>
     
@@ -46,7 +46,7 @@
     
         <td>
           <mat-form-field class="input2">
-            <input matInput type="text" placeholder="13:11" formControlName="Hora">
+            <input matInput type="text" placeholder="13:11" [value]="hora" readonly>
           </mat-form-field>
         </td>
       </tr>
@@ -61,7 +61,7 @@
     
         <td>
           <mat-form-field class="input1">
-            <input matInput type="text" placeholder="" formControlName="DxOperatorio">
+            <input matInput type="text" placeholder="" formControlName="DxOperatorio" readonly>
             </mat-form-field>
         </td>
     
@@ -71,7 +71,7 @@
     
         <td>
           <mat-form-field class="input2">
-            <input matInput type="text" placeholder="2" formControlName="NoQx" >
+            <input matInput type="text" placeholder="2" formControlName="NoQx" readonly>
           </mat-form-field>
         </td>
       </tr>
@@ -85,7 +85,7 @@
     
         <td>
           <mat-form-field class="input1">
-            <input matInput type="text" placeholder="Casimiro Gomez" formControlName="Entrega">
+            <input matInput type="text" placeholder="Casimiro Gomez" formControlName="Entrega" >
             </mat-form-field>
         </td>
     
@@ -109,7 +109,7 @@
     
         <td>
           <mat-form-field class="input1">
-            <input matInput type="text" placeholder="José Lino" formControlName="Recepcion" >
+            <input matInput type="text" placeholder="José Lino" formControlName="Recepcion" readonly >
             </mat-form-field>
         </td>
     
@@ -119,7 +119,7 @@
     
         <td>
           <mat-form-field class="input2">
-            <input matInput type="text" placeholder="783516" formControlName="IDRecepcion" >
+            <input matInput type="text" placeholder="783516" formControlName="IDRecepcion" readonly>
           </mat-form-field>
         </td>
       </tr>
@@ -161,9 +161,8 @@
 
 
     <div style="display: flex; width: 90%; margin-left: 5%; margin-right: 5%;">
-       <div style="width: 70%; text-align: right;"> <h1>Fecha: {{fecha}}</h1></div>
-       <div style="width: 17%; text-align: right;"> <h1>Hora: {{hora}}</h1></div>
-       <div style="width: 13%; text-align: right;"> <h1>Turno: {{turno}}</h1></div>
+       <div style="width: 90%; text-align: right;"> <h1>Fecha: {{fecha}}</h1></div>
+       <div style="width: 10%; text-align: right;"> <h1>Turno: {{TurnoAct}}</h1></div>
    </div><br>
 
 

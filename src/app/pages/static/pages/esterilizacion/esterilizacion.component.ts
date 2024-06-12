@@ -151,7 +151,6 @@ export class EsterilizacionComponent {
 
 
   Esterilizador = new FormGroup({
-    EstatusF1: new FormControl({value: '', disabled: false}),
     PruebaBrDk1: new FormControl({value: '', disabled: false}),
   });
   

@@ -306,10 +306,35 @@ export class EditarprogramacioncirugiaComponent {
        });
 
   }
+  
 
   labelPosition: 'baja' | 'media' | 'alta' = 'alta';
   value = 'Clear me';
 
+  Prioridades(){
+    console.log(this.fechaElegida)
+    console.log(this.fechaNacimiento)
+    console.log(this.labelPosition)
+  switch(  this.formaEdicion.get('Prioridad')?.value!) { 
+    case 'baja': { 
+       this.prioridad = 1
+       break; 
+    } 
+    case 'media': { 
+      this.prioridad = 2
+       break; 
+    } 
+    case 'alta': { 
+      this.prioridad = 3
+      break; 
+   } 
+    default: { 
+      this.prioridad = 1
+       break; 
+    } 
+ } 
+
+}
 
   displayedColumns: string[] = ['Elemento', 'Cantidad', 'Descripcion', 'icon'];
   
@@ -349,7 +374,7 @@ export class EditarprogramacioncirugiaComponent {
       })
     })
     this.formaEdicion = this.fb.nonNullable.group({
-
+      Fechacirugia:[''],
       Paciente:  [''],
       Registro: [''],
       Edad: [0],
@@ -405,34 +430,8 @@ export class EditarprogramacioncirugiaComponent {
   eliminarRegistro(elemento: PeriodicElement) {
     //console.log(elemento)
   }
-  showDate(valor: any) {
-    //console.log('Cambio la fecha')
-    this.fechaElegida = valor.value._d
-    //console.log(this.fechaElegida.toString())
-    //console.log(this.labelPosition)
-    switch(this.labelPosition) { 
-      case 'baja': { 
-         this.prioridad = 1
-         break; 
-      } 
-      case 'media': { 
-        this.prioridad = 2
-         break; 
-      } 
-      case 'alta': { 
-        this.prioridad = 3
-        break; 
-     } 
-      default: { 
-        this.prioridad = 1
-         break; 
-      } 
-   } 
 
-  }
-  showNacimiento(naci: any) {
-    this.fechaNacimiento = naci.value._d
-  }
+ 
   private lazyLoadBeta$ = from(
     import('@app/services/emergente/components/mensajecontinuar/mensajecontinuar.component').then(
       (component) => component.MensajecontinuarComponent
@@ -463,11 +462,11 @@ export class EditarprogramacioncirugiaComponent {
   capturarProgCirug(): Ticket {
     const tickerCapturado: Ticket = {
       id:  Number(this.ticketAEditar),
-      fecha_cirugia: this.fechaElegida.getTime().toString(),
+      fecha_cirugia:this.today,
       paciente: this.formaEdicion?.get('Paciente')?.value!,
       registro: this.formaEdicion?.get('Registro')?.value!,
       edad: this.formaEdicion?.get('Edad')?.value!,
-      fecha_nacimiento: this.fechaNacimiento.getTime().toString(),
+      fecha_nacimiento: this.today2,
       habitacion: this.formaEdicion?.get('Habitacion')?.value!,
       sala: this.formaEdicion?.get('Sala')?.value!,
       turno: this.formaEdicion?.get('Turno')?.value!,
@@ -478,7 +477,7 @@ export class EditarprogramacioncirugiaComponent {
       anestesiologo: this.formaEdicion?.get('Anestesiologo')?.value!,
       anestesia: this.formaEdicion?.get('Anestesia')?.value!,
       residente: this.formaEdicion?.get('Ayudante')?.value!,
-      area_registro: this.formaEdicion?.get('Registro')?.value!,
+      area_registro: this.formaEdicion?.get('AreaRegistro')?.value!,
       enfermero: this.formaEdicion?.get('Enfermera')?.value!,
       notas: this.formaEdicion?.get('Notas')?.value!,
       estatus: 'pendiente',
@@ -489,6 +488,32 @@ export class EditarprogramacioncirugiaComponent {
     return tickerCapturado;
     // ***********************************************************
   }
+
+  today:any;
+  today2:any;
+
+  showNacimiento(naci: any) {
+    this.fechaNacimiento = naci.value._d
+    console.log(this.fechaNacimiento.toString())
+    const date =this.fechaNacimiento;
+    this.today2 = date.getFullYear() + '-'
+             + ('0' + (date.getMonth() + 1)).slice(-2) + '-'
+             + ('0' + date.getDate()).slice(-2) + ' 08:00:00';
+             console.log(this.today2);
+  }
+  showDate(valor: any) {
+    console.log('Cambio la fecha')
+    this.fechaElegida = valor.value._d
+    console.log(this.fechaElegida.toString())
+    const date =this.fechaElegida;
+    this.today = date.getFullYear() + '-'
+             + ('0' + (date.getMonth() + 1)).slice(-2) + '-'
+             + ('0' + date.getDate()).slice(-2)+ ' 08:00:00';
+             console.log(this.today);
+
+  }
+
+
   escribirProgCirug(escribir: TicketRequest) {
     let prioridadString = ''
     switch(escribir.prioridad) { 
@@ -509,11 +534,12 @@ export class EditarprogramacioncirugiaComponent {
          break; 
       } 
     };
-      fecha_cirugia: this.fechaElegida.getTime().toString();
+      this.formaEdicion?.get('Fechacirugia')?.setValue(escribir.fecha_cirugia)
       this.formaEdicion?.get('Paciente')?.setValue(escribir.paciente);
       this.formaEdicion?.get('Registro')?.setValue(escribir.registro);
       this.formaEdicion?.get('Edad')?.setValue(escribir.edad);
-      this.fechaNacimiento.getTime().toString();
+      this.formaEdicion?.get('Nacimiento')?.setValue(escribir.fecha_nacimiento)
+      this.formaEdicion?.get('Prioridad')?.setValue(escribir.prioridad.toString());
       this.formaEdicion?.get('Habitacion')?.setValue(escribir.habitacion);
       this.formaEdicion?.get('Sala')?.setValue(escribir.sala);
       this.formaEdicion?.get('Turno')?.setValue(escribir.turno);
@@ -524,7 +550,7 @@ export class EditarprogramacioncirugiaComponent {
       this.formaEdicion?.get('Anestesiologo')?.setValue(escribir.anestesiologo);
       this.formaEdicion?.get('Anestesia')?.setValue(escribir.anestesia);
       this.formaEdicion?.get('Ayudante')?.setValue(escribir.residente);
-      this.formaEdicion?.get('Registro')?.setValue(escribir.registro);
+      this.formaEdicion?.get('AreaRegistro')?.setValue(escribir.area_registro);
       this.formaEdicion?.get('Enfermera')?.setValue(escribir.enfermero);
       this.formaEdicion?.get('Notas')?.setValue(escribir.notas);
       //this.estatus = escribir.estatus,
@@ -623,6 +649,7 @@ export interface PeriodicElement {
 }
 
 interface TicketForma {
+  Fechacirugia: FormControl<string>;
   Paciente: FormControl<string>;
   Registro:FormControl<string>;
   Edad: FormControl<number>;

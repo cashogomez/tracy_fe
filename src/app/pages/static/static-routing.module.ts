@@ -134,6 +134,10 @@ const routes: Routes = [
     path: 'historico-qr',
     loadComponent: () => import('./pages/historicoqr/historicoqr.component').then((m) => m.HistoricoqrComponent),
   },
+  {
+    path: 'crear-lavadoras',
+    loadComponent: () => import('./pages/crear-lavadoras/crear-lavadoras.component').then((m) => m.CrearLavadorasComponent),
+  },
 ];
 
 

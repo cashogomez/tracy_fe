@@ -1,4 +1,4 @@
-import { Component, Inject, ViewChild } from '@angular/core';
+import { Component, Inject, Input, ViewChild, input } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -18,7 +18,7 @@ import { MatDivider } from '@angular/material/divider';
 import { from } from 'rxjs';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { RouterLink, RouterLinkActive, RouterModule, RouterOutlet } from '@angular/router';
 import { NotificationService } from '@app/services';
 import { ImprimirService } from '@app/services/imprimir/imprimir.service';
@@ -30,6 +30,7 @@ import { EditarprogramacioncirugiaComponent } from '../editarprogramacioncirugia
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
 
+import { FormControl, FormGroup,FormsModule, ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-quirofanoinformacion',
   providers: [
@@ -49,7 +50,7 @@ import { EditarprogramacioncirugiaComponent } from '../editarprogramacioncirugia
     MatIcon,
     MatTooltipModule,
     EditarprogramacioncirugiaComponent,
-
+    ReactiveFormsModule,
     RouterOutlet,
     RouterLink, 
     RouterLinkActive,
@@ -59,6 +60,9 @@ import { EditarprogramacioncirugiaComponent } from '../editarprogramacioncirugia
   styleUrl: './quirofanoinformacion.component.scss'
 })
 export class QuirofanoinformacionComponent {
+
+  @Input()  editar2!: boolean;
+
   nombrejefa= "María Dolores Rodríguez Ramírez";
   editar: boolean = false;
   editarRegistro !: Element;
@@ -130,8 +134,47 @@ export class QuirofanoinformacionComponent {
             this.notification.error("¡Se canceló la operación");
           }
         });
+        const edits = Boolean(this.editar2)
+        this.editar = edits
+
+          //------------------------------------------condicion reloj
+      this.pipe = new DatePipe('en');
+      this.dataSource.filterPredicate = (data3, filter) =>{
+          var cortado = data3.Fecha.split('T').slice(0)
+          var cortado2 = cortado[0]
+        const date =this.fromDate._d; this.today = date.getFullYear()+ '-'  + ('0' + (date.getMonth() + 1)).slice(-2) + '-' +('0' + date.getDate()).slice(-2)  
+
+        const date2 =this.toDate._d;  this.today2 = date2.getFullYear()+ '-'  + ('0' + (date2.getMonth() + 1)).slice(-2) + '-' +('0' + date2.getDate()).slice(-2)  
+
+        if (this.today && this.today2 ) {
+          return cortado2  >=  this.today  && cortado2 <= this.today2;
+        }
+        return true;
+      }
+    //------------------------------------------condicion reloj
+ 
+      console.log(edits)
 
   }
+
+  //--------------------inicia calendario
+  today:any;
+  today2:any;
+  pipe: DatePipe;
+  filterForm:any = new FormGroup({
+    fromDate: new FormControl(),
+    toDate: new FormControl(),
+  });
+  
+  get fromDate() { return this.filterForm.get('fromDate').value; }
+  get toDate() { return this.filterForm.get('toDate').value; }
+  
+  applyFilter2() {
+    this.dataSource.filter = ''+Math.random();
+  }
+
+//--------------------fincalendario
+  
 
   ngOnInit() {
     this.updateCloseButtonLabel('Cerrar Calendario');
