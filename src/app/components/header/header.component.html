@@ -15,7 +15,7 @@
     </button>
  
     <button mat-icon-button matTooltip="Mi cuenta" [matMenuTriggerFor]="userAccountMenu" >
-        <img  class="images" src="{{usuario!.foto}}" width="40px" class="circular" /> 
+        <img *ngIf="usuario!=null" class="images" src="{{usuario!.foto}}" width="40px" class="circular" /> 
       <!--  <img  class="images" src="/assets/generales/silueta.jpg" width="40px" class="circular" /> -->
     </button>
     <mat-menu #userAccountMenu [overlapTrigger]="false" yPosition="below">
