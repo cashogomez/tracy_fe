@@ -7,6 +7,6 @@
 </div>
 
 <mat-dialog-actions align="center">
-    <button class="botones"  mat-dialog-close >Cancelar</button>
-    <a href="static/distribucionquirofano"  style="margin-left: 2%; "> <button class="botones"  [mat-dialog-close]="true"cdkFocusInitial> Aceptar</button></a>
+    <button class="botones"  mat-dialog-close style="margin: 20px;" >Cancelar</button>
+    <button class="botones"  [mat-dialog-close]="true"cdkFocusInitial click="actualizarticket()" style="margin: 20px;"> Aceptar</button>
   </mat-dialog-actions>

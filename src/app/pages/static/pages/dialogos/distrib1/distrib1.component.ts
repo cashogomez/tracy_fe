@@ -9,5 +9,7 @@ import {MatButtonModule} from '@angular/material/button';
   styleUrl: './distrib1.component.scss'
 })
 export class Distrib1Component {
-
+ actualizarticket(){
+  console.log ('Actualizando estatus del ticket')
+ }
 }

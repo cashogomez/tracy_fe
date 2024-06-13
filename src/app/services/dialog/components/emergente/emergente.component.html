@@ -1,0 +1,27 @@
+<div mat-dialog-title>Advertencia</div>
+
+<div mat-dialog-content>
+ <!-- This dialog allows other components to be injected into this space: -->
+
+  <div class="injection-space" *ngIf="!!dynamicComponents$">
+    <ng-container
+      *ngComponentOutlet="dynamicComponents$ | async"
+    ></ng-container>
+  </div>
+</div>
+
+<div style="width: 100%;  margin: auto; text-align: center;">
+  <mat-label>Nombre de quien recibe: &nbsp;&nbsp;&nbsp;</mat-label>
+  <mat-form-field style="width: 75%;">
+    <input matInput [(ngModel)]='valor'>
+  </mat-form-field>
+</div>
+
+<div mat-dialog-actions align="center" >
+  <button mat-flat-button [mat-dialog-close]="false" class="button-text">
+    Cancelar
+  </button>
+  <button mat-flat-button [mat-dialog-close]="true" class="button-text">
+    Aceptar
+  </button>
+</div>

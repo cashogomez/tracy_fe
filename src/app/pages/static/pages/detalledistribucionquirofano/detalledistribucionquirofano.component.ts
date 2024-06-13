@@ -34,6 +34,7 @@ import { TicketsetService } from '@app/services/ticketset/ticketset.service';
 //--------------------pedir tablas set info --------------------------
 import { TicketinstrumentoService } from '@app/services/ticketinstrumento/ticketinstrumento.service';
 import { InstrumentoService } from '@app/services/instrumento/instrumento.service';
+import { from } from 'rxjs';
 
 export interface Distribucion_1 {
   FechaCirugia: string;
@@ -152,14 +153,16 @@ fechaN:any;
    //--------------------traer tablas Inst info --------------------------
     
 
-
+   private dataService: DialogService,
 
     //--------------------traer tablas Inst info --------------------------
    private setElement: SetService,
    private instElement:InstrumentoService,
    //--------------------traer tablas Inst info --------------------------
   ){
-
+    this.dataService.data$.subscribe(data => {
+      console.log (data)
+    })
 
   }
 
@@ -167,7 +170,6 @@ fechaN:any;
   formaEdicion!: FormGroup<TicketForma>;
 
   ngOnInit(): void {
-
     this.recargar();
     let ticket = Number(this.ticketAEditar)
     // Assign the data to the data source for the table to render
@@ -255,9 +257,19 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
     });
   }
 
-  emergente1(){
-    this.dialogService.ditribucion1emergente()
+
+  tipoOperacion : number = 0;
+  private lazyLoadBeta$ = from(
+    import('@app/services/dialog/components/mensajeaceptar/mensajeaceptar.component').then(
+      (component) => component.MensajeaceptarComponent
+    )
+  );
+  onBetaClicked() {
+    this.dialogService.showDialog(this.lazyLoadBeta$);
+    this.tipoOperacion = 1
   }
+
+
   emergente2(){
   this.dialogService.ditribucion2emergente()
   }

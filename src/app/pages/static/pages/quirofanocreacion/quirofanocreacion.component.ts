@@ -438,7 +438,7 @@ export class QuirofanocreacionComponent {
 
     // ELEMENT_DATA6 y DataSource4 tienen los instrumentos que se usaran
     this.envioSet = {
-      numero: 1,
+      numero: 0,
       maximo: this.valorMaximo,
       minimo: this.valorMinimo,
       nombre: this.nombreSet,
