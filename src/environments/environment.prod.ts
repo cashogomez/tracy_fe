@@ -14,4 +14,5 @@ export const environment = {
     },
     //url: 'http://127.0.0.1:8000/'
     url: 'http://45.136.19.245:8000/'
+
 }
