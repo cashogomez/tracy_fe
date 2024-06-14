@@ -83,7 +83,7 @@
     <!-- Symbol Column -->
     <ng-container matColumnDef="accion">
       <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
-      <mat-cell *matCellDef="let element"> <button [disabled]="element.Estatus != 'En Espera'" class="botones" style=" margin-right: 20px;" matTooltip="Recibir material"  (click)="editarFila(element)" >Recibir</button></mat-cell>
+      <mat-cell *matCellDef="let element"> <button  [disabled]="element.Estatus == 'pendiente'"   class="botones" style=" margin-right: 20px;" matTooltip="Recibir material"  (click)="editarFila(element)" >Recibir</button></mat-cell>
     </ng-container>
 
 
