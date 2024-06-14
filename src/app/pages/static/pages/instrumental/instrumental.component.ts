@@ -374,7 +374,7 @@ function table(data: { [x: string]: { toString: () => any; }; }[] | { name: stri
   return {
     style: 'tableExample',
       table: {
-        widths: ['15%','15%','15%','15%','10%','10%','10%', '10%'],
+        widths: ['15%','15%','15%','15%','10%','15%','15%',],
           //headerRows: 1,
           body: buildTableBody(data, columns),
       },layout: 'noBorders'
@@ -411,7 +411,7 @@ function getBase64ImageFromURL(url: string) {
  
     const pdfDefinition: any = {
       pageSize: 'A4',
-      pageMargins: [20, 270, 20, 60],
+      pageMargins: [20, 230, 20, 60],
 
       background: [
         {
@@ -438,9 +438,9 @@ function getBase64ImageFromURL(url: string) {
         {
           style: 'tableExample', margin:[20,20,20,0],
           table: {
-            widths: ['15%','15%','15%','15%','10%','10%','10%', '10%'],
+            widths: ['15%','15%','15%','15%','10%','15%','15%',],
             body: [
-              ['id', 'nombre', 'tipo','marca',  'descripcion',  'lote', 'cantidad','caducidad'],
+              ['Id', 'Nombre', 'Tipo','Marca',  'Descripción',  'Lote', 'Cantidad'],
             ]
           },layout: 'noBorders'
         },
@@ -448,7 +448,7 @@ function getBase64ImageFromURL(url: string) {
 
       content: [
         
-         table(dataSource, ['id', 'nombre', 'tipo','marca',  'descripcion',  'lote', 'cantidad','caducidad'], ),
+         table(dataSource, ['id', 'nombre', 'tipo','marca',  'descripcion',  'lote', 'cantidad'], ),
     ],
     
   images:{

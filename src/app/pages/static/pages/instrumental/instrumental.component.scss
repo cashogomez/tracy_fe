@@ -47,25 +47,6 @@
 .botoneliminar {
   margin: 20px 4px;
 }
-.botones {
-  width: 100px;
-  height: 40px;
-  text-align: center;
-  background-color: #0f8f95;
-  border: none;
-  color: white;
-  font-weight: 700;
-  border-radius: 15px;
-}
-
-
-.botones:hover {
-  text-align: center;
-  background-color: #38b6ff;
-  border: none;
-  color: white;
-  font-weight: 700;
-}
 
 .flex-container {
     height: 100%;
@@ -75,9 +56,7 @@
     align-items: center;
     justify-content: center;
 }
-mat-form-field{
-    width: 90%;
-  }
+
 mat-card {
     width: 600px;
     text-align: center;
@@ -89,3 +68,24 @@ mat-card {
     align-items: center;
     height: 60px;
   }
+
+  .botones {
+    width: 100px;
+    height: 40px;
+    margin: 20px;
+    text-align: center;
+    background-color: #0f8f95;
+    border: none;
+    color: white;
+    font-weight: 700;
+    border-radius: 15px;
+}
+
+
+.botones:hover {
+    text-align: center;
+    background-color: #38b6ff;
+    border: none;
+    color: white;
+    font-weight: 700;
+}

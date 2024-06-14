@@ -7,3 +7,25 @@
     padding: 5px 30px 5px 30px; 
     margin: 20px 8px;
 }
+
+.botones {
+  margin: 20px;
+  width: 100px;
+  height: 40px;
+  text-align: center;
+  background-color: #0f8f95;
+  border: none;
+  color: white;
+  font-weight: 700;
+  border-radius: 15px;
+}
+
+
+.botones:hover {
+  margin: 20px;
+  text-align: center;
+  background-color: #38b6ff;
+  border: none;
+  color: white;
+  font-weight: 700;
+}

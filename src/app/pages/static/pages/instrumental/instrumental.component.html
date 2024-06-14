@@ -9,19 +9,21 @@
 
 <p align="end">
 
-      <button mat-raised-button (click)="generarPDF()" class="botones" style=" margin: 10px;" matTooltip="Generar un reporte" >Reporte</button>
-      <button mat-raised-button   class="botones" matTooltip="Nueva alta de instrumental" (click)="crearInstrumento(1)" >Alta</button>
+      <button (click)="generarPDF()" class="botones" style=" margin: 10px;" matTooltip="Generar un reporte" >Reporte</button>
+      <button    class="botones" matTooltip="Nueva alta de instrumental" (click)="crearInstrumento(1)" >Alta</button>
 
 </p>
 <!------------------------------ FILTRO -------------------------------->
-<mat-form-field>
-  <mat-label>Filtro</mat-label>
-  <input matInput (keyup)="applyFilter($event)" placeholder="Búsqueda" #input>
-</mat-form-field>
 
+<div style="width: 95%;  margin: auto;">
+    <mat-label>Filtro: &nbsp;&nbsp;&nbsp;</mat-label>
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Búsqueda" #input>
+    </mat-form-field>
+  </div>
 <!------------------------------ FIN DE ENCABEZADO -------------------------------->
 
-<div class="mat-elevation-z8" id="page-1" class="page">
+<div class="mat-elevation-z8" id="page-1" class="page"  style="width: 95%; text-align: center; margin: auto;">
   <mat-table #table [dataSource]="dataSource">
 
     <!--- Note that these columns can be defined in any order.

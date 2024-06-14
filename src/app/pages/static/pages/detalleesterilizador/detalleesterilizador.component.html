@@ -22,7 +22,7 @@
     <div style=" width: 40%; margin-left:30%; margin-right:30%;">
       <label >Ingresa QR:</label><br>
       <mat-form-field  style=" width: 100%" >
-              <input matInput type="text" placeholder="Ingresa QR" formControlName="QR"  >
+              <input matInput type="text" placeholder="Ingresa QR" formControlName="QR"  [value]="Esterilizador.value.QR" >
               <mat-icon style="color:#0f8f95;" matIconSuffix>center_focus_weak</mat-icon>
         </mat-form-field>
         <button (click)='Subir()' hidden="true">Add Row</button>
@@ -42,26 +42,30 @@
     
       <!-- Position Column -->
       <ng-container matColumnDef="Id">
-        <th mat-header-cell *matHeaderCellDef style="width: 40%;"> ID </th>
-        <td mat-cell *matCellDef="let element" style="width: 40%;"> {{element.Id}} </td>
+        <th mat-header-cell *matHeaderCellDef style="width: 20%; "> ID </th>
+        <td mat-cell *matCellDef="let element" style="width: 20%;"> {{element.Id}} </td>
       </ng-container>
     
       <!-- Name Column -->
       <ng-container matColumnDef="Paquete">
-        <th mat-header-cell *matHeaderCellDef style="width: 40%;"> Paquete </th>
-        <td mat-cell *matCellDef="let element" style="width: 40%;"> {{element.Paquete}} </td>
+        <th mat-header-cell *matHeaderCellDef style="width: 40%; text-align: center;"> Paquete </th>
+        <td mat-cell *matCellDef="let element" style="width: 40%; text-align: center;"> {{element.Paquete}} </td>
       </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="Cantidad">
+          <th mat-header-cell *matHeaderCellDef style="width: 20%; text-align: center;"> Cantidad </th>
+          <td mat-cell *matCellDef="let element" style="width: 20%; text-align: center;"> {{element.Cantidad}} </td>
+        </ng-container>
     
       <!-- Symbol Column -->
       <ng-container matColumnDef="Icon">
-          <th mat-header-cell *matHeaderCellDef style="text-align: center;" style="width: 10%;"> Incidencia</th>
-          <td mat-cell *matCellDef="let element" style="text-align: center; width: 10%;"> <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="warning" style="color: orange" (click)="emergente1()"></mat-icon> </td>
+          <th mat-header-cell *matHeaderCellDef style="text-align: center;" style="width: 20%;"> Incidencia</th>
+          <td mat-cell *matCellDef="let element; let score; let i = index;" style=" width: 20%;"> <mat-icon style=" width: 50%;" aria-hidden="false" aria-label="Example home icon" fontIcon="warning" style="color: orange" (click)="emergente1()"></mat-icon> 
+                                                                                                                     <mat-icon style="  width: 50%;" aria-hidden="false" aria-label="Example home icon" fontIcon="cancel" style="color: red; text-align: center; " (click)="removeData()"></mat-icon> </td>
         </ng-container>
 
-        <ng-container matColumnDef="Borrar">
-          <th mat-header-cell *matHeaderCellDef style="text-align: center;" style="width: 10%;"> </th>
-          <td mat-cell *matCellDef="let element" style="text-align: center; align-items: center; width: 10%;  " > <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete" style="color: red; text-align: center; " (click)="removeData()"></mat-icon> </td>
-        </ng-container>
+    
     
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

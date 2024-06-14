@@ -26,7 +26,7 @@ import { Ciclo } from '@app/models/backend/ciclo';
 import { CommonModule, DatePipe } from '@angular/common';
 import { CuentaregresivaService } from '@app/services/cuentaregresiva/cuentaregresiva.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { SetService } from '@app/services';
 
 @Component({
   selector: 'app-detalleesterilizador',
@@ -78,7 +78,8 @@ export class DetalleesterilizadorComponent implements OnInit {
                 private ciclosequipoService: CiclosequipoService,
                 private cicloService: CicloService,
                 public datePipe: DatePipe,
-                private _snackBar: MatSnackBar
+                private _snackBar: MatSnackBar,
+                private setElement: SetService,
   ){
 
     
@@ -208,7 +209,7 @@ start() {
   ValorID="";
   Valorfch="";
   valorres="";
-  displayedColumns: string[] = ['Id', 'Paquete','Icon', 'Borrar'];
+  displayedColumns: string[] = ['Id', 'Paquete', 'Cantidad', 'Icon'];
   dataSource = [...ELEMENT_DATA];
 
   numciclo=10;
@@ -237,35 +238,76 @@ start() {
     //___________________________________________      cambiar los valores de los splice por los identificadores que eligió     ___________________________________________//
     //_____________________________________________________________________________________________________________________________________________________________________//
     //_____________________________________________________________________________________________________________________________________________________________________//
-        this.valueQR=this.Esterilizador?.get('QR')?.value!,
-        this.ValorID = this.valueQR.split(".").splice(0,1)  .join("") // aqui cortamos el qr para dejar solo el valor del ID
-        this.ValorID= atob(this.ValorID)// aqui cortamos convertimos la parte cortada del qr de base64 a lenguaje común 
+  
     
-        const Valorfch_1=  this.valueQR.split(".").splice(1)  .join("")// aqui cortamos el qr para dejar solo el valor de la fecha
-        this.Valorfch = Valorfch_1.split("=").splice(-10,1).join("")// aqui cortamos el qr para dejar solo el valor de la fecha
-        this.Valorfch = atob(this.Valorfch)// aqui cortamos convertimos la parte cortada del qr de base64 a lenguaje común 
+       
     
-    
-        this.valorres =  this.valueQR.split(".").splice(2)  .join("")// aqui cortamos el qr para dejar solo el valor de las piezas faltantes
-    
-       const  date2= date.toString();
-    
-        this.dataSource.push({
-          Id: this.ValorID, // aqui se publica en el reporte el balor del id 
-          Paquete: this.valorres, // Aquí lo cambiaria por el nobre del paquete que está casado a la base de datos
-          FechaE: dia + '/'+mes+'/'+año,
-          Turno: '2', // cambiar por variable del turno en operación
-          FechaC: dia + '/'+mes+'/'+año, // cambiar por fecha de eserilizacion de cada pieza de la lista
-        });
-        this.table.renderRows();
-        this.valueQR=""
+       this.valueQR = this.Esterilizador?.get('QR')?.value!
+      
+       var splitted = this.valueQR.split(".", 3)
+       
+       this.ValorID= atob(splitted[0])// aqui cortamos convertimos la parte cortada del qr de base64 a lenguaje común 
+       
+       this.Valorfch = atob(splitted[1])// aqui cortamos convertimos la parte cortada del qr de base64 a lenguaje común 
+       
+       this.valorres =  splitted[2]
+       
+       
+           let comparable = this.dataSource.filter((IDcomp) => IDcomp.Id == Number(this.ValorID))
+           
+ 
+           if (comparable.length > 0 ){
+            let num = 0;
+            this.dataSource.forEach(data =>{
+              if (data.Id  == Number(this.ValorID )) {
+                this.dataSource[num].Cantidad = this.dataSource[num].Cantidad+1
+              }
+             
+              num++
+            })
+         
+                //  this.dataSource2[indice].Entregados =     this.dataSource2[indice].Entregados + 1
+         
+                this.Esterilizador.value.QR=''
+             }
+       
+              //  this.dataSource2[indice].Entregados =     this.dataSource2[indice].Entregados + 1
+ 
+           else{
+             var tickets = Number(this.ValorID)
+             this.setElement.traerUNset(tickets).subscribe(setRecibidos=> {
+         
+                 let setAgregar ={
+                   Id: setRecibidos.id.toString(),
+                   Paquete: setRecibidos.nombre,
+                   Cantidad: 1,
+                   
+               
+ 
+                 }
+                 this.dataSource.push(setAgregar)
+                 this.table.renderRows();
+               
+             })
+               this.Esterilizador.value.QR=''
+           
+         }
+
+      
       }
 
       emergente1(){
         this.dialogService.emergente1()
       }
+  
+      removeAt(index: number) {
+        this.dataSource.splice(index, 1);
+        console.log('borrando')
+        this.table.renderRows();
+      }
       removeData() {
         this.dataSource.pop();
+        console.log('borrando')
         this.table.renderRows();
       }
 

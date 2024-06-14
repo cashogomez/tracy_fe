@@ -31,6 +31,7 @@ import { TicketsetService } from '@app/services/ticketset/ticketset.service';
 
 //--------------------pedir tablas set info --------------------------
 import { TicketinstrumentoService } from '@app/services/ticketinstrumento/ticketinstrumento.service';
+import { from } from 'rxjs';
 //--------------------pedir tablas set info --------------------------
 
 const date = new Date();const año = date.getFullYear();const mes = date.getMonth()+1;const mes2 = date.toLocaleString('default', { month: 'long' });const dia = date.getDate(); const hora = date.getHours();const minutos = date.getMinutes();
@@ -116,6 +117,10 @@ export class RecibirrecepcionquirofanoComponent implements OnInit {
     window.alert(JSON.stringify(this.Recepcion.value, null, 2));
   }
 
+
+  respuesta:any;
+  nombreEmer: any;
+
   constructor ( 
     private dialogService: DialogService,
     private fb: FormBuilder,
@@ -131,13 +136,28 @@ export class RecibirrecepcionquirofanoComponent implements OnInit {
       //--------------------traer tablas Inst info --------------------------
       private Insttraer: TicketinstrumentoService,
       //--------------------traer tablas Inst info --------------------------
-    
+      private dataService: DialogService,
       private turnoService: TurnoService,
   ){
    
     this.dataSource1 = new MatTableDataSource(this.Instrumental_quirugico_sencillo);
     this.dataSource2 = new MatTableDataSource(this.Instrumental_quirugico);
 
+
+
+
+    this.dataService.data$.subscribe(data => {
+      var cortado = data
+      var cortado2 = cortado.split(':', 2)
+      this.respuesta = cortado2[0]
+      this.nombreEmer = cortado2[1]
+      console.log (this.respuesta)
+      if (this.respuesta=='true') {}
+      
+        
+    })
+    
+   
 
   }
 
@@ -267,9 +287,19 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
 
   }
 
-  emergente1(){
-    this.dialogService.emergente1()
+
+  tipoOperacion : number = 0;
+  private lazyLoadBeta$ = from(
+    import('@app/services/dialog/components/dialogo/dialogo.component').then(
+      (component) => component.DialogoComponent
+    )
+  );
+
+  onBetaClicked() {
+    this.dialogService.showDialog2(this.lazyLoadBeta$);
+    this.tipoOperacion = 1
   }
+
 
 ticketC =100;
 fecha=fechaA;
