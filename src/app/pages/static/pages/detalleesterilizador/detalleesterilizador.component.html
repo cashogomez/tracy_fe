@@ -1,4 +1,4 @@
-<form [formGroup]="Esterilizador">
+<form [formGroup]="Esterilizador1">
   <div  style="display: flex;  align-items: center;">
       <div style=" width: 40%; margin-left:5%;">
     <label>Esterilizador:</label><br>
@@ -22,14 +22,14 @@
     <div style=" width: 40%; margin-left:30%; margin-right:30%;">
       <label >Ingresa QR:</label><br>
       <mat-form-field  style=" width: 100%" >
-              <input matInput type="text" placeholder="Ingresa QR" formControlName="QR"  [value]="Esterilizador.value.QR" >
+              <input matInput type="text" placeholder="Ingresa QR" formControlName="QR"  [value]="Esterilizador1.value.QR" >
               <mat-icon style="color:#0f8f95;" matIconSuffix>center_focus_weak</mat-icon>
         </mat-form-field>
         <button (click)='Subir()' hidden="true">Add Row</button>
      
       </div>
     
-
+    </form>
 
 
   <br><br>
@@ -42,8 +42,8 @@
     
       <!-- Position Column -->
       <ng-container matColumnDef="Id">
-        <th mat-header-cell *matHeaderCellDef style="width: 20%; "> ID </th>
-        <td mat-cell *matCellDef="let element" style="width: 20%;"> {{element.Id}} </td>
+        <th mat-header-cell *matHeaderCellDef style="width: 10%; "> ID </th>
+        <td mat-cell *matCellDef="let element" style="width: 10%;"> {{element.Id}} </td>
       </ng-container>
     
       <!-- Name Column -->
@@ -60,9 +60,13 @@
     
       <!-- Symbol Column -->
       <ng-container matColumnDef="Icon">
-          <th mat-header-cell *matHeaderCellDef style="text-align: center;" style="width: 20%;"> Incidencia</th>
-          <td mat-cell *matCellDef="let element; let score; let i = index;" style=" width: 20%;"> <mat-icon style=" width: 50%;" aria-hidden="false" aria-label="Example home icon" fontIcon="warning" style="color: orange" (click)="emergente1()"></mat-icon> 
-                                                                                                                     <mat-icon style="  width: 50%;" aria-hidden="false" aria-label="Example home icon" fontIcon="cancel" style="color: red; text-align: center; " (click)="removeData()"></mat-icon> </td>
+          <th mat-header-cell *matHeaderCellDef style="text-align: center; width: 15%;"> Incidencia</th>
+          <td mat-cell *matCellDef="let element" style="text-align: center; width: 15%;"> <mat-icon  aria-hidden="false" aria-label="Example home icon" fontIcon="warning" style="color: orange" (click)="emergente1()"></mat-icon> 
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="Accion">
+          <th mat-header-cell *matHeaderCellDef style="text-align: center; width: 15%;"> Acción</th>
+          <td mat-cell *matCellDef="let element; let score; let i = index;" style="text-align: center; width: 15%;"> <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="cancel" style="color: red; text-align: center; " (click)="removeAt(i)"></mat-icon> </td>
         </ng-container>
 
     
@@ -70,10 +74,12 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    
+
+
   </div>
   </div>
   <br><br>
+
 
   <br>
   <div  style="display: flex;  align-items: center;">
@@ -109,7 +115,7 @@
   <br>
 
 
-
+  <form [formGroup]="Esterilizador">
     
         <br>
         <div  style="display: flex;  align-items: center;">
@@ -177,7 +183,7 @@
               <button class="botones" (click)="createPDF()">Generar Reporte</button>
             </div>
             <div style="width: 33.3%; text-align: center;">
-              <button class="botones" (click)="submitted()" >Finalizar</button>
+              <button class="botones" >Finalizar</button>
             </div>
           </div><br><br>
 </form>    

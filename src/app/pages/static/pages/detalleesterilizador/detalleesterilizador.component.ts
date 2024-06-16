@@ -11,7 +11,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatTable, MatTableModule } from '@angular/material/table';
+import {MatTable, MatTableModule,MatTableDataSource, } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Equipo } from '@app/models/backend/equipo';
@@ -26,7 +26,21 @@ import { Ciclo } from '@app/models/backend/ciclo';
 import { CommonModule, DatePipe } from '@angular/common';
 import { CuentaregresivaService } from '@app/services/cuentaregresiva/cuentaregresiva.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SetService } from '@app/services';
+import { SetService, TurnoService } from '@app/services';
+
+import { Store } from '@ngrx/store';
+import * as fromRoot from '@app/store';
+import * as fromUser from '@app/store/user';
+import { UserResponse } from '@app/store/user';
+
+export interface TablaAñadir2 {
+  Id: number;
+  Paquete: string;
+  Cantidad: number;
+  Turno: number;
+  FechaE: string;
+  FechaC: string;
+}  
 
 @Component({
   selector: 'app-detalleesterilizador',
@@ -57,9 +71,19 @@ import { SetService } from '@app/services';
   templateUrl: './detalleesterilizador.component.html',
   styleUrl: './detalleesterilizador.component.scss'
 })
+
+
+
+  
+
 export class DetalleesterilizadorComponent implements OnInit {
   @Input()  EquipoADetallar!: string;
-  
+
+
+  ELEMENT_DATA:  any[] = [ ];
+  dataSource = [...this.ELEMENT_DATA];
+  displayedColumns: string[] = ['Id', 'Paquete', 'Cantidad', 'Icon','Accion'];
+
   timerService = inject(CuentaregresivaService);
 
   activationDeadline: any;
@@ -80,6 +104,9 @@ export class DetalleesterilizadorComponent implements OnInit {
                 public datePipe: DatePipe,
                 private _snackBar: MatSnackBar,
                 private setElement: SetService,
+                private turnoService: TurnoService,
+                    
+                private store: Store<fromRoot.State>, 
   ){
 
     
@@ -129,8 +156,31 @@ start() {
     console.log(this.activationDeadline)
     }
 
+
+
+    Turno1: number = 0;
+    TurnoAct:number = 0;
+    hora=horaA;
+
   ngOnInit(): void {
-  
+    this.recargar()
+   
+    if (horaA >= 7 && horaA < 14 ) {this.Turno1 = 1;}
+
+    if (horaA >=14  && horaA < 21 ) { this.Turno1 = 2;}
+
+    if (horaA >=21  && horaA < 7 ){this.Turno1 = 3;}
+ console.log (horaA)
+this.turnoService.traerUNturno(this.Turno1).subscribe (turnoRecibido => {
+    let turnoAgregar ={
+      Numero: turnoRecibido.id,
+      Inicio: turnoRecibido.inicio,
+      Fin: turnoRecibido.fin,
+      Id: turnoRecibido.id
+    }
+   this.TurnoAct= turnoRecibido.id
+})
+
     this.endTime = localStorage.getItem('est'+ this.EquipoADetallar)
     if (this.endTime != null) {
   this.activationDeadline = new Date(Date.parse(this.endTime) + 60 * this.valuer1 * 1000);
@@ -209,8 +259,6 @@ start() {
   ValorID="";
   Valorfch="";
   valorres="";
-  displayedColumns: string[] = ['Id', 'Paquete', 'Cantidad', 'Icon'];
-  dataSource = [...ELEMENT_DATA];
 
   numciclo=10;
   valuer1=1;
@@ -220,18 +268,30 @@ start() {
 
   display: any =10;
   public timerInterval: any;
-
-  Esterilizador = new FormGroup({
+  Esterilizador1 = new FormGroup({
     Esterilizador: new FormControl(''),
     Ciclo: new FormControl(''),
     QR: new FormControl(''),
+    
+  });
+
+  Esterilizador = new FormGroup({
     TicketPrueBio: new FormControl(''),
     NumCarga: new FormControl(''),
     PruebaBio: new FormControl(''),
     PruebaQuim: new FormControl(''),
   });
 
-  @ViewChild(MatTable) table!: MatTable<esterilizadorTable>;
+
+
+  @ViewChild(MatTable) table!: MatTable<any>;
+  
+
+  removeAt(index: number) {
+    this.dataSource.splice(index, 1);
+    this.table!!!!!!!!.renderRows();
+    console.log('borrando')
+  }
   Subir() {
     //_____________________________________________________________________________________________________________________________________________________________________//
     //_____________________________________________________________________________________________________________________________________________________________________//
@@ -242,7 +302,7 @@ start() {
     
        
     
-       this.valueQR = this.Esterilizador?.get('QR')?.value!
+       this.valueQR = this.Esterilizador1?.get('QR')?.value!
       
        var splitted = this.valueQR.split(".", 3)
        
@@ -268,7 +328,7 @@ start() {
          
                 //  this.dataSource2[indice].Entregados =     this.dataSource2[indice].Entregados + 1
          
-                this.Esterilizador.value.QR=''
+                this.Esterilizador1.value.QR=''
              }
        
               //  this.dataSource2[indice].Entregados =     this.dataSource2[indice].Entregados + 1
@@ -278,9 +338,12 @@ start() {
              this.setElement.traerUNset(tickets).subscribe(setRecibidos=> {
          
                  let setAgregar ={
-                   Id: setRecibidos.id.toString(),
+                   Id: setRecibidos.id,
                    Paquete: setRecibidos.nombre,
                    Cantidad: 1,
+                   Turno:this.Turno1, 
+                   FechaE:fechaA,
+                   FechaC: fechaB,
                    
                
  
@@ -289,7 +352,7 @@ start() {
                  this.table.renderRows();
                
              })
-               this.Esterilizador.value.QR=''
+               this.Esterilizador1.value.QR=''
            
          }
 
@@ -300,11 +363,10 @@ start() {
         this.dialogService.emergente1()
       }
   
-      removeAt(index: number) {
-        this.dataSource.splice(index, 1);
-        console.log('borrando')
-        this.table.renderRows();
-      }
+
+
+
+    
       removeData() {
         this.dataSource.pop();
         console.log('borrando')
@@ -347,6 +409,15 @@ start() {
       this.bloquear = true;
   }
 
+
+  usuario: UserResponse | null = null;
+  recargar(): void {
+    this.store.select(fromUser.getUserState).subscribe( rs => {
+        const indexOfM = Object.keys(rs).indexOf( 'user' );
+        const s:fromUser.UserState  = Object.values(rs)[indexOfM];
+        this.usuario = JSON.parse(JSON.stringify(s.entity));  
+        console.log(this.usuario) 
+    });}
   //_____________________________________________________________________________________________________________________________________________________________________//
 //_____________________________________________________________________________________________________________________________________________________________________//
 //______________________________________      valores para el reporte y la prueba biologica y el folio de la prueba quimica     _______________________________________//
@@ -530,10 +601,6 @@ submit(){
   horaFin = "10:50";
   nombreOperadorFin = "Hugo Rodriguez";
 
-  submitted() {
-    
-    window.alert(JSON.stringify(this.Esterilizador.value, null, 2));
-  }
   getBase64ImageFromURL(url: string) {
     return new Promise((resolve, reject) => {
       var img = new Image();
@@ -566,14 +633,25 @@ submit(){
     //_____________________________________________________________________________________________________________________________________________________________________//
     //_____________________________________________________________________________________________________________________________________________________________________// 
           this.modeloprueba=this.Avalor6;
-          this.fechaFabricacion=this.Avalor3;
           this.fechaCaducidad=this.Avalor3;
           this.lote=this.Avalor7;
-          this.horaInicio=hora.toString() + ':' + minutos + ' hrs';
-          this.fechaInicio = dia + '/'+mes+'/'+año;
           this.numCarga = this.numCarga=this.Esterilizador?.get('NumCarga')?.value!;
           this.pruebaBiologica = this.pruebaBiologica=this.Esterilizador?.get('TicketPrueBio')?.value!;
     
+
+  /////------------------------------- ciclo de inicio
+          this.horaInicio=horaA1.toString()
+          this.fechaInicio = fechaA
+          this.fechaFabricacion=this.Avalor3;
+          this.nombreOperador = this.usuario?.nombre.toString()!
+ /////------------------------------- ciclo de fin
+          this.fechaFin = fechaA;
+          this.horaFin = horaB.toString();
+          this.nombreOperadorFin = "Hugo Rodriguez";
+
+
+
+
         const pdfDefinition: any = {
     
           
@@ -651,7 +729,7 @@ submit(){
           {text: 'Nombre operador:',style: 'content3'},
           {text: 'Firma del  operador:',style: 'content4'},
           {text: ' '+this.fechaFin ,style: 'content1b'},
-          {text: ' '+this.horaFin ,style: 'content2b'},
+          {text: ' '+this.horaFin,style: 'content2b'},
           {text: ' '+this.nombreOperadorFin,style: 'content3b'},
     
           {text: 'Número de Paquetes Esterilizados: '+ this.cantidadPaquetes ,style: 'content5'},
@@ -661,9 +739,9 @@ submit(){
           {
             style: 'tableExample', margin:[0,20,30,0],
             table: {
-              widths: ['20%','20%','20%','20%','20%'],
+              widths: ['20%','20%','15%','15%','15%','15%'],
               body: [
-                ['ID:', 'Paquete:', 'Turno:', 'Fecha de Elaboración:', 'Fecha de Caducidad:'],
+                ['ID', 'Paquete','cantidad', 'Turno', 'Fecha de Elaboración', 'Fecha de Caducidad'],
               ]
             },layout: 'noBorders'
           },
@@ -674,7 +752,7 @@ submit(){
             
     
     
-             table(this.dataSource, ['Id', 'Paquete', 'Turno', 'FechaE','FechaC'], ),
+             table(this.dataSource, ['Id', 'Paquete','Cantidad', 'Turno', 'FechaE','FechaC'], ),
         ],
         
       images:{
@@ -846,13 +924,18 @@ export interface listaCiclo {
 
 
 const date = new Date();
+
 const año = date.getFullYear();
 const mes = date.toLocaleString('default', { month: 'numeric' });
 const mes2 = date.toLocaleString('default', { month: 'long' });
 const dia = date.getDate(); 
 const hora = date.getHours();
 const minutos = date.getMinutes();
-
+const horaA =   date.getHours()
+const horaA1 =   date.getHours() +':'+ date.getMinutes()
+const horaB =   (date.getHours()+1) +':'+ date.getMinutes()
+const fechaA =dia +'/'+ ('0' + (date.getMonth() + 1)).slice(-2)  +'/'+ año ;
+const fechaB =dia +'/'+ ('0' + (date.getMonth() + 3)).slice(-2)  +'/'+ año ;
 export interface esterilizadorTable {
   Id: string;
   Paquete: string;
@@ -861,8 +944,7 @@ export interface esterilizadorTable {
   FechaC: string;
 }
 
-const ELEMENT_DATA: any  = [
-];
+
 
 export interface esterilizador {
   Esterilizador:string;
@@ -878,7 +960,7 @@ function table(data: { [x: string]: { toString: () => any; }; }[] | { name: stri
   return {
     style: 'tableExample',
       table: {
-        widths: ['20%','20%','20%','20%','20%'],
+        widths: ['20%','20%','15%','15%','15%','15%'],
           body: buildTableBody(data, columns),
       },layout: 'noBorders'
     

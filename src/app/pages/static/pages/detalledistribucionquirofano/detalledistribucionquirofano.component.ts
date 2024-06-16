@@ -186,88 +186,7 @@ fechaN:any;
              //statements;
               // ***********************************************************************************
               let tickerCapturado = this.capturarProgCirug();
-              this.ticketServicio.editarticket(tickerCapturado, tickerCapturado.id).subscribe((ticket) => {
-                //console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++')
-                //console.log(ticket)
-                ticketinstrumentoServicio.traerticketinstrumento(ticket.id).subscribe((ticketinstrumentosReales) => {
-                  ticketsetServicio.traerticketset(ticket.id).subscribe((ticketsetReales) => {
-                    // *************************************************************************************
-                    this.Tabla2.forEach((elemento) => {
-                      switch(elemento.Tipo) { 
-                        case '(I)': { 
-                            let instrumentoSeleccionado = this.instrumentos.filter(instru => instru.id == elemento.ID)
-                            let indice = ticketinstrumentosReales.findIndex(u => u.instrumento.id === instrumentoSeleccionado[0].id);
-                            
-                            if (indice == -1) {
-                              let ticketinstrumento = {
-                                instrumento: instrumentoSeleccionado[0],
-                                ticket: ticket,
-                                cantidad: elemento.Cantidad
-                              }
-                              this.ticketinstrumentoServicio.altaticketinstrumento(ticketinstrumento).subscribe((ticketinstrumentoR) => {
-                                //console.log(ticketinstrumentoR)
-                              })
-                            }
-                            else {
-                              let ticketInstrumentoR2 = ticketinstrumentosReales.filter(u => u.instrumento.id === instrumentoSeleccionado[0].id);
-                              let ticketinstrumento = {
-                                id: ticketInstrumentoR2[0].id,
-                                instrumento: instrumentoSeleccionado[0],
-                                ticket: ticket,
-                                cantidad: elemento.Cantidad
-                              }
-                              //console.log(ticketinstrumento)
-                              // *******************************  EDITAR INSTRUMENTO **********************
-                              this.ticketinstrumentoServicio.editarticketinstrumento(ticketinstrumento, ticketinstrumento.id).subscribe((ticketinstrumentoRes) => {
-
-                              })
-                            }
-
-                           //statements; 
-                           break; 
-                        } 
-                        case '(S)': { 
-                           //statements; 
-                           let setSeleccionado = this.noSets.filter(setseleccionado => setseleccionado.id == elemento.ID)
-                           let indice = ticketsetReales.findIndex(u => u.set.id === setSeleccionado[0].id);
-                            if (indice == -1) {
-                              let ticketset = {
-                                 set: setSeleccionado[0],
-                                 ticket: ticket,
-                                 cantidad: elemento.Cantidad
-                               }
-                              this.ticketsetServicio.altaticketset(ticketset).subscribe((ticketsetR) => {
-                                //console.log(ticketsetR)
-                              })
-                            }
-                            else {
-                              // ********************** EDITAR SET ********************************
-                              let ticketSetR2 = ticketsetReales.filter(u => u.set.id === setSeleccionado[0].id);
-                              let ticketsetR3 = {
-                                id: ticketSetR2[0].id,
-                                set: setSeleccionado[0],
-                                ticket: ticket,
-                                cantidad: elemento.Cantidad
-                              }
-                              this.ticketsetServicio.editarticketset(ticketsetR3, ticketsetR3.id).subscribe((ticketsetR) => {
-                                //console.log(ticketsetR)
-                              })
-                            }
-                           break; 
-                        } 
-                        default: { 
-                           //statements; 
-                           break; 
-                        } 
-                     }
-                    }) 
-                    // *************************************************************************************
-                  })
-                })
-
-// Foreach ELEMENT_DATA
-
-              })  // Editar Ticket
+            // Editar Ticket
 
               this.subirset();
               
@@ -635,7 +554,7 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
                       cantidad:   this.cantidadnuevoset
                     }
     
-                    this.Settraer.altaticketset(ticketSetSubir).subscribe(subidos=>{
+                    this.Settraer.editarticketset(set , set.id).subscribe(subidos=>{
                       console.log(subidos)
                     })
                   })
