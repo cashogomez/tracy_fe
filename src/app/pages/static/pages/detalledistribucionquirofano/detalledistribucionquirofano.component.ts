@@ -186,7 +186,7 @@ fechaN:any;
              //statements;
               // ***********************************************************************************
               let tickerCapturado = this.capturarProgCirug();
-            // Editar Ticket
+              this.ticketServicio.editarticket(tickerCapturado, tickerCapturado.id).subscribe((ticket) => {})
 
               this.subirset();
               

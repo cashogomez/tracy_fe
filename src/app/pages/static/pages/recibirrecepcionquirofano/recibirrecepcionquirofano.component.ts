@@ -24,7 +24,8 @@ import { UserResponse } from '@app/store/user';
 import { TicketService } from '@app/services/ticket/ticket.service';
 
 
-import { TurnoService } from '@app/services';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { NotificationService, TurnoService } from '@app/services';
 //--------------------pedir tablas set info --------------------------
 import { TicketsetService } from '@app/services/ticketset/ticketset.service';
 //--------------------pedir tablas set info --------------------------
@@ -32,6 +33,7 @@ import { TicketsetService } from '@app/services/ticketset/ticketset.service';
 //--------------------pedir tablas set info --------------------------
 import { TicketinstrumentoService } from '@app/services/ticketinstrumento/ticketinstrumento.service';
 import { from } from 'rxjs';
+import { Ticket } from '@app/models/backend/ticket';
 //--------------------pedir tablas set info --------------------------
 
 const date = new Date();const año = date.getFullYear();const mes = date.getMonth()+1;const mes2 = date.toLocaleString('default', { month: 'long' });const dia = date.getDate(); const hora = date.getHours();const minutos = date.getMinutes();
@@ -138,12 +140,12 @@ export class RecibirrecepcionquirofanoComponent implements OnInit {
       //--------------------traer tablas Inst info --------------------------
       private dataService: DialogService,
       private turnoService: TurnoService,
+    private notification: NotificationService,
+    private router: Router,
   ){
    
     this.dataSource1 = new MatTableDataSource(this.Instrumental_quirugico_sencillo);
     this.dataSource2 = new MatTableDataSource(this.Instrumental_quirugico);
-
-
 
 
     this.dataService.data$.subscribe(data => {
@@ -151,17 +153,72 @@ export class RecibirrecepcionquirofanoComponent implements OnInit {
       var cortado2 = cortado.split(':', 2)
       this.respuesta = cortado2[0]
       this.nombreEmer = cortado2[1]
-      console.log (this.respuesta)
-      if (this.respuesta=='true') {}
-      
+
+      if (this.respuesta=='true') {
+        switch(this.tipoOperacion) { 
+          case 2: { 
+            this.notification.success("Recibido!");
+            this.router.navigate(['/static/welcome']);
+             //statements;
+              // ***********************************************************************************
+              let tickerCapturado = this.capturarProgCirug();
+              this.ticketServicio.editarticket(tickerCapturado, tickerCapturado.id).subscribe((ticket) => {})
+
+         
+              
+             break; 
+          } 
+          case 3: { 
+            this.notification.error("Operación cancelada");
+            this.router.navigate(['/static/welcome']);
+            //statements; 
+            break; 
+         } 
+          default: { 
+             //statements; 
+             break; 
+          } 
+       }
         
-    })
-    
+      }
+      else {
+        this.notification.error("¡Se canceló la operación");
+      } 
+    });
+   
    
 
   }
 
-
+  capturarProgCirug(): Ticket {
+    const tickerCapturado: Ticket = {
+      id:  Number(this.ticketAEditar),
+      fecha_cirugia:this.formaEdicion?.get('Fechacirugia')?.value!,
+      paciente: this.formaEdicion?.get('Paciente')?.value!,
+      registro: this.formaEdicion?.get('Registro')?.value!,
+      edad: this.formaEdicion?.get('Edad')?.value!,
+      fecha_nacimiento: this.formaEdicion?.get('Nacimiento')?.value!,
+      habitacion: this.formaEdicion?.get('Habitacion')?.value!,
+      sala: Number( this.formaEdicion?.get('Sala')?.value!),
+      turno: Number(this.formaEdicion?.get('Turno')?.value!),
+      diagnostico: this.formaEdicion?.get('Diagnostico')?.value!,
+      cirugia: this.formaEdicion?.get('Cirugia')?.value!,
+      solicita: this.formaEdicion?.get('Solicita')?.value!,
+      cirujano: this.formaEdicion?.get('Cirujano')?.value!,
+      anestesiologo: this.formaEdicion?.get('Anestesiologo')?.value!,
+      anestesia: this.formaEdicion?.get('Anestesia')?.value!,
+      residente: this.formaEdicion?.get('Ayudante')?.value!,
+      area_registro: this.formaEdicion?.get('AreaRegistro')?.value!,
+      enfermero: this.formaEdicion?.get('Enfermera')?.value!,
+      notas: this.formaEdicion?.get('Notas')?.value!,
+      estatus: 'recibido',
+      prioridad: this.formaEdicion?.get('Prioridad')?.value!,
+      activo: true
+    };
+    //console.log(tickerCapturado)
+    return tickerCapturado;
+    // ***********************************************************
+  }
 
   recargar(): void {
     this.store.select(fromUser.getUserState).subscribe( rs => {
@@ -218,6 +275,16 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
           Estatus: data.estatus,
         }
         
+        this.formaEdicion?.get('FechaCirugia')?.setValue(data.fecha_cirugia!)
+        this.formaEdicion?.get('CirugíaProgramada')?.setValue(data.cirugia!)
+        this.formaEdicion?.get('NotasAdd')?.setValue(data.notas!)
+        this.formaEdicion?.get('Sala')?.setValue(data.sala.toString()!)
+        this.formaEdicion?.get('AreaRegistro')?.setValue(data.area_registro!)
+        this.formaEdicion?.get('Turno')?.setValue(data.turno.toString()!)
+        this.formaEdicion?.get('Enfermera')?.setValue(data.enfermero!),
+        this.formaEdicion?.get('Prioridad')?.setValue(data.prioridad!)
+
+
         console.log(this.formaEdicion.value.FechaCirugia)
         this.formaEdicion?.get('FechaCirugia')?.setValue(data.fecha_cirugia!)
         this.formaEdicion?.get('DxOperatorio')?.setValue(data.diagnostico!)
@@ -280,6 +347,13 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
     IDRecepcion: [''],
     Devolucion:  [''],
     IDDevolucion: [''],
+    CirugíaProgramada: [''],
+    Sala: [''],
+    AreaRegistro: [''],
+    Turno: [''],
+    Enfermera:  [''],
+    NotasAdd: [''],
+    Prioridad: [''],
  });
 
 
@@ -294,12 +368,19 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
       (component) => component.DialogoComponent
     )
   );
-
+  private lazyLoadBetas$ = from(
+    import('@app/services/dialog/components/recibir/recibir.component').then(
+      (component) => component.RecibirComponent
+    )
+  );
   onBetaClicked() {
     this.dialogService.showDialog2(this.lazyLoadBeta$);
-    this.tipoOperacion = 1
+    this.tipoOperacion = 2
   }
-
+  onBetaClicked2() {
+    this.dialogService.showDialog2(this.lazyLoadBetas$);
+    this.tipoOperacion = 2
+  }
 
 ticketC =100;
 fecha=fechaA;
@@ -344,4 +425,11 @@ interface TicketForma {
   IDRecepcion: FormControl<string>;
   Devolucion: FormControl<string>;
   IDDevolucion: FormControl<string>;
+  CirugíaProgramada: FormControl<string>;
+  Sala: FormControl<string>;
+  AreaRegistro: FormControl<string>;
+  Turno: FormControl<string>;
+  Enfermera:  FormControl<string>;
+  NotasAdd: FormControl<string>;
+  Prioridad:  FormControl<any>;
 }

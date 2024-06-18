@@ -356,6 +356,8 @@ this.turnoService.traerUNturno(this.Turno1).subscribe (turnoRecibido => {
   });
 
 
+  NumeroPaquete=0;
+
 
   @ViewChild(MatTable) table!: MatTable<any>;
 
@@ -387,15 +389,18 @@ this.turnoService.traerUNturno(this.Turno1).subscribe (turnoRecibido => {
        
            let comparable = this.dataSource.filter((IDcomp) => IDcomp.Id == Number(this.ValorID))
            
- 
+       
            if (comparable.length > 0 ){
             let num = 0;
             this.dataSource.forEach(data =>{
               if (data.Id  == Number(this.ValorID )) {
                 this.dataSource[num].Cantidad = this.dataSource[num].Cantidad+1
               }
-             
+              var Cantidades = this.dataSource.map(data => data.Cantidad )
+              this.NumeroPaquete = Cantidades.reduce((a,b) => a+b )
+
               num++
+              
             })
          
                 //  this.dataSource2[indice].Entregados =     this.dataSource2[indice].Entregados + 1
@@ -416,19 +421,17 @@ this.turnoService.traerUNturno(this.Turno1).subscribe (turnoRecibido => {
                    Turno:this.Turno1, 
                    FechaE:fechaA,
                    FechaC: fechaB,
-                   
-               
- 
                  }
+                 
                  this.dataSource.push(setAgregar)
                  this.table.renderRows();
                
+                 this.NumeroPaquete =  this.NumeroPaquete+1
              })
                this.Esterilizador1.value.QR=''
            
          }
 
-      
       }
 
       emergente1(){
@@ -709,14 +712,16 @@ submit(){
     //_____________________________________________________________________________________________________________________________________________________________________//
     //_____________________________________________________________________________________________________________________________________________________________________// 
 
-    localStorage.removeItem('est'+ this.EquipoADetallar)
+
+/*     localStorage.removeItem('est'+ this.EquipoADetallar)
     localStorage.removeItem('Usuario'+ this.EquipoADetallar )
     localStorage.removeItem('horaActual'+ this.EquipoADetallar )
     localStorage.removeItem('FechaActual'+ this.EquipoADetallar)
     localStorage.removeItem('TempM'+ this.EquipoADetallar)
     localStorage.removeItem('CicloN'+ this.EquipoADetallar)
-
+ */
     /////------------------------------- datos esterilizador
+          this.cantidadPaquetes=this.NumeroPaquete.toString();
           this.marca = this.MarcaEst;
           this.modelo = this.ModeloEst;
           this.numSerie = this.NumeroSreieEst;

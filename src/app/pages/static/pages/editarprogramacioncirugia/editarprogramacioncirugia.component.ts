@@ -151,7 +151,7 @@ export class EditarprogramacioncirugiaComponent {
               } 
               case 2: { 
                 this.notification.success("Ticket generado");
-                this.router.navigate(['/static/quirofanoinformacion']);
+                this.router.navigate(['/static/welcome']);
                  //statements;
                   // ***********************************************************************************
                   let tickerCapturado = this.capturarProgCirug();
@@ -163,7 +163,34 @@ export class EditarprogramacioncirugiaComponent {
                         // *************************************************************************************
                         this.ELEMENT_DATA.forEach((elemento) => {
                           switch(elemento.Tipo) { 
-                           
+                            case '(I)': { 
+                                let instrumentoSeleccionado = this.instrumentos.filter(instru => instru.id == elemento.id)
+                                let indice = ticketinstrumentosReales.findIndex(u => u.instrumento.id === instrumentoSeleccionado[0].id);
+                                
+                                if (indice == -1) {
+                                  let ticketinstrumento = {
+                                    instrumento: instrumentoSeleccionado[0],
+                                    ticket: ticket,
+                                    cantidad: elemento.Cantidad
+                                  }
+                          
+                                }
+                                else {
+                                  let ticketInstrumentoR2 = ticketinstrumentosReales.filter(u => u.instrumento.id === instrumentoSeleccionado[0].id);
+                                  let ticketinstrumento = {
+                                    id: ticketInstrumentoR2[0].id,
+                                    instrumento: instrumentoSeleccionado[0],
+                                    ticket: ticket,
+                                    cantidad: elemento.Cantidad
+                                  }
+                                  //console.log(ticketinstrumento)
+                                  // *******************************  EDITAR INSTRUMENTO **********************
+                               
+                                }
+
+                               //statements; 
+                               break; 
+                            } 
                             case '(S)': { 
                                //statements; 
                                let setSeleccionado = this.noSets.filter(setseleccionado => setseleccionado.id == elemento.id)
@@ -239,24 +266,7 @@ export class EditarprogramacioncirugiaComponent {
        })
    
        // ********************* CARGA DE LOS INSTRUMENTOS *******************
-       this.instrumentoService.traerinstrumentos().subscribe(instrumentosRegistrados => {
-         this.instrumentos = instrumentosRegistrados;
-         this.instrumentos.forEach((name, index) => {
-           let indice = this.lista_familia.findIndex(u => u === name.familia);
-           //console.log(indice)
-     
-         })
-         this.filteredOptions = this.myControl.valueChanges.pipe(
-           startWith(''),
-           map(value => {
-             const name = typeof value === 'string' ? value : value?.name;
-             return name ? this._filter(name as string) : this.options.slice();
-           }),
-         );
-         //this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
-         this.dataSource.data = this.ELEMENT_DATA;
-   
-       });
+       
 
   }
   
@@ -300,7 +310,6 @@ export class EditarprogramacioncirugiaComponent {
     this.ticketServicio.traerUNticket(ticket).subscribe(data => {
       this.escribirProgCirug(data);
       this.ticketsetServicio.traerticketset(data.id).subscribe(conjuntoDeSetsDelTicket => {
-        this.ticketinstrumentoServicio.traerticketinstrumento(data.id).subscribe(conjuntoDeInstrumentosDelTicket => {
           conjuntoDeSetsDelTicket.forEach((ticketsetObtenido) => {
             let elementoAgregar: PeriodicElement = {
               id: ticketsetObtenido.set.id,
@@ -311,10 +320,10 @@ export class EditarprogramacioncirugiaComponent {
             }
             this.ELEMENT_DATA.push(elementoAgregar);
           })
-       
           this.dataSource.data = this.ELEMENT_DATA;
           //console.log(this.ELEMENT_DATA);
-        })
+        
+          
       })
     })
     this.formaEdicion = this.fb.nonNullable.group({
@@ -511,8 +520,7 @@ export class EditarprogramacioncirugiaComponent {
     if (this.cantidad > 0) {
       var splitted = this.elementoRecibido.name.split(" ", 5); 
   
-     
-       if (splitted[1] ==='(S)') {
+      if (splitted[1] ==='(S)') {
           //console.log('Set')
           let setSeleccionado = this.noSets.filter(setregistrado => setregistrado.id == parseInt(splitted[0]))
           if (setSeleccionado.length > 0) {
@@ -546,6 +554,27 @@ export class EditarprogramacioncirugiaComponent {
         }
       }
     }
+
+
+
+      SubirSets(){
+       
+
+
+
+
+
+
+
+
+
+
+
+        
+      }
+
+
+
 
 }
 
