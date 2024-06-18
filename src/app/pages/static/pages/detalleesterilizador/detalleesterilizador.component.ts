@@ -33,6 +33,8 @@ import * as fromRoot from '@app/store';
 import * as fromUser from '@app/store/user';
 import { UserResponse } from '@app/store/user';
 
+
+
 export interface TablaAñadir2 {
   Id: number;
   Paquete: string;
@@ -105,10 +107,10 @@ export class DetalleesterilizadorComponent implements OnInit {
                 private _snackBar: MatSnackBar,
                 private setElement: SetService,
                 private turnoService: TurnoService,
-                    
+                private equiposServicio: EquipoService,
                 private store: Store<fromRoot.State>, 
   ){
-
+  
     
   }
 
@@ -118,12 +120,26 @@ endTime:any;
 stop() {
   this.remainingTime=0;
   this.endTime=0;
-  localStorage.removeItem('est'+ this.EquipoADetallar )
+  this.bloquear=false
+  localStorage.removeItem('est'+ this.EquipoADetallar)
+  localStorage.removeItem('Usuario'+ this.EquipoADetallar )
+  localStorage.removeItem('horaActual'+ this.EquipoADetallar )
+  localStorage.removeItem('FechaActual'+ this.EquipoADetallar)
+  localStorage.removeItem('TempM'+ this.EquipoADetallar)
+  localStorage.removeItem('CicloN'+ this.EquipoADetallar)
 }
-
-
-tiempof=0;
+FechaInicioA='';
+FechaFinalA='';
+FechaFinalB='';
+HoraInicioR=''
+HoraFinal='';
+UsuarioInicial='';
+UsuarioInicial2='';
+UsuarioFinal='';
+tiempof='';
 start() {
+  this.CicloCuenta = this.CicloCuenta+1;
+  this.bloquear = true;
   let terminado = false
   this.endTime = localStorage.getItem('est'+ this.EquipoADetallar) ?? new Date().toString(); 
   this.activationDeadline = new Date(Date.parse(this.endTime) + 60 * this.valuer1 * 1000);
@@ -141,19 +157,40 @@ start() {
         this.bloquear=false
         this.remainingTime=0;
         localStorage.removeItem('est'+ this.EquipoADetallar )
+        this.bloquear2 = false;
         
       }
     })
     if (terminado == false) {
       localStorage.setItem('est'+ this.EquipoADetallar, this.activationDeadline )
+      localStorage.setItem('CicloCuenta'+ this.EquipoADetallar, this.CicloCuenta.toString() )
+      localStorage.setItem('CicloN'+ this.EquipoADetallar, this.CicloNombre )
+      localStorage.setItem('TempM'+ this.EquipoADetallar, this.valuer1.toString() )
+      localStorage.setItem('Usuario'+ this.EquipoADetallar, this.UsuarioInicial2 )
+      localStorage.setItem('horaActual'+ this.EquipoADetallar, horaA1 )
+      localStorage.setItem('FechaActual'+ this.EquipoADetallar, fechaA )
     }
     else {
       localStorage.removeItem('est'+ this.EquipoADetallar)
+      localStorage.removeItem('UsuarioA'+ this.EquipoADetallar )
+      localStorage.removeItem('horaActual'+ this.EquipoADetallar )
+      localStorage.removeItem('FechaActual'+ this.EquipoADetallar)
     }
 
 
 
     console.log(this.activationDeadline)
+
+    this.HoraInicioR = horaA1;
+    this.FechaInicioA = fechaA
+
+    this.FechaFinalA= this.activationDeadline.toString().split(" ", 5)
+    this.HoraFinal = this.FechaFinalA[4].split(':').slice(0,2).join(':')
+    this.FechaFinalB = this.FechaFinalA[2]+ '/' + this.FechaFinalA[1] + '/'+ this.FechaFinalA[3]
+    this.FechaFinalB = (this.datePipe.transform(this.FechaFinalB, 'dd-MM-yyyy')!).toString()!;
+    this.FechaFinalB = this.FechaFinalB.split('-').join('/');
+    this.UsuarioInicial2 = this.UsuarioInicial2.toString()
+    console.log(this.UsuarioInicial2)
     }
 
 
@@ -163,8 +200,27 @@ start() {
     hora=horaA;
 
   ngOnInit(): void {
+
+    this.equiposServicio.traerUNequipo(Number(this.EquipoADetallar)).subscribe((DatosEst)=>{
+      let esterilizadorDatos ={
+        Estatus: DatosEst.estatus,
+        Id: DatosEst.id,
+        Marca: DatosEst.marca,
+        Modelo: DatosEst.modelo,
+        Nombre: DatosEst.nombre,
+        Numero: DatosEst.numero,
+        NumeroSerie: DatosEst.numero_serie,
+        Prueba: DatosEst.prueba
+      }
+
+      this.MarcaEst=esterilizadorDatos.Marca;
+      this.ModeloEst = esterilizadorDatos.Modelo;
+      this.NumeroSreieEst=esterilizadorDatos.NumeroSerie;
+})
+
     this.recargar()
    
+    this.UsuarioInicial2 = this.usuario?.nombre.toString()!;
     if (horaA >= 7 && horaA < 14 ) {this.Turno1 = 1;}
 
     if (horaA >=14  && horaA < 21 ) { this.Turno1 = 2;}
@@ -196,6 +252,7 @@ this.turnoService.traerUNturno(this.Turno1).subscribe (turnoRecibido => {
         this.bloquear=false
         this.remainingTime=0;
         localStorage.removeItem('est'+ this.EquipoADetallar )
+         this.bloquear2 = false;
       }
     })
   }
@@ -219,6 +276,20 @@ this.turnoService.traerUNturno(this.Turno1).subscribe (turnoRecibido => {
     })
 
 
+    this.valuer1 =  Number(localStorage.getItem('TempM'+ this.EquipoADetallar)! )
+    if (this.valuer1 >= 1){
+      this.bloquear=true;
+    }
+    this.FechaInicioA =  localStorage.getItem('FechaActual'+ this.EquipoADetallar)!
+    this.CicloCuenta =  Number(localStorage.getItem('CicloCuenta'+ this.EquipoADetallar))!
+    this.CicloNombre =  localStorage.getItem('CicloN'+ this.EquipoADetallar)!
+    this.HoraInicioR =  localStorage.getItem('horaActual'+ this.EquipoADetallar)!
+    this.UsuarioInicial=  localStorage.getItem('Usuario'+ this.EquipoADetallar)!
+    this.FechaFinalA= this.activationDeadline.toString().split(" ", 5)
+    this.HoraFinal = this.FechaFinalA[4].split(':').slice(0,2).join(':')
+    this.FechaFinalB = this.FechaFinalA[2]+ '/' + this.FechaFinalA[1] + '/'+ this.FechaFinalA[3]
+    this.FechaFinalB = (this.datePipe.transform(this.FechaFinalB, 'dd-MM-yyyy')!).toString()!;
+    this.FechaFinalB = this.FechaFinalB.split('-').join('/');
 
     
   }
@@ -236,7 +307,7 @@ this.turnoService.traerUNturno(this.Turno1).subscribe (turnoRecibido => {
 
       var splitted = cicloelegido.duracion.split(':',3)
       
-      
+      this.CicloNombre =separado[1]
       this.cicloVigente = cicloelegido
 
       //this.valuer1 = Number(splitted[1])
@@ -265,6 +336,8 @@ this.turnoService.traerUNturno(this.Turno1).subscribe (turnoRecibido => {
   valuer=10;
   interval:any;
   bloquear: boolean = false;
+  bloquear2: boolean = true;
+
 
   display: any =10;
   public timerInterval: any;
@@ -285,11 +358,10 @@ this.turnoService.traerUNturno(this.Turno1).subscribe (turnoRecibido => {
 
 
   @ViewChild(MatTable) table!: MatTable<any>;
-  
 
   removeAt(index: number) {
     this.dataSource.splice(index, 1);
-    this.table!!!!!!!!.renderRows();
+    this.table.renderRows();
     console.log('borrando')
   }
   Subir() {
@@ -405,9 +477,7 @@ this.turnoService.traerUNturno(this.Turno1).subscribe (turnoRecibido => {
         }, 1000);
       }
 
-    hacerSubmit() {
-      this.bloquear = true;
-  }
+   
 
 
   usuario: UserResponse | null = null;
@@ -626,12 +696,37 @@ submit(){
       img.src = url;
     });
   }
+
+  MarcaEst='';
+  ModeloEst = '';
+  NumeroSreieEst='';
+  CicloNombre='';
+  CicloCuenta=0;
   async createPDF(){
     //_____________________________________________________________________________________________________________________________________________________________________//
     //_____________________________________________________________________________________________________________________________________________________________________//
     //__________________________________________      Aquí cambiara los datos por los que generamos en la parte del verificado    _________________________________________//
     //_____________________________________________________________________________________________________________________________________________________________________//
     //_____________________________________________________________________________________________________________________________________________________________________// 
+
+    localStorage.removeItem('est'+ this.EquipoADetallar)
+    localStorage.removeItem('Usuario'+ this.EquipoADetallar )
+    localStorage.removeItem('horaActual'+ this.EquipoADetallar )
+    localStorage.removeItem('FechaActual'+ this.EquipoADetallar)
+    localStorage.removeItem('TempM'+ this.EquipoADetallar)
+    localStorage.removeItem('CicloN'+ this.EquipoADetallar)
+
+    /////------------------------------- datos esterilizador
+          this.marca = this.MarcaEst;
+          this.modelo = this.ModeloEst;
+          this.numSerie = this.NumeroSreieEst;
+          this.tiempoCiclo = this.valuer1.toString();
+          this.tipoCiclo = this.CicloNombre;
+          this.numCicloDiario = this.CicloCuenta.toString();
+    /////------------------------------- datos pruebas
+    
+    
+          this.UsuarioFinal = this.usuario?.nombre.toString()!
           this.modeloprueba=this.Avalor6;
           this.fechaCaducidad=this.Avalor3;
           this.lote=this.Avalor7;
@@ -640,14 +735,14 @@ submit(){
     
 
   /////------------------------------- ciclo de inicio
-          this.horaInicio=horaA1.toString()
-          this.fechaInicio = fechaA
+          this.horaInicio= this.HoraInicioR;
+          this.fechaInicio = this.FechaInicioA;
           this.fechaFabricacion=this.Avalor3;
-          this.nombreOperador = this.usuario?.nombre.toString()!
+          this.nombreOperador = this.UsuarioInicial
  /////------------------------------- ciclo de fin
-          this.fechaFin = fechaA;
-          this.horaFin = horaB.toString();
-          this.nombreOperadorFin = "Hugo Rodriguez";
+          this.fechaFin = this.FechaFinalB;
+          this.horaFin = this.HoraFinal;
+          this.nombreOperadorFin = this.UsuarioFinal;
 
 
 
@@ -718,7 +813,7 @@ submit(){
     
           {text: 'Resultado de la prueba biológica: ' +this.resultado ,style: 'content5'},
     
-          {text: 'Número de carga:',style: 'content1'},
+          {text: 'Núm. Carga:',style: 'content1'},
           {text: 'Número de ciclo diario:',style: 'content2'},
           {text: ' '+this.numCarga,style: 'content1b'},
           {text: ' '+this.numCicloDiario  ,style: 'content2b'},
@@ -807,7 +902,7 @@ submit(){
           content2: {
             fontSize: 11,
             bold: true,
-            margin: [140, -12, 0, 0],
+            margin: [125, -12, 0, 0],
             alignment: "left",
             color: 'black',
             position:'fixed',
@@ -847,7 +942,7 @@ submit(){
           content2b: {
             fontSize: 11,
             bold: false,
-            margin: [140, -12, 0, 0],
+            margin: [125, -12, 0, 0],
             alignment: "left",
             color: 'black',
             position:'fixed',
@@ -895,8 +990,8 @@ submit(){
         
      
         const pdf =  pdfMake.createPdf(pdfDefinition);
-        pdf.download('Bitacora de Esterilizacion '+ dia + '/'+mes2+'/'+año + ' ('+ hora + '/'+ minutos + 'hr)');
-    
+        //pdf.download('Bitacora de Esterilizacion '+ dia + '/'+mes2+'/'+año + ' ('+ hora + '/'+ minutos + 'hr)');
+        pdf.open()
         
       }
 
@@ -932,8 +1027,7 @@ const dia = date.getDate();
 const hora = date.getHours();
 const minutos = date.getMinutes();
 const horaA =   date.getHours()
-const horaA1 =   date.getHours() +':'+ date.getMinutes()
-const horaB =   (date.getHours()+1) +':'+ date.getMinutes()
+const horaA1 =   date.getHours() +':'+ ('0' + (date.getMinutes())).slice(-2) 
 const fechaA =dia +'/'+ ('0' + (date.getMonth() + 1)).slice(-2)  +'/'+ año ;
 const fechaB =dia +'/'+ ('0' + (date.getMonth() + 3)).slice(-2)  +'/'+ año ;
 export interface esterilizadorTable {

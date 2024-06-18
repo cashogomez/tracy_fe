@@ -32,7 +32,6 @@ import { SetService } from '@app/services/set/set.service';
 import { InstrumentoService } from '@app/services/instrumento/instrumento.service';
 import { Instrumento } from '@app/models/backend/instrumento';
 import { TicketService } from '@app/services/ticket/ticket.service';
-import { TurnoService } from '@app/services';
 import moment from 'moment';
 import 'moment/locale/es';
 import { TicketsetService } from '@app/services/ticketset/ticketset.service';
@@ -116,7 +115,6 @@ export class ProgramacioncirugiaComponent implements OnInit {
     private notification: NotificationService,
     private dataService: DynamicDialogService,
     private ticketService: TicketService,
-    private turnoService: TurnoService,
     private setService: SetService,
     private instrumentoService : InstrumentoService,
     @Inject(MAT_DATE_LOCALE) private _locale: string,) {
@@ -257,30 +255,9 @@ export class ProgramacioncirugiaComponent implements OnInit {
   //dataSource!: MatTableDataSource<Element>;
 // **********************************************************
 
-  Turno1: number = 0;
-  TurnoAct:number = 0;
   hora = horaA;
   ngOnInit() {
     
-//------------------------_______________________-----------------TURNO----------------_______________________-------------------------
-        if (horaA >= 7 && horaA < 14 ) {this.Turno1 = 1;}
-
-        if (horaA >=14  && horaA < 21 ) { this.Turno1 = 2;}
-
-        if (horaA >=21  && horaA < 7 ){this.Turno1 = 3;}
-  
-    this.turnoService.traerUNturno(this.Turno1).subscribe (turnoRecibido => {
-        let turnoAgregar ={
-          Numero: turnoRecibido.id,
-          Inicio: turnoRecibido.inicio,
-          Fin: turnoRecibido.fin,
-          Id: turnoRecibido.id
-        }
-       this.TurnoAct= turnoRecibido.id
-    })
-//------------------------_______________________-----------------TURNO----------------_______________________-------------------------
-    
-
     this.updateCloseButtonLabel('Cerrar Calendario');
 
     this.formaEdicion = this.fb.nonNullable.group({
