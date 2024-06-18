@@ -35,7 +35,6 @@ import { TicketService } from '@app/services/ticket/ticket.service';
 import moment from 'moment';
 import 'moment/locale/es';
 import { TicketsetService } from '@app/services/ticketset/ticketset.service';
-import { TicketinstrumentoService } from '@app/services/ticketinstrumento/ticketinstrumento.service';
 
 
 const date = new Date();const minutos=date.getMinutes();const segundos = date. getSeconds();
@@ -107,7 +106,6 @@ export class ProgramacioncirugiaComponent implements OnInit {
   
   constructor(
     private   ticketsetServicio : TicketsetService,
-    private   ticketinstrumentoServicio : TicketinstrumentoService,
     private fb: FormBuilder,
     private router: Router,
     private _adapter: DateAdapter<any>,
@@ -149,19 +147,7 @@ export class ProgramacioncirugiaComponent implements OnInit {
                     console.log(ticket)
                     this.ELEMENT_DATA5.forEach((elemento) => {
                       switch(elemento.Tipo) { 
-                        case '(I)': { 
-                          let instrumentoSeleccionado = this.instrumentos.filter(instrumento => instrumento.id == elemento.id)
-                            let ticketinstrumento = {
-                              instrumento: instrumentoSeleccionado[0],
-                              ticket: ticket,
-                              cantidad: elemento.Cantidad
-                            }
-                            this.ticketinstrumentoServicio.altaticketinstrumento(ticketinstrumento).subscribe((ticketinstrumento) => {
-                              console.log(ticketinstrumento)
-                            })
-                           //statements; 
-                           break; 
-                        } 
+                      
                         case '(S)': { 
                            //statements; 
                            let setSeleccionado = this.noSets.filter(setseleccionado => setseleccionado.id == elemento.id)
@@ -220,12 +206,7 @@ export class ProgramacioncirugiaComponent implements OnInit {
            this.instrumentos.forEach((name, index) => {
              let indice = this.lista_familia.findIndex(u => u === name.familia);
              //console.log(indice)
-             if (indice == -1) {
-               this.lista_familia.push(name.familia);
-               //this.ELEMENT_DATA5.push({Elemento: name.id.toString()+' '+name.nombre, Cantidad: name.cantidad, Descripcion: name.descripcion })
-               console.log(name.id+' '+name.nombre+' ' +name.tipo+' '+name.marca+' '+name.descripcion)
-               this.options.push({name: name.id.toString()+' '+'(I)'+' '+name.nombre+' ' +name.tipo+' '+name.marca+' '+name.descripcion})
-             }
+            
            })
            this.filteredOptions = this.myControl.valueChanges.pipe(
              startWith(''),
@@ -435,39 +416,7 @@ capturaAgregar() {
   if (this.cantidad > 0) {
     var splitted = this.elementoRecibido.name.split(" ", 5); 
 
-    if (splitted[1] === '(I)') {
-      console.log('Instrumento')
-      let instrumentoSeleccionado = this.instrumentos.filter(instrumento => instrumento.id == parseInt(splitted[0]))
-      if (instrumentoSeleccionado.length > 0) {
-        const indice = this.ELEMENT_DATA5.findIndex((elemento: Element) => elemento.id == instrumentoSeleccionado[0].id)
-        if (indice == -1) {
-          var datoAnexo: Element = {
-            id: instrumentoSeleccionado[0].id,
-            Elemento: instrumentoSeleccionado[0].nombre+' '+instrumentoSeleccionado[0].tipo,
-            Cantidad: this.cantidad,
-            Descripcion: instrumentoSeleccionado[0].descripcion,
-            Tipo: '(I)',
-          }
-        }
-        else {
-          var datoAnexo: Element = {
-            id: instrumentoSeleccionado[0].id,
-            Elemento: instrumentoSeleccionado[0].nombre+' '+instrumentoSeleccionado[0].tipo,
-            Cantidad: this.cantidad+this.ELEMENT_DATA5[indice].Cantidad,
-            Descripcion: instrumentoSeleccionado[0].descripcion,
-            Tipo: '(I)'
-          }
-          this.ELEMENT_DATA5 = this.ELEMENT_DATA5.filter(instrumento => instrumento.id != instrumentoSeleccionado[0].id);
-        }
-        
-        this.ELEMENT_DATA5.push(datoAnexo);
-        this.dataSource.data = this.ELEMENT_DATA5
-        this.notification.success('Instrumento agregado correctamente')
-      }
-      else {
-        this.notification.error('Error al agregar instrumento')
-      }
-    }else if (splitted[1] ==='(S)') {
+   if (splitted[1] ==='(S)') {
         console.log('Set')
         let setSeleccionado = this.noSets.filter(setregistrado => setregistrado.id == parseInt(splitted[0]))
         if (setSeleccionado.length > 0) {
