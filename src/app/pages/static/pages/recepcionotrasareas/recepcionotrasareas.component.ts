@@ -12,6 +12,9 @@ import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
 import 'moment/locale/es';
 import { Router } from '@angular/router';
 
+import { FormControl, FormGroup,FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+
 @Component({
   selector: 'app-recepcionotrasareas',
   standalone: false,
@@ -24,50 +27,16 @@ export class RecepcionotrasareasComponent {
   borrarRegistro !: Element;
   /** Constants used to fill up our data base. */
   ELEMENT_DATA = [
-    {Ticket: 1, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 2, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 3, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 4, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 5, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 6, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 7, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 8, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 9, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 10, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-  
-    {Ticket: 11, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 12, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 13, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 14, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 15, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 16, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 17, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 18, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 19, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 20, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-  
-    {Ticket: 21, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 22, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 23, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 24, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 25, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 26, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 27, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 28, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 29, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 30, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-  
-    {Ticket: 41, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 42, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 43, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 44, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 45, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 46, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 47, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 48, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 49, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 40, Fecha: '27/05/2023', Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    
+    {Ticket: 1, Fecha: new Date(2024, 5, 26), Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
+    {Ticket: 2, Fecha: new Date(2024, 5, 27), Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
+    {Ticket: 3, Fecha: new Date(2024, 5, 28), Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
+    {Ticket: 4, Fecha: new Date(2024, 5, 29), Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
+    {Ticket: 5, Fecha: new Date(2024, 5, 30), Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
+    {Ticket: 6, Fecha: new Date(2024, 6, 1), Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
+    {Ticket: 7, Fecha: new Date(2024, 6, 2), Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
+    {Ticket: 8, Fecha: new Date(2024, 6, 3), Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
+    {Ticket: 9, Fecha: new Date(2024, 6, 4), Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
+    {Ticket: 10, Fecha: new Date(2024, 6 , 5), Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
   ];
 
 // EliminarElementoTabla(key: number) {
@@ -83,7 +52,20 @@ export class RecepcionotrasareasComponent {
     private _intl: MatDatepickerIntl,
     @Inject(MAT_DATE_LOCALE) private _locale: string,) { // Assign the data to the data source for the table to render
       this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+  //------------------------------------------condicion reloj
+  this.dataSource.filterPredicate = (data: any, filter: string): boolean => {
+    if (this.fromDate && this.toDate) {
+      return data.Fecha>= this.fromDate && data.Fecha <= this.toDate;
+    }
+    const dataStr = Object.keys(data).reduce((currentTerm: string, key: string) => {
+      return (currentTerm + (data as { [key: string]: any })[key] + '◬');
+    }, '').normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
+    const transformedFilter = filter.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+    return dataStr.indexOf(transformedFilter) != -1;
+  }
+  //------------------------------------------condicion reloj
   }
   goPlaces(){
     this.router.navigate(['static/recibirrecepcionotras'])
@@ -125,19 +107,31 @@ export class RecepcionotrasareasComponent {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
+ //--------------------inicia calendario
+ today:any;
+ today2:any;
+ filterForm:any = new FormGroup({
+   fromDate: new FormControl(),
+   toDate: new FormControl(),
+ });
+ 
+ get fromDate() { return this.filterForm.get('fromDate').value; }
+ get toDate() { return this.filterForm.get('toDate').value; }
+ 
+ applyFilter2() {
+   this.dataSource.filter = ''+Math.random();
+ }
+ 
+ applyFilter(event: Event) {
+   const filterValue = (event.target as HTMLInputElement).value;
+   this.dataSource.filter = filterValue.trim().toLowerCase();
+ }
+//--------------------fincalendario
   //dataSource: MatTableDataSource<Element>;
   dataSource: MatTableDataSource<Element>;
 // **********************************************************
 
-  displayedColumns = ['ticket', 'fecha', 'area', 'sala', 'turno', 'estatus', 'accion' ];
+  displayedColumns = ['ticket', 'fecha',  'turno', 'estatus', 'accion' ];
 
   editarFila(element: Element) {
     this.editarRegistro=element;
@@ -149,7 +143,7 @@ export class RecepcionotrasareasComponent {
 }
 export interface Element {
   Ticket: number;
-  Fecha: string;
+  Fecha: Date;
   Area: string;
   Sala: number;
   Turno: number;

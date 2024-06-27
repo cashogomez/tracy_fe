@@ -11,6 +11,7 @@ import { TransfAlmacenComponent } from '@app/pages/static/pages/dialogos/transf-
 
 import { EmergenteComponent } from './components/emergente/emergente.component';
 import { Emergente2Component } from './components/emergente2/emergente2.component';
+import { InsidenciasComponent } from './components/insidencias/insidencias.component';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,9 @@ export class DialogService {
   showDialog2(dynamicComponents$: Observable<any>) {
     this.dialog.open(Emergente2Component, { data: dynamicComponents$ });
   }
-
+  showDialog3(dynamicComponents$: Observable<any>) {
+    this.dialog.open(InsidenciasComponent, { data: dynamicComponents$ });
+  }
   sendData(data: any) {
     this.dataSource.next(data);
   }

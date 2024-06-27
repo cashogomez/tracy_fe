@@ -12,6 +12,8 @@ import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { Router } from '@angular/router';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
+
+import { FormControl, FormGroup,FormsModule, ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-recepcionproveedorexterno',
   standalone: false,
@@ -24,39 +26,17 @@ export class RecepcionproveedorexternoComponent {
   borrarRegistro !: Element;
   /** Constants used to fill up our data base. */
   ELEMENT_DATA = [
-    {Ticket: 1, Fecha: '27/05/2023', Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
-    {Ticket: 2, Fecha: '27/05/2023', Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
-    {Ticket: 3, Fecha: '27/05/2023', Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
-    {Ticket: 4, Fecha: '27/05/2023', Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
-    {Ticket: 5, Fecha: '27/05/2023', Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
-    {Ticket: 6, Fecha: '27/05/2023', Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
-    {Ticket: 7, Fecha: '27/05/2023', Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
-    {Ticket: 8, Fecha: '27/05/2023', Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
-    {Ticket: 9, Fecha: '27/05/2023', Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
-    {Ticket: 10, Fecha: '27/05/2023', Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
-   
-    {Ticket: 11, Fecha: '27/05/2023', Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
-    {Ticket: 12, Fecha: '27/05/2023', Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
-    {Ticket: 13, Fecha: '27/05/2023', Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
-    {Ticket: 14, Fecha: '27/05/2023', Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
-    {Ticket: 15, Fecha: '27/05/2023', Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
-    {Ticket: 16, Fecha: '27/05/2023', Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
-    {Ticket: 17, Fecha: '27/05/2023', Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
-    {Ticket: 18, Fecha: '27/05/2023', Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
-    {Ticket: 19, Fecha: '27/05/2023', Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
-    {Ticket: 20, Fecha: '27/05/2023', Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
-  
-    {Ticket: 21, Fecha: '27/05/2023', Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
-    {Ticket: 22, Fecha: '27/05/2023', Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
-    {Ticket: 23, Fecha: '27/05/2023', Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
-    {Ticket: 24, Fecha: '27/05/2023', Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
-    {Ticket: 25, Fecha: '27/05/2023', Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
-    {Ticket: 26, Fecha: '27/05/2023', Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
-    {Ticket: 27, Fecha: '27/05/2023', Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
-    {Ticket: 28, Fecha: '27/05/2023', Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
-    {Ticket: 29, Fecha: '27/05/2023', Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
-    {Ticket: 30, Fecha: '27/05/2023', Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
-  ];
+    {Ticket: 1, Fecha: new Date(2024, 5, 26), Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
+    {Ticket: 1, Fecha: new Date(2024, 5, 27), Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
+    {Ticket: 1, Fecha: new Date(2024, 5, 28), Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
+    {Ticket: 1, Fecha: new Date(2024, 5, 29), Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
+    {Ticket: 1, Fecha: new Date(2024, 5, 30), Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
+    {Ticket: 1, Fecha: new Date(2024, 6, 1), Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
+    {Ticket: 1, Fecha: new Date(2024, 6, 2), Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
+    {Ticket: 1, Fecha: new Date(2024, 6, 3), Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
+    {Ticket: 1, Fecha: new Date(2024, 6, 4), Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
+    {Ticket: 1, Fecha: new Date(2024, 6, 5), Instrumental:'Tijeras Kelly', Proveedor:'SMARTEST', Responsable: 2, Estatus:'Recibido'},
+    ];
 
 // EliminarElementoTabla(key: number) {
 //   this.ELEMENT_DATA.forEach((value,index)=>{
@@ -72,8 +52,38 @@ export class RecepcionproveedorexternoComponent {
     @Inject(MAT_DATE_LOCALE) private _locale: string,) { // Assign the data to the data source for the table to render
       this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
 
-  }
+        //------------------------------------------condicion reloj
+  this.dataSource.filterPredicate = (data: any, filter: string): boolean => {
+    if (this.fromDate && this.toDate) {
+      return data.Fecha>= this.fromDate && data.Fecha <= this.toDate;
+    }
+    const dataStr = Object.keys(data).reduce((currentTerm: string, key: string) => {
+      return (currentTerm + (data as { [key: string]: any })[key] + '◬');
+    }, '').normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
+    const transformedFilter = filter.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+    return dataStr.indexOf(transformedFilter) != -1;
+  }
+  //------------------------------------------condicion reloj
+  }
+ //--------------------inicia calendario
+ today:any;
+ today2:any;
+ filterForm:any = new FormGroup({
+   fromDate: new FormControl(),
+   toDate: new FormControl(),
+ });
+ 
+ get fromDate() { return this.filterForm.get('fromDate').value; }
+ get toDate() { return this.filterForm.get('toDate').value; }
+ 
+ applyFilter2() {
+   this.dataSource.filter = ''+Math.random();
+ }
+ 
+ 
+//--------------------fincalendario
   goPlaces(){
     this.router.navigate(['static/recibirrecepcionprov'])
   }
@@ -137,7 +147,7 @@ export class RecepcionproveedorexternoComponent {
 }
 export interface Element {
 Ticket: number;
-Fecha: string;
+Fecha: Date;
 Instrumental: string;
 Proveedor: string;
 Responsable: number;

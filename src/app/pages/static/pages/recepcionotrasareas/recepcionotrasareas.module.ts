@@ -17,6 +17,8 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 
 
+
+import { FormControl, FormGroup,FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [RecepcionotrasareasComponent ],
   imports: [
@@ -36,6 +38,7 @@ import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
     RouterLink, 
     RouterLinkActive,
     RouterModule,
+    ReactiveFormsModule
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'es-ES'},

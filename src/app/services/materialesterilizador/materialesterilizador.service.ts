@@ -13,15 +13,14 @@ export class MaterialesterilizadorService {
   getToken(): string | null{
     return localStorage.getItem('token');
   }
-  altamaterialesterilizador(registrarMaterialEsterilizador: MaterialEsterilizadorRequest): Observable<any> {
+  altamaterialesterilizador(registrarMaterialEsterilizador: MaterialEsterilizadorRequest): Observable<MaterialEsterilizador> {
     var token = this.getToken();
     
     var httpOptions = {
       headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`})
     };
-    var direccion = `${environment.url}ceye/MaterialEnEsterilizador/`
-    console.log(registrarMaterialEsterilizador);
-    return this.http.post<any>(direccion,registrarMaterialEsterilizador , httpOptions)
+    var direccion = `${environment.url}ceye/MaterialEnEsterilizador/eventoesterilizacion/`
+    return this.http.post<MaterialEsterilizador>(direccion,registrarMaterialEsterilizador , httpOptions)
   }
 
   traermaterialesterilizador(pk:number): Observable<MaterialEsterilizador[]> {
@@ -30,8 +29,8 @@ export class MaterialesterilizadorService {
     var httpOptions = {
       headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`})
     };
-    console.log(`${environment.url}ceye/MaterialEnEsterilizador/${pk}`);
-    return  this.http.get<MaterialEsterilizador[]>(`${environment.url}ceye/MaterialEnEsterilizador/${pk}`, httpOptions)
+    console.log(`${environment.url}ceye/MaterialEnEsterilizador/esterilizador/${pk}`);
+    return  this.http.get<MaterialEsterilizador[]>(`${environment.url}ceye/MaterialEnEsterilizador/esterilizador/${pk}`, httpOptions)
   }
   
   traerUNmaterialesterilizador(pk:number): Observable<MaterialEsterilizador> {

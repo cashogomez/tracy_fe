@@ -1,16 +1,16 @@
 import { Ciclo } from "../ciclo"
-import { User } from "../user"
 
 export interface EventoEsterilizacion {
-    id: Number
-    perfil_inicio: User
+    id: number
+    perfil_inicio: string
     hora_inicio: string
     fecha_inicio: string
-    perfil_final: User
+    perfil_final: string
     hora_final: string
     fecha_final: string
     ciclo: Ciclo
-    cicloDiario: Number
+    cicloDiario: number
+    id_esterilizador:number
   
   }
   export type EventoEsterilizacionRequest = Omit<EventoEsterilizacion, 'id'>;

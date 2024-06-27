@@ -33,7 +33,7 @@ import { DetalleesterilizadorComponent } from '../detalleesterilizador/detallees
 
 @NgModule({
   declarations: [
-    EsterilizacionComponent
+    EsterilizacionComponent 
   ],
   imports: [
     CommonModule,
@@ -73,7 +73,6 @@ import { DetalleesterilizadorComponent } from '../detalleesterilizador/detallees
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'es-ES'},
     provideMomentDateAdapter(),
-    provideAnimationsAsync()
   ],
 })
 export class EsterilizacionModule { }

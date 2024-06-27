@@ -13,15 +13,15 @@ export class EventoesterilizacionService {
   getToken(): string | null{
     return localStorage.getItem('token');
   }
-  altaeventoesterilizacion(registrarEventoEsterilizacion: EventoEsterilizacionRequest): Observable<any> {
+  altaeventoesterilizacion(registrarEventoEsterilizacion: EventoEsterilizacionRequest, pk:number): Observable<EventoEsterilizacion> {
     var token = this.getToken();
     
     var httpOptions = {
       headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`})
     };
-    var direccion = `${environment.url}ceye/MaterialEnEsterilizador/`
+    var direccion = `${environment.url}ceye/eventoesterilizacion/ciclo/${pk}`
     console.log(registrarEventoEsterilizacion);
-    return this.http.post<any>(direccion,registrarEventoEsterilizacion , httpOptions)
+    return this.http.post<EventoEsterilizacion>(direccion,registrarEventoEsterilizacion , httpOptions)
   }
 
   traereventoesterilizacion(pk:number): Observable<EventoEsterilizacion[]> {
@@ -30,8 +30,8 @@ export class EventoesterilizacionService {
     var httpOptions = {
       headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`})
     };
-    console.log(`${environment.url}ceye/eventoesterilizacion/${pk}`);
-    return  this.http.get<EventoEsterilizacion[]>(`${environment.url}ceye/eventoesterilizacion/${pk}`, httpOptions)
+    console.log(`${environment.url}ceye/eventoesterilizacion/esterilizador/${pk}`);
+    return  this.http.get<EventoEsterilizacion[]>(`${environment.url}ceye/eventoesterilizacion/esterilizador/${pk}`, httpOptions)
   }
   
   traerUNeventoesterilizacion(pk:number): Observable<EventoEsterilizacion> {

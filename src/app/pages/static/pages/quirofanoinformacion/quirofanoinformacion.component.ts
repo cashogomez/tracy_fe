@@ -103,7 +103,7 @@ export class QuirofanoinformacionComponent {
           ticketsRecibidos.forEach((ticket) => {
             let elementoAgregar = {
               id: ticket.id,
-              Fecha: ticket.fecha_cirugia,
+              Fecha:new Date(ticket.fecha_cirugia),
               Ticket: ticket.id,
               Paciente: ticket.paciente,
               Edad: ticket.edad,
@@ -138,19 +138,18 @@ export class QuirofanoinformacionComponent {
         this.editar = edits
 
           //------------------------------------------condicion reloj
-      this.pipe = new DatePipe('en');
-      this.dataSource.filterPredicate = (data3, filter) =>{
-          var cortado = data3.Fecha.split('T').slice(0)
-          var cortado2 = cortado[0]
-        const date =this.fromDate._d; this.today = date.getFullYear()+ '-'  + ('0' + (date.getMonth() + 1)).slice(-2) + '-' +('0' + date.getDate()).slice(-2)  
-
-        const date2 =this.toDate._d;  this.today2 = date2.getFullYear()+ '-'  + ('0' + (date2.getMonth() + 1)).slice(-2) + '-' +('0' + date2.getDate()).slice(-2)  
-
-        if (this.today && this.today2 ) {
-          return cortado2  >=  this.today  && cortado2 <= this.today2;
-        }
-        return true;
-      }
+          this.dataSource.filterPredicate = (data: any, filter: string): boolean => {
+            if (this.fromDate && this.toDate) {
+              return data.Fecha>= this.fromDate && data.Fecha <= this.toDate;
+            }
+            const dataStr = Object.keys(data).reduce((currentTerm: string, key: string) => {
+              return (currentTerm + (data as { [key: string]: any })[key] + '◬');
+            }, '').normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+      
+            const transformedFilter = filter.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+      
+            return dataStr.indexOf(transformedFilter) != -1;
+          }
     //------------------------------------------condicion reloj
  
       console.log(edits)
@@ -160,7 +159,6 @@ export class QuirofanoinformacionComponent {
   //--------------------inicia calendario
   today:any;
   today2:any;
-  pipe: DatePipe;
   filterForm:any = new FormGroup({
     fromDate: new FormControl(),
     toDate: new FormControl(),

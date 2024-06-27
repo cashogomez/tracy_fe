@@ -9,7 +9,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule }   from '@angular/forms';
 
-import { IncidenciaRequest } from '@app/models/backend/incidencia';
+import { InsidenciasComponent } from '../insidencias/insidencias.component';
+
+//import { IncidenciaRequest } from '@app/models/backend/incidencia';
+
 
 
 export interface incidencias {
@@ -30,16 +33,21 @@ export interface incidencias {
     MatRadioModule,
     FormsModule ,
     ReactiveFormsModule,
+    InsidenciasComponent
   ],
   templateUrl: './dialogo.component.html',
   styleUrl: './dialogo.component.scss'
 })
 export class DialogoComponent {
  
-valor='';
-comentario='';
+  Insidencia: string = '';
+  Texto: string = '';
 
-subir (): IncidenciaRequest{
+  valor='';
+  comentario='';
+
+  constructor(){}
+/* subir (): IncidenciaRequest{
   this.valor = this.incidencias.get('valor')?.value!
   this.comentario = this.incidencias.get('comentario')?.value!
 
@@ -50,24 +58,15 @@ subir (): IncidenciaRequest{
     nota: this.comentario,
   }
   return incidencia
-}
+} */
 
 
-  incidencias= new FormGroup({
-  valor: new FormControl(''),
-  comentario: new FormControl('')
-})
+
 
 
   durationInSeconds =1 ;
 
-  constructor(private _snackBar: MatSnackBar) {}
 
-  openSnackBar() {
-    this._snackBar.openFromComponent(PizzaPartyComponent, {
-      duration: this.durationInSeconds * 1000,
-    });
-  }
 
 
   checked = false;
@@ -76,22 +75,3 @@ subir (): IncidenciaRequest{
   disabled = false;
 }
 
-@Component({
-  selector: 'app-snack',
-  templateUrl: './snack.component.html',
-  styles: `
-  
-   :host {
-    display: flex;
-      text-align: center;
-      
-    }
-
-    .example-pizza-party {
-    color: white;
-    font-weight: 500;
-    }
-  `,
-  standalone: true,
-})
-export class PizzaPartyComponent {}

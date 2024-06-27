@@ -19,6 +19,7 @@ import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { MAT_DATE_LOCALE, MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 
+import { FormControl, FormGroup,FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatButtonModule,
     MatOptionModule,
     MatSelectModule,
-
+    ReactiveFormsModule,
     RouterOutlet,
     RouterLink, 
     RouterLinkActive,

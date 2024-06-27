@@ -17,6 +17,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 
 
+import { FormControl, FormGroup,FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     RecepcionproveedorexternoComponent
@@ -33,7 +34,7 @@ import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
     MatDivider,
     MatIcon,
     MatTooltipModule,
-
+    ReactiveFormsModule,
     RouterOutlet,
     RouterLink, 
     RouterLinkActive,

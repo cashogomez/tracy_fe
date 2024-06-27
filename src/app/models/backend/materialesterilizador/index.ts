@@ -6,6 +6,7 @@ export interface MaterialEsterilizador {
     nombreSet: string
     cantidad: number
     turno: number
-    eventoEsterilizador: EventoEsterilizacion
+    eventoesterilizador: number
+    id_esterilizador: number
 }
 export type MaterialEsterilizadorRequest = Omit<MaterialEsterilizador, 'id'>;

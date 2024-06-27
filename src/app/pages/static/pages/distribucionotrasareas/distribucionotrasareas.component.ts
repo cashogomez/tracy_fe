@@ -12,6 +12,7 @@ import pdfMake from "pdfmake/build/pdfmake";
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
+import { FormControl, FormGroup,FormsModule, ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-distribucionotrasareas',
   standalone: false,
@@ -43,46 +44,16 @@ export class DistribucionotrasareasComponent {
 
   /** Constants used to fill up our data base. */
   ELEMENT_DATA = [
-    {Prioridad: 'alta', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'alta', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'baja', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'alta', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'alta', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'media', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'alta', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'baja', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'alta', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'media', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'alta', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'baja', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'media', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'alta', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'alta', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'baja', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'alta', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'media', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'alta', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'baja', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'alta', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'alta', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'media', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'alta', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'baja', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'alta', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'alta', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'media', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'alta', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'alta', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'baja', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'alta', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'baja', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'alta', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'media', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'alta', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'alta', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'baja', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'media', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
-    {Prioridad: 'alta', Ticket: 1233, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:'23/02/2024', Turno:2},
+    {Prioridad: 'alta', Ticket: 1, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:new Date(2024, 5, 26), Turno:2},
+    {Prioridad: 'alta', Ticket: 2, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:new Date(2024, 5, 27), Turno:2},
+    {Prioridad: 'alta', Ticket: 3, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:new Date(2024, 5, 28), Turno:2},
+    {Prioridad: 'alta', Ticket: 4, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:new Date(2024, 5, 29), Turno:2},
+    {Prioridad: 'alta', Ticket: 5, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:new Date(2024, 5, 30), Turno:2},
+    {Prioridad: 'alta', Ticket: 6, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:new Date(2024, 5, 1), Turno:2},
+    {Prioridad: 'alta', Ticket: 7, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:new Date(2024, 5, 2), Turno:2},
+    {Prioridad: 'alta', Ticket: 8, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:new Date(2024, 5, 3), Turno:2},
+    {Prioridad: 'alta', Ticket: 9, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:new Date(2024, 5, 4), Turno:2},
+    {Prioridad: 'alta', Ticket: 10, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:new Date(2024, 5, 5), Turno:2},
    
   ];
   areaElegida!: AreaTrabajo;
@@ -102,7 +73,42 @@ export class DistribucionotrasareasComponent {
     @Inject(MAT_DATE_LOCALE) private _locale: string,) { // Assign the data to the data source for the table to render
       this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
 
+        //------------------------------------------condicion reloj
+  this.dataSource.filterPredicate = (data: any, filter: string): boolean => {
+    if (this.fromDate && this.toDate) {
+      return data.Fecha>= this.fromDate && data.Fecha <= this.toDate;
+    }
+    const dataStr = Object.keys(data).reduce((currentTerm: string, key: string) => {
+      return (currentTerm + (data as { [key: string]: any })[key] + '◬');
+    }, '').normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+    const transformedFilter = filter.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+    return dataStr.indexOf(transformedFilter) != -1;
   }
+  //------------------------------------------condicion reloj
+  }
+
+  //--------------------inicia calendario
+ today:any;
+ today2:any;
+ filterForm:any = new FormGroup({
+   fromDate: new FormControl(),
+   toDate: new FormControl(),
+ });
+ 
+ get fromDate() { return this.filterForm.get('fromDate').value; }
+ get toDate() { return this.filterForm.get('toDate').value; }
+ 
+ applyFilter2() {
+   this.dataSource.filter = ''+Math.random();
+ }
+ 
+ applyFilter(event: Event) {
+   const filterValue = (event.target as HTMLInputElement).value;
+   this.dataSource.filter = filterValue.trim().toLowerCase();
+ }
+//--------------------fincalendario
 
   goPlaces(){
     this.router.navigate(['/static/detalledistribucionentrega'])
@@ -145,19 +151,12 @@ export class DistribucionotrasareasComponent {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
   //dataSource: MatTableDataSource<Element>;
   dataSource: MatTableDataSource<Element>;
 // **********************************************************
 
-  displayedColumns = ['prioridad', 'ticket', 'QR', 'nombre',  'fecha', 'turno', 'accion' ];
+  displayedColumns = ['prioridad', 'ticket', 'QR', 'nombre',  'fecha', 'accion' ];
 
   editarFila(element: Element) {
     this.editarRegistro=element;
@@ -177,7 +176,7 @@ Ticket: number;
 QR: number;
 Proveedor: string;
 Nombre: string;
-Fecha: string;
+Fecha: Date;
 Turno: number;
 }
 // **************************************************************************************

@@ -8,36 +8,24 @@
   <div class="line"><mat-divider></mat-divider></div>
 </div>
 
-<div align="end">
-  <button class="botones" style=" margin: 5px;" matTooltip="Generar reporte" (click)="generarPDF()">Reporte</button>
-  <button class="botones" style=" margin: 5px;" matTooltip="Generar préstamo" (click)="goPlaces2()">Préstamo</button>
-</div>
-
-<div class="container">
-  <div class="line"><mat-divider></mat-divider></div>
-  <div class="text mat-typography">Buscador</div>
-  <div class="line"><mat-divider></mat-divider></div>
-</div>
-
-
-<div align="end">
-
-  <mat-form-field class="menu_desplegable">
-    <mat-label>Área de trabajo</mat-label>
-    <mat-select (selectionChange)="changeArea($event.value)">
-      <mat-option *ngFor="let x of area; let i = index" [value]="area[i]">{{area[i].nombre}}</mat-option>
-    </mat-select>
-  </mat-form-field> 
-
-  <mat-form-field>
-    <mat-label>Elige la fecha</mat-label>
-    <input matInput [matDatepicker]="dp">
-    <mat-hint>{{getDateFormatString()}}</mat-hint>
-    <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
-    <mat-datepicker #dp></mat-datepicker>
-  </mat-form-field>
-  <button class="botones" style=" margin: 10px;" matTooltip="Aplicar buscador">Aplicar</button>
-</div>
+<div align="end" style="width: 95%;  margin: auto;">
+  <form class="date-block" [formGroup]="filterForm">
+      
+    <mat-form-field  style=" margin: 10px;">
+      <mat-label>Ingresa la Fecha</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate placeholder="Fecha Inicio" formControlName="fromDate">
+        <input matEndDate placeholder="Fecha Final" formControlName="toDate">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+    
+    <button  (click)="applyFilter2()" class="botones" style=" margin: 10px;" matTooltip="Aplicar filtro">Aplicar</button>
+    <button class="botones" style=" margin: 5px;" matTooltip="Generar reporte" (click)="generarPDF()">Reporte</button>
+    <button class="botones" style=" margin: 5px;" matTooltip="Generar préstamo" (click)="goPlaces2()">Préstamo</button>
+  
+  </form></div>
 
 
 <div class="container">
@@ -46,15 +34,16 @@
   <div class="line"><mat-divider></mat-divider></div>
 </div>
 <!------------------------------ FILTRO -------------------------------->
-<div align="begin">
+<div style="width: 95%;  margin: auto;">
+  <mat-label>Filtro: &nbsp;&nbsp;&nbsp;</mat-label>
   <mat-form-field>
-    <mat-label>Filtro</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Búsqueda" #input>
   </mat-form-field>
 </div>
 <!------------------------------ FIN DE ENCABEZADO -------------------------------->
 
-<div class="mat-elevation-z8" id="page-1" class="page">
+
+<div class="mat-elevation-z8" id="page-1" class="page" style="width: 95%; text-align: center; margin: auto;">
   <mat-table #table [dataSource]="dataSource">
 
     <!--- Note that these columns can be defined in any order.
@@ -69,7 +58,7 @@
     <!-- Name Column -->
     <ng-container matColumnDef="fecha">
       <mat-header-cell *matHeaderCellDef matTooltip="Fecha de recepción"> Fecha </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.Fecha}} </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.Fecha | date: 'dd/MM/yyyy'}}  </mat-cell>
     </ng-container>
 
 
@@ -85,11 +74,7 @@
       <mat-cell *matCellDef="let element"> {{element.Nombre}} </mat-cell>
     </ng-container>
 
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="turno">
-      <mat-header-cell *matHeaderCellDef> Turno </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.Turno}} </mat-cell>
-    </ng-container>
+  
 
     <!-- Symbol Column -->
     <ng-container matColumnDef="prioridad">
@@ -119,3 +104,4 @@
   <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of elementos"></mat-paginator>
 </div>
 
+<br><br>

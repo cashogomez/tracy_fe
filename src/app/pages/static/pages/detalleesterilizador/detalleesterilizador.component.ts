@@ -11,6 +11,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSidenavModule } from '@angular/material/sidenav';
+
+import { NotificationService } from '@app/services/notification/notification.service';
 import {MatTable, MatTableModule,MatTableDataSource, } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -20,7 +22,7 @@ import { EquipoService } from '@app/services/equipo/equipo.service';
 import pdfMake from 'pdfmake/build/pdfmake';
 import { DialogService } from '@app/services/dialog/dialog.service';
 import { CicloService } from '@app/services/ciclo/ciclo.service';
-import { Observable, Subscription, map, startWith } from 'rxjs';
+import { Observable, ReplaySubject, Subscription, from, map, startWith } from 'rxjs';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { Ciclo } from '@app/models/backend/ciclo';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -33,9 +35,16 @@ import * as fromRoot from '@app/store';
 import * as fromUser from '@app/store/user';
 import { UserResponse } from '@app/store/user';
 
+import { EventoEsterilizacion, EventoEsterilizacionRequest } from '@app/models/backend/eventoesterilizacion';
+
+import { EventoesterilizacionService } from '@app/services/eventoesterilizacion/eventoesterilizacion.service';
+import {  MaterialesterilizadorService} from '@app/services/materialesterilizador/materialesterilizador.service';
 
 
-export interface TablaAñadir2 {
+import {DataSource} from '@angular/cdk/collections';
+
+
+export interface esterilizadorTable {
   Id: number;
   Paquete: string;
   Cantidad: number;
@@ -43,6 +52,8 @@ export interface TablaAñadir2 {
   FechaE: string;
   FechaC: string;
 }  
+
+
 
 @Component({
   selector: 'app-detalleesterilizador',
@@ -65,7 +76,8 @@ export interface TablaAñadir2 {
     MatInputModule,
     MatRadioModule,
     MatCheckboxModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatButtonModule, MatTableModule
   ],
   providers: [
     DatePipe
@@ -79,11 +91,14 @@ export interface TablaAñadir2 {
   
 
 export class DetalleesterilizadorComponent implements OnInit {
+
   @Input()  EquipoADetallar!: string;
+  //EquipoADetallar=1;
 
-
-  ELEMENT_DATA:  any[] = [ ];
-  dataSource = [...this.ELEMENT_DATA];
+  @ViewChild(MatTable, {static: false}) table!: MatTable<esterilizadorTable>;
+ 
+  public ELEMENT_DATA:  esterilizadorTable[] = [ ];
+  
   displayedColumns: string[] = ['Id', 'Paquete', 'Cantidad', 'Icon','Accion'];
 
   timerService = inject(CuentaregresivaService);
@@ -100,6 +115,10 @@ export class DetalleesterilizadorComponent implements OnInit {
   cicloVigente!: Ciclo;
   tiempoFinal!: Date;
 
+  respuesta:string='';
+  InsidenciaValor:string='';
+  InsidenciaComentario:string='';
+
   constructor ( private dialogService: DialogService,
                 private ciclosequipoService: CiclosequipoService,
                 private cicloService: CicloService,
@@ -108,12 +127,29 @@ export class DetalleesterilizadorComponent implements OnInit {
                 private setElement: SetService,
                 private turnoService: TurnoService,
                 private equiposServicio: EquipoService,
+                
+                private dataService: DialogService,
+                private notification: NotificationService,
                 private store: Store<fromRoot.State>, 
+                private eventoesterilizacion:EventoesterilizacionService,
+                private materialEsterilizador: MaterialesterilizadorService
   ){
+    this.dataService.data$.subscribe(data => {
+      var cortado = data
+      var cortado2 = cortado.split(':', 3)
+      this.respuesta = cortado2[0]
+      this.InsidenciaValor = cortado2[1]
+      this.InsidenciaComentario = cortado2[2]
+
+
+      console.log('hola soy la respuesta:   ' + this.respuesta)
+      console.log('hola soy la la insicencia:   ' + this.InsidenciaValor)
+      console.log('hola soy la el comentario extra:   ' + this.InsidenciaComentario)
+    })
   
-    
   }
 
+dataSource!: MatTableDataSource<esterilizadorTable>;
 nombreequipo:string="";
 endTime:any;
 
@@ -132,6 +168,7 @@ FechaInicioA='';
 FechaFinalA='';
 FechaFinalB='';
 HoraInicioR=''
+HoraInicioR1:any;
 HoraFinal='';
 UsuarioInicial='';
 UsuarioInicial2='';
@@ -148,7 +185,7 @@ start() {
       next : time => {
         this.remainingTime = time;
         terminado = false
-      console.log(this.remainingTime)
+      //console.log(this.remainingTime)
       },
       error: (err) => console.error(err),
       complete: () => {
@@ -163,34 +200,30 @@ start() {
     })
     if (terminado == false) {
       localStorage.setItem('est'+ this.EquipoADetallar, this.activationDeadline )
-      localStorage.setItem('CicloCuenta'+ this.EquipoADetallar, this.CicloCuenta.toString() )
-      localStorage.setItem('CicloN'+ this.EquipoADetallar, this.CicloNombre )
-      localStorage.setItem('TempM'+ this.EquipoADetallar, this.valuer1.toString() )
-      localStorage.setItem('Usuario'+ this.EquipoADetallar, this.UsuarioInicial2 )
-      localStorage.setItem('horaActual'+ this.EquipoADetallar, horaA1 )
-      localStorage.setItem('FechaActual'+ this.EquipoADetallar, fechaA )
+   
     }
     else {
       localStorage.removeItem('est'+ this.EquipoADetallar)
-      localStorage.removeItem('UsuarioA'+ this.EquipoADetallar )
-      localStorage.removeItem('horaActual'+ this.EquipoADetallar )
-      localStorage.removeItem('FechaActual'+ this.EquipoADetallar)
+
     }
 
 
 
-    console.log(this.activationDeadline)
+    //console.log(this.activationDeadline)
 
-    this.HoraInicioR = horaA1;
+    this.HoraInicioR1 = this.time.toString().split(" ", 5)
+    this.HoraInicioR1 = this.HoraInicioR1[4]
+
+
     this.FechaInicioA = fechaA
 
     this.FechaFinalA= this.activationDeadline.toString().split(" ", 5)
-    this.HoraFinal = this.FechaFinalA[4].split(':').slice(0,2).join(':')
+    this.HoraFinal = this.FechaFinalA[4]
     this.FechaFinalB = this.FechaFinalA[2]+ '/' + this.FechaFinalA[1] + '/'+ this.FechaFinalA[3]
     this.FechaFinalB = (this.datePipe.transform(this.FechaFinalB, 'dd-MM-yyyy')!).toString()!;
     this.FechaFinalB = this.FechaFinalB.split('-').join('/');
-    this.UsuarioInicial2 = this.UsuarioInicial2.toString()
-    console.log(this.UsuarioInicial2)
+    this.UsuarioInicial2 = this.usuario?.nombre.toString()! + ' ' + this.usuario?.paterno.toString()!
+
     }
 
 
@@ -198,8 +231,12 @@ start() {
     Turno1: number = 0;
     TurnoAct:number = 0;
     hora=horaA;
-
+    intervalId:any;
+    time = new Date();
+    tempo1=0;
+    tempo2=0;
   ngOnInit(): void {
+
 
     this.equiposServicio.traerUNequipo(Number(this.EquipoADetallar)).subscribe((DatosEst)=>{
       let esterilizadorDatos ={
@@ -216,26 +253,111 @@ start() {
       this.MarcaEst=esterilizadorDatos.Marca;
       this.ModeloEst = esterilizadorDatos.Modelo;
       this.NumeroSreieEst=esterilizadorDatos.NumeroSerie;
+      
 })
 
+
+
+  this.eventoesterilizacion.traereventoesterilizacion(Number(this.EquipoADetallar)).subscribe(InfoEvento=>{
+    InfoEvento.forEach((ids)=>{
+
+  if (ids.id > this.tempo1){
+    this.tempo1 = ids.id;
+  }
+
+  this.eventoesterilizacion.traerUNeventoesterilizacion(this.tempo1).subscribe((datosInicio)=>{
+    let datosInicio2 ={
+      nombreInicio: datosInicio.perfil_inicio,
+      fechaInicio: datosInicio.fecha_inicio,
+      horaInicio: datosInicio.hora_inicio,
+
+      nombreFinal: datosInicio.perfil_final,
+      fechaFinal: datosInicio.fecha_final,
+      horaFinal: datosInicio.hora_final,
+
+      horaCiclo: datosInicio.ciclo.duracion,
+      nombreCiclo: datosInicio.ciclo.nombre,
+      ciclo:datosInicio.ciclo,
+
+      cuenta: datosInicio.cicloDiario,
+    }
+    
+        this.UsuarioInicial2 = datosInicio2.nombreInicio;
+        this.FechaInicioA = datosInicio2.fechaInicio;
+        this.HoraInicioR1 = datosInicio2.horaInicio;
+
+        this.UsuarioFinal = datosInicio2.nombreFinal,
+        this.FechaFinalB = datosInicio2.fechaFinal
+        this.HoraFinal = datosInicio.hora_final;
+    
+        this.CicloNombre = datosInicio2.ciclo
+        if (fechaA == this.FechaInicioA ){
+          this.CicloCuenta= datosInicio2.cuenta
+        }
+        else{
+          this.CicloCuenta =0;
+        }
+       
+        
+  })
+
+   })
+
+   
+  })
+
+  this.materialEsterilizador.traermaterialesterilizador(Number(this.EquipoADetallar)).subscribe(InfoMaterial =>{
+      InfoMaterial.forEach((ids2)=>{
+        if (ids2.id > this.tempo2)
+          {
+            this.tempo2=ids2.id
+          }
+          
+       
+          this.materialEsterilizador.traerUNmaterialesterilizador(this.tempo2).subscribe(valorT=>{
+            let valorT2: esterilizadorTable={
+              Id: valorT.setId,
+              Paquete: valorT.nombreSet,
+              Cantidad: valorT.cantidad,
+              Turno: valorT.turno, 
+              FechaE:fechaA,
+              FechaC: fechaB,
+                       
+            }
+            this.ELEMENT_DATA.push(valorT2)
+             
+           //// console.log(valorT2)
+            var Cantidades = this.ELEMENT_DATA.map(data => data.Cantidad )
+            this.NumeroPaquete = Cantidades.reduce((a,b) => a+b )
+            console.log('***************************************')
+            console.log (this.ELEMENT_DATA)
+            this.dataSource.data = this.ELEMENT_DATA 
+        })
+
+      })
+
+    
+  })
+ 
+//console.log ('valor tempo  '+ this.tempo1)
+
+
+
+
+
+
+
+ 
+    
     this.recargar()
    
-    this.UsuarioInicial2 = this.usuario?.nombre.toString()!;
     if (horaA >= 7 && horaA < 14 ) {this.Turno1 = 1;}
 
     if (horaA >=14  && horaA < 21 ) { this.Turno1 = 2;}
 
     if (horaA >=21  && horaA < 7 ){this.Turno1 = 3;}
  console.log (horaA)
-this.turnoService.traerUNturno(this.Turno1).subscribe (turnoRecibido => {
-    let turnoAgregar ={
-      Numero: turnoRecibido.id,
-      Inicio: turnoRecibido.inicio,
-      Fin: turnoRecibido.fin,
-      Id: turnoRecibido.id
-    }
-   this.TurnoAct= turnoRecibido.id
-})
+
 
     this.endTime = localStorage.getItem('est'+ this.EquipoADetallar)
     if (this.endTime != null) {
@@ -276,11 +398,12 @@ this.turnoService.traerUNturno(this.Turno1).subscribe (turnoRecibido => {
     })
 
 
+
     this.valuer1 =  Number(localStorage.getItem('TempM'+ this.EquipoADetallar)! )
     if (this.valuer1 >= 1){
       this.bloquear=true;
     }
-    this.FechaInicioA =  localStorage.getItem('FechaActual'+ this.EquipoADetallar)!
+/*     this.FechaInicioA =  localStorage.getItem('FechaActual'+ this.EquipoADetallar)!
     this.CicloCuenta =  Number(localStorage.getItem('CicloCuenta'+ this.EquipoADetallar))!
     this.CicloNombre =  localStorage.getItem('CicloN'+ this.EquipoADetallar)!
     this.HoraInicioR =  localStorage.getItem('horaActual'+ this.EquipoADetallar)!
@@ -289,9 +412,11 @@ this.turnoService.traerUNturno(this.Turno1).subscribe (turnoRecibido => {
     this.HoraFinal = this.FechaFinalA[4].split(':').slice(0,2).join(':')
     this.FechaFinalB = this.FechaFinalA[2]+ '/' + this.FechaFinalA[1] + '/'+ this.FechaFinalA[3]
     this.FechaFinalB = (this.datePipe.transform(this.FechaFinalB, 'dd-MM-yyyy')!).toString()!;
-    this.FechaFinalB = this.FechaFinalB.split('-').join('/');
+    this.FechaFinalB = this.FechaFinalB.split('-').join('/') */;
 
     
+    this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+  
   }
 
   private _filter(name: string): listaCiclo[] {
@@ -307,7 +432,8 @@ this.turnoService.traerUNturno(this.Turno1).subscribe (turnoRecibido => {
 
       var splitted = cicloelegido.duracion.split(':',3)
       
-      this.CicloNombre =separado[1]
+      this.CicloNombre = cicloelegido
+
       this.cicloVigente = cicloelegido
 
       //this.valuer1 = Number(splitted[1])
@@ -359,13 +485,8 @@ this.turnoService.traerUNturno(this.Turno1).subscribe (turnoRecibido => {
   NumeroPaquete=0;
 
 
-  @ViewChild(MatTable) table!: MatTable<any>;
 
-  removeAt(index: number) {
-    this.dataSource.splice(index, 1);
-    this.table.renderRows();
-    console.log('borrando')
-  }
+ 
   Subir() {
     //_____________________________________________________________________________________________________________________________________________________________________//
     //_____________________________________________________________________________________________________________________________________________________________________//
@@ -387,16 +508,16 @@ this.turnoService.traerUNturno(this.Turno1).subscribe (turnoRecibido => {
        this.valorres =  splitted[2]
        
        
-           let comparable = this.dataSource.filter((IDcomp) => IDcomp.Id == Number(this.ValorID))
+           let comparable = this.dataSource.data.filter((IDcomp) => IDcomp.Id == Number(this.ValorID))
            
        
            if (comparable.length > 0 ){
             let num = 0;
-            this.dataSource.forEach(data =>{
+            this.dataSource.data.forEach(data =>{
               if (data.Id  == Number(this.ValorID )) {
-                this.dataSource[num].Cantidad = this.dataSource[num].Cantidad+1
+                this.dataSource.data[num].Cantidad = this.dataSource.data[num].Cantidad+1
               }
-              var Cantidades = this.dataSource.map(data => data.Cantidad )
+              var Cantidades = this.dataSource.data.map(data => data.Cantidad )
               this.NumeroPaquete = Cantidades.reduce((a,b) => a+b )
 
               num++
@@ -423,7 +544,7 @@ this.turnoService.traerUNturno(this.Turno1).subscribe (turnoRecibido => {
                    FechaC: fechaB,
                  }
                  
-                 this.dataSource.push(setAgregar)
+                 this.dataSource.data.push(setAgregar)
                  this.table.renderRows();
                
                  this.NumeroPaquete =  this.NumeroPaquete+1
@@ -434,16 +555,52 @@ this.turnoService.traerUNturno(this.Turno1).subscribe (turnoRecibido => {
 
       }
 
-      emergente1(){
-        this.dialogService.emergente1()
+   
+  
+      removeAt(index: number) {
+        this.dataSource.data.splice(index, 1);
+        this.table.renderRows();
+      }
+    
+      tipoOperacion : number = 0;
+      private lazyLoadBeta$ = from(
+        import('@app/services/dialog/components/dialogo/dialogo.component').then(
+          (component) => component.DialogoComponent
+        )
+      );
+      emergente1() {
+        this.dialogService.showDialog3(this.lazyLoadBeta$);
+        this.tipoOperacion = 2
       }
   
 
 
+      limpiarEsterilizador(){
+        this.notification.success("Esterilizador Limpiado!");
+        console.log('borrando')
+        this.UsuarioInicial2 = ''
+        this.FechaInicioA = ''
+        this.HoraInicioR1 = ''
 
+        this.UsuarioFinal = ''
+        this.FechaFinalB = ''
+        this.HoraFinal = ''
     
+        this.CicloNombre = null! 
+
+        this.ELEMENT_DATA =[];
+        this.dataSource.data=[];
+
+        console.log(this.dataSource.data);
+
+        console.log('////////////////////////////////////////////////////////////////');
+        console.log(this.ELEMENT_DATA);
+      }
+    
+
+      
       removeData() {
-        this.dataSource.pop();
+        this.dataSource.data.pop();
         console.log('borrando')
         this.table.renderRows();
       }
@@ -489,7 +646,7 @@ this.turnoService.traerUNturno(this.Turno1).subscribe (turnoRecibido => {
         const indexOfM = Object.keys(rs).indexOf( 'user' );
         const s:fromUser.UserState  = Object.values(rs)[indexOfM];
         this.usuario = JSON.parse(JSON.stringify(s.entity));  
-        console.log(this.usuario) 
+       // console.log(this.usuario) 
     });}
   //_____________________________________________________________________________________________________________________________________________________________________//
 //_____________________________________________________________________________________________________________________________________________________________________//
@@ -646,6 +803,24 @@ submit(){
 
     }
 
+
+
+    editarEventoLavado():EventoEsterilizacion{
+      const tickerCapturado: EventoEsterilizacion = {
+      id: this.tempo1,
+      perfil_inicio: this.UsuarioInicial2,
+      hora_inicio: this.HoraInicioR1,
+      fecha_inicio: this.FechaInicioA,
+      perfil_final: this.usuario?.nombre! + ' ' + this.usuario?.paterno!,
+      hora_final: this.HoraFinal,
+      fecha_final: this.FechaFinalB,
+      ciclo: this.CicloNombre,
+      cicloDiario: this.CicloCuenta,
+      id_esterilizador: Number(this.EquipoADetallar),
+      
+      };
+      return tickerCapturado;
+    }
     //_____________________________________________________________________________________________________________________________________________________________________//
 //_____________________________________________________________________________________________________________________________________________________________________//
 //_______________________________________      Datos que aparecerán por defecto, estos pueden venir desde la base de datos     ________________________________________//
@@ -703,9 +878,17 @@ submit(){
   MarcaEst='';
   ModeloEst = '';
   NumeroSreieEst='';
-  CicloNombre='';
+  CicloNombre!:Ciclo;
   CicloCuenta=0;
   async createPDF(){
+/* 
+    let datosAeditar= this.editarEventoLavado();
+
+    this.eventoesterilizacion.editareventoesterilizacion(datosAeditar, datosAeditar.id).subscribe((valores)=>{
+      console.log('////////////////')
+      console.log(valores)
+      console.log('////////////////')
+    }) */
     //_____________________________________________________________________________________________________________________________________________________________________//
     //_____________________________________________________________________________________________________________________________________________________________________//
     //__________________________________________      Aquí cambiara los datos por los que generamos en la parte del verificado    _________________________________________//
@@ -721,17 +904,17 @@ submit(){
     localStorage.removeItem('CicloN'+ this.EquipoADetallar)
  */
     /////------------------------------- datos esterilizador
-          this.cantidadPaquetes=this.NumeroPaquete.toString();
+          this.cantidadPaquetes=this.NumeroPaquete!.toString();
           this.marca = this.MarcaEst;
           this.modelo = this.ModeloEst;
           this.numSerie = this.NumeroSreieEst;
-          this.tiempoCiclo = this.valuer1.toString();
-          this.tipoCiclo = this.CicloNombre;
+          this.tiempoCiclo = this.CicloNombre.duracion;
+          this.tipoCiclo = this.CicloNombre.nombre;
           this.numCicloDiario = this.CicloCuenta.toString();
     /////------------------------------- datos pruebas
     
     
-          this.UsuarioFinal = this.usuario?.nombre.toString()!
+          this.UsuarioFinal = this.usuario?.nombre.toString()! + ' ' + this.usuario?.paterno.toString()!,
           this.modeloprueba=this.Avalor6;
           this.fechaCaducidad=this.Avalor3;
           this.lote=this.Avalor7;
@@ -740,13 +923,13 @@ submit(){
     
 
   /////------------------------------- ciclo de inicio
-          this.horaInicio= this.HoraInicioR;
+          this.horaInicio= this.HoraInicioR1;
           this.fechaInicio = this.FechaInicioA;
           this.fechaFabricacion=this.Avalor3;
-          this.nombreOperador = this.UsuarioInicial
+          this.nombreOperador = this.UsuarioInicial2.toString()!
  /////------------------------------- ciclo de fin
           this.fechaFin = this.FechaFinalB;
-          this.horaFin = this.HoraFinal;
+          this.horaFin = this.HoraFinal
           this.nombreOperadorFin = this.UsuarioFinal;
 
 
@@ -804,9 +987,19 @@ submit(){
           {text: ' '+this.fechaInicio ,style: 'content1b'},
           {text: ' '+this.horaInicio ,style: 'content2b'},
           {text: ' '+this.nombreOperador,style: 'content3b'},
-    
-          {text: 'Número de ticket de prueba biológica: ' +this.pruebaBiologica ,style: 'content5'},
-    
+
+          
+          {text: 'FIN DE CICLO DE ESTERILIZACIÓN',style: 'content0'},
+          {text: 'Fecha:',style: 'content1'},
+          {text: 'Hora:',style: 'content2'},  
+          {text: 'Nombre operador:',style: 'content3'},
+          {text: 'Firma del  operador:',style: 'content4'},
+          {text: ' '+this.fechaFin ,style: 'content1b'},
+          {text: ' '+this.horaFin,style: 'content2b'},
+          {text: ' '+this.nombreOperadorFin,style: 'content3b'},
+
+          {text: 'Número de Paquetes Esterilizados: '+ this.cantidadPaquetes ,style: 'content5'},
+
           {text: 'Lote:',style: 'content1'},
           {text: 'Modelo:',style: 'content2'},  
           {text: 'Fecha de fabricación:',style: 'content3'},
@@ -816,6 +1009,9 @@ submit(){
           {text: ' '+this.fechaFabricacion,style: 'content3b'},
           {text: ' '+this.fechaCaducidad,style: 'content4b'},
     
+    
+          {text: 'Número de ticket de prueba biológica: ' +this.pruebaBiologica ,style: 'content5'},
+    
           {text: 'Resultado de la prueba biológica: ' +this.resultado ,style: 'content5'},
     
           {text: 'Núm. Carga:',style: 'content1'},
@@ -823,16 +1019,9 @@ submit(){
           {text: ' '+this.numCarga,style: 'content1b'},
           {text: ' '+this.numCicloDiario  ,style: 'content2b'},
     
-          {text: 'FIN DE CICLO DE ESTERILIZACIÓN',style: 'content0'},
-          {text: 'Fecha:',style: 'content1'},
-          {text: 'Hora:',style: 'content2'},  
-          {text: 'Nombre operador:',style: 'content3'},
-          {text: 'Firma del  operador:',style: 'content4'},
-          {text: ' '+this.fechaFin ,style: 'content1b'},
-          {text: ' '+this.horaFin,style: 'content2b'},
-          {text: ' '+this.nombreOperadorFin,style: 'content3b'},
+     
     
-          {text: 'Número de Paquetes Esterilizados: '+ this.cantidadPaquetes ,style: 'content5'},
+          
     
           {text: 'MATERIALES ESTERILIZADOS ', style: 'header2'},
     
@@ -852,7 +1041,7 @@ submit(){
             
     
     
-             table(this.dataSource, ['Id', 'Paquete','Cantidad', 'Turno', 'FechaE','FechaC'], ),
+             table(this.dataSource.data, ['Id', 'Paquete','Cantidad', 'Turno', 'FechaE','FechaC'], ),
         ],
         
       images:{
@@ -1003,18 +1192,67 @@ submit(){
 
 
       openSnackBar() {
-        this._snackBar.openFromComponent(PizzaPartyComponent, {
-          duration: 1000,
-          panelClass: ['aceptado']
-        });
+        this.notification.success("Condirmado!");
       }
 
       openSnackBar2() {
-        this._snackBar.openFromComponent(PizzaPartyComponent2, {
-          duration: 1000,
-          panelClass: ['rechazado']
-        });
+        this.notification.error("Rechazado!");
       }
+
+
+
+
+      SubirDatosEsterilizador(){
+        this.notification.success("Datos Guardados!");
+
+        let eventoEsterilizacion: EventoEsterilizacionRequest = {
+          perfil_inicio: this.usuario?.nombre.toString() + ' ' + this.usuario?.paterno.toString(),
+          hora_inicio: this.HoraInicioR1,
+          fecha_inicio: this.FechaInicioA,
+          perfil_final: '',
+          hora_final: this.HoraFinal,
+          fecha_final: this.FechaFinalB,
+          ciclo: this.CicloNombre,
+          cicloDiario: this.CicloCuenta,
+          id_esterilizador: Number(this.EquipoADetallar) ,
+        }
+
+
+
+       this.eventoesterilizacion.altaeventoesterilizacion(eventoEsterilizacion, this.CicloNombre.id).subscribe((respuesta)=>{
+       // console.log(respuesta)
+          this.ELEMENT_DATA =  this.dataSource.data
+          this.ELEMENT_DATA.forEach(e=>{
+            let Valores ={
+              setId: Number(e.Id),
+              nombreSet: e.Paquete,
+              cantidad: Number(e.Cantidad),
+              turno: Number(this.Turno1), 
+              eventoesterilizador:  Number(respuesta.id),
+              id_esterilizador: Number(this.EquipoADetallar) 
+            }
+            this.materialEsterilizador.altamaterialesterilizador(Valores).subscribe(dataMterial => {
+          
+            console.log(Valores)
+          })
+
+     
+         
+          
+         })
+
+        })
+
+      }
+
+
+
+
+
+
+
+
+
 }
 
 
@@ -1035,27 +1273,10 @@ const horaA =   date.getHours()
 const horaA1 =   date.getHours() +':'+ ('0' + (date.getMinutes())).slice(-2) 
 const fechaA =dia +'/'+ ('0' + (date.getMonth() + 1)).slice(-2)  +'/'+ año ;
 const fechaB =dia +'/'+ ('0' + (date.getMonth() + 3)).slice(-2)  +'/'+ año ;
-export interface esterilizadorTable {
-  Id: string;
-  Paquete: string;
-  Turno: string;
-  FechaE: string;
-  FechaC: string;
-}
 
 
 
-export interface esterilizador {
-  Esterilizador:string;
-  Ciclo:string;
-  QR: string;
-  TicketPrueBio:string;
-  NumCarga:string;
-  PruebaBio:string;
-  PruebaQuim:string;
-}
-
-function table(data: { [x: string]: { toString: () => any; }; }[] | { name: string; age: number; }[], columns: (string | number)[]) {
+function table(data: { [x: string]: { toString: () => any; }; }[] | { Id:number; Paquete:string; Cantidad:number; Turno:number; FechaE:string; FechaC:string; }[], columns: (string | number)[]) {
   return {
     style: 'tableExample',
       table: {
@@ -1100,20 +1321,3 @@ function addMinutes(date: Date, minutes: number) {
 
 
 
-@Component({
-  selector: 'snack-bar-component-example-snack',
-  templateUrl: 'confirmar.html',
-  styleUrl: './detalleesterilizador.component.scss',
-  standalone: true,
-})
-export class PizzaPartyComponent {}
-
-
-
-@Component({
-  selector: 'snack-bar-component-example-snack2',
-  templateUrl: 'rechazar.html',
-  styleUrl: './detalleesterilizador.component.scss',
-  standalone: true,
-})
-export class PizzaPartyComponent2 {}

@@ -26,58 +26,50 @@
               <mat-icon style="color:#0f8f95;" matIconSuffix>center_focus_weak</mat-icon>
         </mat-form-field>
         <button (click)='Subir()' hidden="true">Add Row</button>
-     
       </div>
-    
+      
     </form>
-
+    
+    <button (click)="limpiarEsterilizador()" style="margin-left: 47%; margin-right: 47%;" class="botones">Limpiar Esterilizador</button>
 
   <br><br>
-  <div  style="display: flex;  align-items: center;">
-      <div style=" width: 70%; margin-left:15%;margin-right: 15%;">
-  <table mat-table [dataSource]="dataSource" style="width: 100%;" >
+  <div style="width: 70%; margin-left: 15%; margin-right: 15%;">
+    <table #tabla2 mat-table [dataSource]="dataSource" style="width: 100%;" >
+  
+       <ng-container matColumnDef="Id">
+            <th mat-header-cell *matHeaderCellDef> ID </th>
+            <td mat-cell *matCellDef="let element"> {{element.Id}} </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="Paquete">
+            <th mat-header-cell *matHeaderCellDef> Paquete </th>
+            <td mat-cell *matCellDef="let element"> {{element.Paquete}} </td>
+          </ng-container>
+        
+     
+          <ng-container matColumnDef="Cantidad">
+            <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Cantidad </th>
+            <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.Cantidad}} </td>
+          </ng-container>
 
-      <!--- Note that these columns can be defined in any order.
-            The actual rendered columns are set as a property on the row definition" -->
-    
-      <!-- Position Column -->
-      <ng-container matColumnDef="Id">
-        <th mat-header-cell *matHeaderCellDef style="width: 10%; "> ID </th>
-        <td mat-cell *matCellDef="let element" style="width: 10%;"> {{element.Id}} </td>
-      </ng-container>
-    
-      <!-- Name Column -->
-      <ng-container matColumnDef="Paquete">
-        <th mat-header-cell *matHeaderCellDef style="width: 40%; text-align: center;"> Paquete </th>
-        <td mat-cell *matCellDef="let element" style="width: 40%; text-align: center;"> {{element.Paquete}} </td>
-      </ng-container>
+          <ng-container matColumnDef="Icon">
+            <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Incidencia </th>
+            <td mat-cell *matCellDef="let element" style="text-align: center;">  <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="warning" style="color: orange; text-align: center; " (click)="emergente1()"></mat-icon> 
+            </td>
+          </ng-container>
 
-        <!-- Name Column -->
-        <ng-container matColumnDef="Cantidad">
-          <th mat-header-cell *matHeaderCellDef style="width: 20%; text-align: center;"> Cantidad </th>
-          <td mat-cell *matCellDef="let element" style="width: 20%; text-align: center;"> {{element.Cantidad}} </td>
-        </ng-container>
-    
-      <!-- Symbol Column -->
-      <ng-container matColumnDef="Icon">
-          <th mat-header-cell *matHeaderCellDef style="text-align: center; width: 15%;"> Incidencia</th>
-          <td mat-cell *matCellDef="let element" style="text-align: center; width: 15%;"> <mat-icon  aria-hidden="false" aria-label="Example home icon" fontIcon="warning" style="color: orange" (click)="emergente1()"></mat-icon> 
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="Accion">
-          <th mat-header-cell *matHeaderCellDef style="text-align: center; width: 15%;"> Acción</th>
-          <td mat-cell *matCellDef="let element; let score; let i = index;" style="text-align: center; width: 15%;"> <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="cancel" style="color: red; text-align: center; " (click)="removeAt(i)"></mat-icon> </td>
-        </ng-container>
-
-    
-    
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-
-
-  </div>
-  </div>
+          <ng-container matColumnDef="Accion">
+              <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Acción</th>
+              <td mat-cell *matCellDef="let element; let score; let i = index;" style="text-align: center;"> 
+                <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="cancel" style="color: red; text-align: center; " (click)="removeAt(i)"></mat-icon> 
+           </td>
+            </ng-container>
+          
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        
+      </div>
   <br><br>
 
 
@@ -177,10 +169,10 @@
       <br>
           <div style="text-align: center; display: flex; width: 100%;">
             <div style="width: 33.3%; text-align: center;">
-              <button class="botones"  >Guardar</button>
+              <button class="botones" (click)="SubirDatosEsterilizador()" >Guardar</button>
             </div>
             <div style="width: 33.3%; text-align: center;">
-              <button class="botones" [disabled]="bloquear2" (click)="createPDF()">Generar Reporte</button>
+              <button class="botones"  (click)="createPDF()">Generar Reporte</button>
             </div>
             <div style="width: 33.3%; text-align: center;">
               <button class="botones" >Finalizar</button>
