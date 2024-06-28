@@ -19,6 +19,7 @@ import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { MAT_DATE_LOCALE, MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 
+import { DetalledistribucionentregaComponent } from '../detalledistribucionentrega/detalledistribucionentrega.component';
 import { FormControl, FormGroup,FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
@@ -45,6 +46,7 @@ import { FormControl, FormGroup,FormsModule, ReactiveFormsModule } from '@angula
     RouterLink, 
     RouterLinkActive,
     RouterModule,
+    DetalledistribucionentregaComponent
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'es-ES'},

@@ -16,7 +16,7 @@ import { RouterOutlet, RouterLink, RouterLinkActive, RouterModule } from '@angul
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 
-
+import { RecibirrecepcionotrasComponent } from '../recibirrecepcionotras/recibirrecepcionotras.component';
 
 import { FormControl, FormGroup,FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
@@ -33,7 +33,7 @@ import { FormControl, FormGroup,FormsModule, ReactiveFormsModule } from '@angula
     MatDivider,
     MatIcon,
     MatTooltipModule,
-
+    RecibirrecepcionotrasComponent,
     RouterOutlet,
     RouterLink, 
     RouterLinkActive,

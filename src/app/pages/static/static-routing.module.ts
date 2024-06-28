@@ -106,10 +106,7 @@ const routes: Routes = [
     path: 'detalledistribucionotras',
     loadComponent: () => import('./pages/detalledistribucionotras/detalledistribucionotras.component').then((m) => m.DetalledistribucionotrasComponent),
   },
-  {
-    path: 'detalledistribucionentrega',
-    loadComponent: () => import('./pages/detalledistribucionentrega/detalledistribucionentrega.component').then((m) => m.DetalledistribucionentregaComponent),
-  },
+
   {
     path: 'recibirrecepcionquirofano',
     loadComponent: () => import('./pages/recibirrecepcionquirofano/recibirrecepcionquirofano.component').then((m) => m.RecibirrecepcionquirofanoComponent),

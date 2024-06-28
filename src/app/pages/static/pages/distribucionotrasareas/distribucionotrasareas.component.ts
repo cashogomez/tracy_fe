@@ -1,4 +1,4 @@
-import { Component, Inject, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepickerIntl } from '@angular/material/datepicker';
 import { MatPaginator } from '@angular/material/paginator';
@@ -12,6 +12,7 @@ import pdfMake from "pdfmake/build/pdfmake";
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
+import { TicketoaService } from '@app/services/ticketoa/ticketoa.service';
 import { FormControl, FormGroup,FormsModule, ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-distribucionotrasareas',
@@ -19,7 +20,11 @@ import { FormControl, FormGroup,FormsModule, ReactiveFormsModule } from '@angula
   templateUrl: './distribucionotrasareas.component.html',
   styleUrl: './distribucionotrasareas.component.scss'
 })
-export class DistribucionotrasareasComponent {
+export class DistribucionotrasareasComponent implements OnInit {
+
+  ticketAEditar: number = 0;
+
+  editar: boolean = false;
   nombrejefa= "María Dolores Rodríguez Ramírez";
   editarRegistro !: Element;
   borrarRegistro !: Element;
@@ -43,19 +48,7 @@ export class DistribucionotrasareasComponent {
 
 
   /** Constants used to fill up our data base. */
-  ELEMENT_DATA = [
-    {Prioridad: 'alta', Ticket: 1, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:new Date(2024, 5, 26), Turno:2},
-    {Prioridad: 'alta', Ticket: 2, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:new Date(2024, 5, 27), Turno:2},
-    {Prioridad: 'alta', Ticket: 3, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:new Date(2024, 5, 28), Turno:2},
-    {Prioridad: 'alta', Ticket: 4, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:new Date(2024, 5, 29), Turno:2},
-    {Prioridad: 'alta', Ticket: 5, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:new Date(2024, 5, 30), Turno:2},
-    {Prioridad: 'alta', Ticket: 6, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:new Date(2024, 5, 1), Turno:2},
-    {Prioridad: 'alta', Ticket: 7, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:new Date(2024, 5, 2), Turno:2},
-    {Prioridad: 'alta', Ticket: 8, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:new Date(2024, 5, 3), Turno:2},
-    {Prioridad: 'alta', Ticket: 9, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:new Date(2024, 5, 4), Turno:2},
-    {Prioridad: 'alta', Ticket: 10, QR:44376579, Proveedor:'Quirófano', Nombre: 'Set de Angiocardio', Fecha:new Date(2024, 5, 5), Turno:2},
-   
-  ];
+  ELEMENT_DATA:any  = [ ];
   areaElegida!: AreaTrabajo;
   area_id!: number;
 
@@ -66,7 +59,7 @@ export class DistribucionotrasareasComponent {
 // } 
 
   constructor(private notification: NotificationService,
-
+    private ticketService: TicketoaService,
     private router:Router,
     private _adapter: DateAdapter<any>,
     private _intl: MatDatepickerIntl,
@@ -117,8 +110,38 @@ export class DistribucionotrasareasComponent {
     this.router.navigate(['/static/detalledistribucionotras'])
   }
 
+  nuevoP =''
   ngOnInit() {
-    this.updateCloseButtonLabel('Cerrar Calendario');
+
+    this.ticketService.traertickets().subscribe(ticketsRecibidos => {
+        
+      ticketsRecibidos.forEach((ticket) => {
+        if (ticket.prioridad == 1){
+          this.nuevoP = 'baja'
+        }
+        if (ticket.prioridad == 2){
+          this.nuevoP = 'media'
+        }
+        if (ticket.prioridad == 3){
+          this.nuevoP = 'alta'
+        }
+        let elementoAgregar = {
+          
+          prioridad: this.nuevoP, 
+          ticket: ticket.id,  
+          area: ticket.area_prestamo,  
+          fecha: new Date(ticket.fecha_prestamo), 
+          estatus: ticket.estatus,
+          accion:'', 
+
+        }
+        console.log (this.nuevoP)
+        
+        
+        this.ELEMENT_DATA.push(elementoAgregar)
+      })
+      this.dataSource.data = this.ELEMENT_DATA
+    })
   }
 
   french() {
@@ -156,10 +179,13 @@ export class DistribucionotrasareasComponent {
   dataSource: MatTableDataSource<Element>;
 // **********************************************************
 
-  displayedColumns = ['prioridad', 'ticket', 'QR', 'nombre',  'fecha', 'accion' ];
+  displayedColumns = ['prioridad', 'ticket', 'area', 'fecha', 'estatus',  'accion' ];
 
   editarFila(element: Element) {
     this.editarRegistro=element;
+    this.editar = true;
+    this.ticketAEditar = element.Ticket;
+    //console.log(this.ticketAEditar);   
   }
   eliminarFila(element: Element) {
     this.borrarRegistro=element;
@@ -174,7 +200,7 @@ export interface Element {
 Prioridad: string;
 Ticket: number;
 QR: number;
-Proveedor: string;
+Proveedor: string; 
 Nombre: string;
 Fecha: Date;
 Turno: number;

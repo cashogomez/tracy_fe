@@ -52,6 +52,31 @@
     font-weight: 700;
     margin: 10px;
   }
+  .botones:disabled {
+    text-align: center;
+    background-color: #808080;
+    border: none;
+    color: white;
+    font-weight: 700;
+  }
+  .boton_alta {
+    background-color: red;
+    color: black;
+    font-weight: 700;
+    margin: 10px;
+  }
+  .boton_media {
+    background-color: orange;
+    color: black;
+    font-weight: 700;
+    margin: 10px;
+  }
+  .boton_baja {
+    background-color: yellow;
+    color: black;
+    font-weight: 700;
+    margin: 10px;
+  }
   .menu_desplegable {
     margin: 10px;
   }

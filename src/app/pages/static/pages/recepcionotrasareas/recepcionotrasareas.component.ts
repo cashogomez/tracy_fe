@@ -13,6 +13,7 @@ import 'moment/locale/es';
 import { Router } from '@angular/router';
 
 import { FormControl, FormGroup,FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TicketoaService } from '@app/services/ticketoa/ticketoa.service';
 
 
 @Component({
@@ -22,21 +23,22 @@ import { FormControl, FormGroup,FormsModule, ReactiveFormsModule } from '@angula
   styleUrl: './recepcionotrasareas.component.scss'
 })
 export class RecepcionotrasareasComponent {
+
+  editar: boolean = false;
+  ticketAEditar: string = '';
+
+  editarFila(element: Element) {
+    this.editarRegistro=element;
+    this.editar = true;
+    this.ticketAEditar = element.Ticket.toString();
+    //console.log(this.ticketAEditar);   
+  }
+
   nombrejefa= "María Dolores Rodríguez Ramírez";
   editarRegistro !: Element;
   borrarRegistro !: Element;
   /** Constants used to fill up our data base. */
-  ELEMENT_DATA = [
-    {Ticket: 1, Fecha: new Date(2024, 5, 26), Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 2, Fecha: new Date(2024, 5, 27), Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 3, Fecha: new Date(2024, 5, 28), Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 4, Fecha: new Date(2024, 5, 29), Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 5, Fecha: new Date(2024, 5, 30), Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 6, Fecha: new Date(2024, 6, 1), Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 7, Fecha: new Date(2024, 6, 2), Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 8, Fecha: new Date(2024, 6, 3), Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 9, Fecha: new Date(2024, 6, 4), Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
-    {Ticket: 10, Fecha: new Date(2024, 6 , 5), Area:'Urgencias', Sala:2, Turno:2, Estatus:'Pendiente'},
+  ELEMENT_DATA: any = [
   ];
 
 // EliminarElementoTabla(key: number) {
@@ -46,7 +48,7 @@ export class RecepcionotrasareasComponent {
 // } 
 
   constructor(private notification: NotificationService,
-
+    private ticketService: TicketoaService,
     private router:Router,
     private _adapter: DateAdapter<any>,
     private _intl: MatDatepickerIntl,
@@ -73,8 +75,29 @@ export class RecepcionotrasareasComponent {
   goPlaces2(){
     this.router.navigate(['static/recibirrecepcionotras2'])
   }
+
+    
   ngOnInit() {
     this.updateCloseButtonLabel('Cerrar Calendario');
+
+    this.ticketService.traertickets().subscribe(ticketsRecibidos => {
+        
+      ticketsRecibidos.forEach((ticket) => {
+   
+        let elementoAgregar = {
+          Ticket: ticket.id, 
+          Fecha: new Date(ticket.fecha_prestamo),  
+          Area:ticket.area_prestamo, 
+          Estatus:ticket.estatus, 
+          Accion:'',
+        }
+        
+        
+        this.ELEMENT_DATA.push(elementoAgregar)
+      })
+      this.dataSource.data = this.ELEMENT_DATA
+    })
+
   }
 
   french() {
@@ -131,11 +154,8 @@ export class RecepcionotrasareasComponent {
   dataSource: MatTableDataSource<Element>;
 // **********************************************************
 
-  displayedColumns = ['ticket', 'fecha',  'turno', 'estatus', 'accion' ];
+  displayedColumns = ['ticket', 'fecha',  'Area', 'estatus', 'accion' ];
 
-  editarFila(element: Element) {
-    this.editarRegistro=element;
-  }
   eliminarFila(element: Element) {
     this.borrarRegistro=element;
   }

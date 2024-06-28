@@ -88,7 +88,6 @@ export class ProgramacioncirugiaComponent implements OnInit {
 
 
   valorElegido : string=''
-  prioridad: number = 0;
   tipoOperacion : number = 0;
   fechaElegida: Date = new Date();
   fechaNacimiento: Date = new Date();
@@ -224,7 +223,7 @@ export class ProgramacioncirugiaComponent implements OnInit {
       
   }
 
-  labelPosition: 'baja' |'media' | 'alta' = 'alta';
+  labelPosition: 1 | 2 | 3 = 3;
   value = 'Clear me';
   cantidadCapturada: string='';
   cantidad: number = 0;
@@ -313,30 +312,7 @@ export class ProgramacioncirugiaComponent implements OnInit {
  today:any;
  today2:any;
 
-  Prioridades(){
-    console.log(this.today)
-    console.log(this.today2)
-    console.log(this.prioridad)
-  switch(this.labelPosition) { 
-    case 'baja': { 
-       this.prioridad = 1
-       break; 
-    } 
-    case 'media': { 
-      this.prioridad = 2
-       break; 
-    } 
-    case 'alta': { 
-      this.prioridad = 3
-      break; 
-   } 
-    default: { 
-      this.prioridad = 1
-       break; 
-    } 
- } 
 
-}
 
   eliminarFila(element: Element) {
     this.borrarRegistro=element;
@@ -402,7 +378,7 @@ capturarProgCirug(): TicketRequest {
     enfermero: this.formaEdicion?.get('Enfermera')?.value!,
     notas: this.formaEdicion?.get('Notas')?.value!,
     estatus: 'pendiente',
-    prioridad: this.prioridad,
+    prioridad: this.labelPosition,
     activo: true
   };
   console.log(tickerCapturado)

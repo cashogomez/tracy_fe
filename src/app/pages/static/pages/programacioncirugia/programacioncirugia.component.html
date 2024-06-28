@@ -23,9 +23,9 @@
     <section class="example-section">
       <label class="example-margin">Prioridad de la Cirugía:</label>
       <mat-radio-group [(ngModel)]="labelPosition">
-        <mat-radio-button class="example-margin" value="alta">Alta</mat-radio-button>
-        <mat-radio-button class="example-margin" value="media">Media</mat-radio-button>
-        <mat-radio-button class="example-margin" value="baja">Baja</mat-radio-button>
+        <mat-radio-button class="example-margin" value="3">Alta</mat-radio-button>
+        <mat-radio-button class="example-margin" value="2">Media</mat-radio-button>
+        <mat-radio-button class="example-margin" value="1">Baja</mat-radio-button>
       </mat-radio-group>
     </section>
   </div>
@@ -324,7 +324,7 @@
 
     <div align="center">
       <button  class="botones" style="margin-right: 5%;" (click)="onCancelarClicked()">Cancelar</button>
-      <button  class="botones" style="margin-right: 5%;" (click)="onAceptarClicked()"  (click)="Prioridades()">Aceptar</button> 
+      <button  class="botones" style="margin-right: 5%;" (click)="onAceptarClicked()" >Aceptar</button> 
     </div>
  
   </div>

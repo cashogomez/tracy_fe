@@ -1,3 +1,4 @@
+<div  *ngIf="editar==false">
 <!------------------------------ INICIO DE ENCABEZADO -------------------------------->
 <h2 align="center">Otras Áreas Hospitalarias</h2>
 
@@ -66,9 +67,9 @@
   
 
     <!-- Symbol Column -->
-    <ng-container matColumnDef="turno">
-      <mat-header-cell *matHeaderCellDef> Turno </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.Turno}} </mat-cell>
+    <ng-container matColumnDef="Area">
+      <mat-header-cell *matHeaderCellDef> Área </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.Area}} </mat-cell>
     </ng-container>
 
     <!-- Symbol Column -->
@@ -80,7 +81,7 @@
     <!-- Symbol Column -->
     <ng-container matColumnDef="accion">
       <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
-      <mat-cell *matCellDef="let element">  <button class="botones" style=" margin-right: 20px;" matTooltip="Recibir material" (click)="goPlaces()">Recibir</button> </mat-cell>
+      <mat-cell *matCellDef="let element">  <button [disabled]="element.Estatus === 'pendiente' || element.Estatus === 'recibido' " class="botones" style=" margin-right: 20px;" matTooltip="Recibir material" (click)="editarFila(element)">Recibir</button> </mat-cell>
     </ng-container>
 
 
@@ -92,3 +93,7 @@
 
   <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of elementos"></mat-paginator>
 </div>
+
+</div>
+
+<app-recibirrecepcionotras [ticketAEditar]="ticketAEditar" *ngIf="editar==true" ></app-recibirrecepcionotras>

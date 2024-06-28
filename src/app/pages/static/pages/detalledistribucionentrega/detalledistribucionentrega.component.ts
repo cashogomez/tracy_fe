@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { DialogService } from '@app/services/dialog/dialog.service';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
@@ -62,6 +62,9 @@ const date = new Date();const año = date.getFullYear();const mes = date.toLocal
   styleUrl: './detalledistribucionentrega.component.scss'
 })
 export class DetalledistribucionentregaComponent {
+
+  @Input()  ticketAEditar!: number;
+  
   Tabla1:  TablaAñadir2[] = [
     {ID:'001', Elemento: 'SET lamparoscopia', Cantidad:1, Entregados:0},
     {ID:'002', Elemento: 'SET lamparoscopia', Cantidad:1, Entregados:0},
