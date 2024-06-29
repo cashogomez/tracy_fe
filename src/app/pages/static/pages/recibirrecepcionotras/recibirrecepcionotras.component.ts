@@ -33,6 +33,8 @@ import { TicketOA } from '@app/models/backend/ticketoa';
 import { from } from 'rxjs';
 import { NotificationService } from '@app/services/notification/notification.service';
 import { Router } from '@angular/router';
+import { CantidadInstrumentoEnviado } from '@app/models/backend';
+import { TicketSetOA } from '@app/models/backend/ticketsetoa';
 
  
 
@@ -92,6 +94,7 @@ export class RecibirrecepcionotrasComponent implements OnInit  {
     private Insttraer: TicketinstrumentoService,
     private notification: NotificationService,
     private router: Router,
+    
    private TraerInstSet: CantidadInstrumentoService,
   ){
 
@@ -108,6 +111,17 @@ export class RecibirrecepcionotrasComponent implements OnInit  {
 
       if (this.respuesta=='true') {
         switch(this.tipoOperacion) { 
+          case 1: { 
+            this.notification.success("Guardado!");
+             //statements;
+              // ***********************************************************************************
+             // let tickerCapturado = this.capturarProgCirug2();
+            //  this.ticketServicio.editarticket(tickerCapturado, tickerCapturado.id).subscribe((ticket) => {})
+
+        
+              
+             break; 
+          } 
           case 2: { 
             this.notification.success("Recibido!");
             this.router.navigate(['/static/welcome']);
@@ -126,6 +140,42 @@ export class RecibirrecepcionotrasComponent implements OnInit  {
             //statements; 
             break; 
          } 
+         case 4: { 
+          this.notification.success("Guardado!");
+          //statements; 
+          let tickerCapturado = this.capturarProgCirug2();
+          this.ticketServicio.editarticket(tickerCapturado, tickerCapturado.id).subscribe((ticket) => {})
+
+          break; 
+       } 
+       case 5: { 
+        this.notification.success("Reporte de Incidensia Enviado!");
+        //statements; 
+
+
+
+        this.dataSource.data.forEach((data)=>{
+          let cantidad ={
+            valorCantidad: data.Cantidad_Recibida,
+            valorCantidad2: data.Cantidad
+          }
+          var Cantidades = this.dataSource.data.map(data => data.Cantidad )
+          var totalcantidades = Cantidades.reduce((a,b) => a+b )
+          console.log(totalcantidades);
+
+          var Cantidades2 = this.dataSource.data.map(data => data.Cantidad_Recibida )
+          var totalcantidades2 = Cantidades2.reduce((a,b) => a+b )
+ 
+          if ( totalcantidades2 <  totalcantidades)
+            {this.visibles=false;}
+          else{
+            this.visibles=true;
+          }
+    
+        })
+      
+        break; 
+     } 
           default: { 
              //statements; 
              break; 
@@ -151,12 +201,18 @@ setStep(index: number) {
 cantidadset=1;
 noSets: any = [];
 dataSource: MatTableDataSource<any>;
-
+totalcantidades1=0;
+totalcantidades2=0;
 valor = true;
 valor2 = false;
+visibles = true;
+idSetValor=0;
 //-------------------------------- finaliza auto generador --------------------------------
  nombreSet='';
   ngOnInit(): void {
+
+    console.log(this.totalcantidades1)
+    console.log(this.totalcantidades2)
 
     if (horaA >= 7 && horaA < 14 ) {this.Turno1 = 1;}
 
@@ -178,11 +234,13 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
           Entrega: data.recepcion_usuario,
           NotasAdd: data.notas,
           Prioridad: data.prioridad,
-          EntregaUsuario: data.entrega_usuario
+          EntregaUsuario: data.entrega_usuario,
+          Devolucion: data.devolucion_usuario
         }
         this.ticket = data.id;
         this.Recepcion?.get('EntregaUsuario')?.setValue(elementoAgregar.EntregaUsuario!)
         this.Recepcion?.get('Prioridad')?.setValue(elementoAgregar.Prioridad.toString()!)
+        this.Recepcion?.get('Devolucion')?.setValue(elementoAgregar.Devolucion!)
         this.Recepcion?.get('Area')?.setValue(elementoAgregar.Area!)
         this.Recepcion?.get('FechaPrestamo')?.setValue(elementoAgregar.FechaPrestamo!)
         this.Recepcion?.get('Entrega')?.setValue(elementoAgregar.Entrega!)
@@ -200,6 +258,7 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
         setRecibidos.forEach((set)=>{
             this.noSets.push(set)
             this.cantidadset = set.cantidad
+            this.idSetValor=set.id
 
         
         })
@@ -209,28 +268,101 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
 
   }
 
+  nuevarecibida=0;
+enviar:any=[]
 
+
+  subirset(setADesplegar: SetEnviado){
+
+
+    this.TraerInstSet.traercantidadinstrumento(setADesplegar.id).subscribe(InstrumentalSet=>{
+   
+      InstrumentalSet.forEach((inst,index)=>{
+        this.dataSource.data.forEach((data)=>{
+          let cantidad ={
+            valorCantidad: data.Cantidad_Recibida
+          }
+
+          this.nuevarecibida = cantidad.valorCantidad
+      
+        let instrumental ={
+          Id: inst.instrumento.id, 
+          Instrumental: inst.instrumento.nombre, 
+          Cantidad: inst.cantidad, 
+          Cantidad_Recibida:  cantidad.valorCantidad , 
+          Marca_Comercial:inst.instrumento.marca, 
+        
+        }
+        this.enviar= [instrumental]
+        
+      
+      })
+      console.log(this.enviar)
+//      this.TraerInstSet.editarset(this.enviar, this.idSetValor).subscribe(data=>{
+      //  console.log(data)
+    //  })
+     
+   
+  
+      
+        
+    })
+  
+    this.dataSource.data = this.Instrumental_quirugico
+    var Cantidades1 = this.dataSource.data.map(data => data.Cantidad )
+    this.totalcantidades1 = Cantidades1.reduce((a,b) => a+b )
+
+
+    this.dataSource.data = this.Instrumental_quirugico
+    var Cantidades2 = this.dataSource.data.map(data => data.Cantidad_Recibida)
+    this.totalcantidades2 = Cantidades2.reduce((a,b) => a+b )
+
+ 
+    
+    console.log(this.totalcantidades1)
+    console.log(this.totalcantidades2)
+  })
+   
+
+   
+  }
 
   actualizarInstrumento(setADesplegar: SetEnviado) {
     this.Instrumental_quirugico=[]
+
+
     this.TraerInstSet.traercantidadinstrumento(setADesplegar.id).subscribe(InstrumentalSet=>{
       console.log (InstrumentalSet)
       InstrumentalSet.forEach((inst,index)=>{
         let instrumental ={
           Id: inst.instrumento.id, 
           Instrumental: inst.instrumento.nombre, 
-          Cantidad: inst.cantidad * this.cantidadset, 
+          Cantidad: inst.cantidad , 
+          Cantidad_Recibida: inst.cantidad_recibida, 
           Marca_Comercial:inst.instrumento.marca, 
           Prelavado:'', 
           Completo:'', 
           Funcional:'', 
-          Cantidad_Recibida:'',
           insidencia:''
         }
+  
         this.Instrumental_quirugico.push(instrumental)
+        
     })
 
     this.dataSource.data = this.Instrumental_quirugico
+    var Cantidades1 = this.dataSource.data.map(data => data.Cantidad )
+    this.totalcantidades1 = Cantidades1.reduce((a,b) => a+b )
+
+
+    this.dataSource.data = this.Instrumental_quirugico
+    var Cantidades2 = this.dataSource.data.map(data => data.Cantidad_Recibida)
+    this.totalcantidades2 = Cantidades2.reduce((a,b) => a+b )
+
+ 
+    
+    console.log(this.totalcantidades1)
+    console.log(this.totalcantidades2)
   })
 
 
@@ -238,6 +370,25 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
 
 
   capturarProgCirug(): TicketOA {
+    const tickerCapturado: TicketOA = {
+      id: Number(this.ticketAEditar),
+      prioridad: Number(this.Recepcion?.get('Prioridad')?.value!),
+      area_prestamo:  this.Recepcion?.get('Area')?.value!,
+      fecha_prestamo:  this.Recepcion?.get('FechaPrestamo')?.value!,
+      recepcion_usuario: this.Recepcion?.get('Entrega')?.value!,
+      recepcion_usuario_recepcion:  this.Recepcion?.get('Recepcion')?.value!,
+      devolucion_usuario: this.Recepcion?.get('Devolucion')?.value!,
+      entrega_usuario: this.Recepcion?.get('EntregaUsuario')?.value!,
+      notas:  this.Recepcion?.get('NotasAdd')?.value!,
+      estatus: 'En Espera',
+    };
+   
+    console.log(tickerCapturado)
+    return tickerCapturado;
+    // ***********************************************************
+  }
+
+  capturarProgCirug2(): TicketOA {
     const tickerCapturado: TicketOA = {
       id: Number(this.ticketAEditar),
       prioridad: Number(this.Recepcion?.get('Prioridad')?.value!),
@@ -266,8 +417,18 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
         console.log(this.usuario) 
     });
   }
+
+
+  private lazyLoadBetas$ = from(
+    import('@app/services/dialog/components/dialogo/dialogo.component').then(
+      (component) => component.DialogoComponent
+    )
+  );
+
   emergente1(){
-    this.dialogService.emergente1()
+    this.dialogService.showDialog3(this.lazyLoadBetas$)
+    this.tipoOperacion = 5
+    
   }
 
 
@@ -282,6 +443,10 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
   onBetaClicked() {
     this.dialogService.showDialog2(this.lazyLoadBeta$);
     this.tipoOperacion = 2
+  }
+  onBetaClicked2() {
+    this.dialogService.showDialog2(this.lazyLoadBeta$);
+    this.tipoOperacion = 4
   }
 
 

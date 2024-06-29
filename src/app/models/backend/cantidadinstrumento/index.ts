@@ -9,6 +9,7 @@ export interface CantidadInstrumentoRequest {
 export interface CantidadInstrumentoEnviado {
     id: number;
     cantidad : number;
+    cantidad_recibida : number;
     instrumento : Instrumento;
     set: SetEnviado;
 }
