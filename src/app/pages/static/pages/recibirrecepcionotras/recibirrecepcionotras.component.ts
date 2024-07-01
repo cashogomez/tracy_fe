@@ -78,12 +78,32 @@ export interface Recepcion{
   styleUrl: './recibirrecepcionotras.component.scss'
 })
 export class RecibirrecepcionotrasComponent implements OnInit  {
+  
+//--------------------------------comienza auto generador --------------------------------
 
-  SetTraidos: any =[]
+step = 0;
 
-  dataSource_set: MatTableDataSource<any>;
-  respuesta:any;
-  nombreEmer: any;
+setStep(index: number) {
+  this.step = index;
+}
+cantidadset=1;
+noSets: any = [];
+dataSource: MatTableDataSource<any>;
+displayedColumns: string[] = ['Id', 'Instrumental', 'Cantidad', 'Marca_Comercial', 'Prelavado', 'Completo', 'Funcional', 'Cantidad_Recibida','insidencia'];
+
+totalcantidades = 0;
+totalcantidades2 = 0;
+valor = true;
+valor2 = false;
+visibles = true;
+visibles2 = true;
+visibles3 = false;
+cantidadfinal=0;
+Incidencia='';
+respuesta:string='';
+nombreEmer:string='';
+//-------------------------------- finaliza auto generador --------------------------------
+
   @Input()  ticketAEditar!: string;
   constructor ( 
     private dialogService: DialogService,
@@ -94,40 +114,64 @@ export class RecibirrecepcionotrasComponent implements OnInit  {
     private Insttraer: TicketinstrumentoService,
     private notification: NotificationService,
     private router: Router,
-    
+    private instrumentosenset:TicketinstrumentoService,
    private TraerInstSet: CantidadInstrumentoService,
   ){
 
 
     this.dataSource = new MatTableDataSource(this.Instrumental_quirugico);
-    this.dataSource_set = new MatTableDataSource(this.noSets);
 
 
     this.dataService.data$.subscribe(data => {
       var cortado = data
-      var cortado2 = cortado.split(':', 2)
+      var cortado2 = cortado.split(':', 3)
       this.respuesta = cortado2[0]
       this.nombreEmer = cortado2[1]
+      this.Incidencia = cortado2[2]
+
+
 
       if (this.respuesta=='true') {
+        console.log ('////////////////////////////////')
+        console.log (this.tipoOperacion)
+        console.log ('////////////////////////////////')
         switch(this.tipoOperacion) { 
+          
           case 1: { 
-            this.notification.success("Guardado!");
-             //statements;
-              // ***********************************************************************************
-             // let tickerCapturado = this.capturarProgCirug2();
-            //  this.ticketServicio.editarticket(tickerCapturado, tickerCapturado.id).subscribe((ticket) => {})
+            this.tipoOperacion=0;
+            this.notification.success("Reporte de Incidencia Enviado!");
 
-        
+            var Cantidades = this.dataSource.data.map(data => data.Cantidad )
+            var totalcantidades = Cantidades.reduce((a,b) => a+b )
+    
+    
+            var Cantidades2 = this.dataSource.data.map(data => data.Cantidad_Recibida )
+            var totalcantidades2 = Cantidades2.reduce((a,b) => a+b )
+    
+            if ( totalcantidades2 ==  totalcantidades)
+              {
+                this.visibles=true;
+                this.visibles2=true;
+                this.visibles3=false;
+              }
+            else{
+              this.visibles=false;
+              this.visibles2=false;
+              this.visibles3=true;
+            }
+    
+            console.log(totalcantidades + '/' + totalcantidades2)
+          
               
              break; 
           } 
           case 2: { 
+            this.tipoOperacion=0;
             this.notification.success("Recibido!");
             this.router.navigate(['/static/welcome']);
              //statements;
               // ***********************************************************************************
-              let tickerCapturado = this.capturarProgCirug();
+              let tickerCapturado = this.Guardado();
               this.ticketServicio.editarticket(tickerCapturado, tickerCapturado.id).subscribe((ticket) => {})
 
          
@@ -135,47 +179,16 @@ export class RecibirrecepcionotrasComponent implements OnInit  {
              break; 
           } 
           case 3: { 
-            this.notification.error("Operación cancelada");
-            this.router.navigate(['/static/welcome']);
-            //statements; 
-            break; 
-         } 
-         case 4: { 
+          this.tipoOperacion=0;
+          this.router.navigate(['/static/welcome']);
           this.notification.success("Guardado!");
           //statements; 
-          let tickerCapturado = this.capturarProgCirug2();
+          let tickerCapturado = this.Finzalizado();
           this.ticketServicio.editarticket(tickerCapturado, tickerCapturado.id).subscribe((ticket) => {})
 
           break; 
-       } 
-       case 5: { 
-        this.notification.success("Reporte de Incidensia Enviado!");
-        //statements; 
+          } 
 
-
-
-        this.dataSource.data.forEach((data)=>{
-          let cantidad ={
-            valorCantidad: data.Cantidad_Recibida,
-            valorCantidad2: data.Cantidad
-          }
-          var Cantidades = this.dataSource.data.map(data => data.Cantidad )
-          var totalcantidades = Cantidades.reduce((a,b) => a+b )
-          console.log(totalcantidades);
-
-          var Cantidades2 = this.dataSource.data.map(data => data.Cantidad_Recibida )
-          var totalcantidades2 = Cantidades2.reduce((a,b) => a+b )
- 
-          if ( totalcantidades2 <  totalcantidades)
-            {this.visibles=false;}
-          else{
-            this.visibles=true;
-          }
-    
-        })
-      
-        break; 
-     } 
           default: { 
              //statements; 
              break; 
@@ -192,27 +205,11 @@ export class RecibirrecepcionotrasComponent implements OnInit  {
   Turno1=0
   fechaN = ''
 
-//--------------------------------comienza auto generador --------------------------------
-step = 0;
 
-setStep(index: number) {
-  this.step = index;
-}
-cantidadset=1;
-noSets: any = [];
-dataSource: MatTableDataSource<any>;
-totalcantidades1=0;
-totalcantidades2=0;
-valor = true;
-valor2 = false;
-visibles = true;
-idSetValor=0;
-//-------------------------------- finaliza auto generador --------------------------------
  nombreSet='';
   ngOnInit(): void {
 
-    console.log(this.totalcantidades1)
-    console.log(this.totalcantidades2)
+
 
     if (horaA >= 7 && horaA < 14 ) {this.Turno1 = 1;}
 
@@ -226,7 +223,6 @@ idSetValor=0;
     let ticket = Number(this.ticketAEditar)
     // Assign the data to the data source for the table to render
 this.ticketServicio.traerUNticket(ticket).subscribe(data => {
-  console.log(data)
         let elementoAgregar = {
           Area: data.area_prestamo,
           FechaPrestamo: data.fecha_prestamo,
@@ -258,13 +254,13 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
         setRecibidos.forEach((set)=>{
             this.noSets.push(set)
             this.cantidadset = set.cantidad
-            this.idSetValor=set.id
 
         
         })
+
+        
       
       }) 
-
 
   }
 
@@ -273,66 +269,65 @@ enviar:any=[]
 
 
   subirset(setADesplegar: SetEnviado){
-
+    this.notification.success("Guardado!");
 
     this.TraerInstSet.traercantidadinstrumento(setADesplegar.id).subscribe(InstrumentalSet=>{
-   
-      InstrumentalSet.forEach((inst,index)=>{
-        this.dataSource.data.forEach((data)=>{
-          let cantidad ={
-            valorCantidad: data.Cantidad_Recibida
-          }
+      let nn=0
+      let CantidadFinal: number[]=[]
+      this.dataSource.data.forEach((data)=>{
+        CantidadFinal[nn] = data.Cantidad_Recibida
+        nn++
+  }) 
+  let nnn=0
+  InstrumentalSet.forEach((inst)=>{
+    let instrumental:CantidadInstrumentoEnviado  ={
+      id:  inst.instrumento.id, 
+      cantidad : inst.cantidad, 
+      cantidad_recibida :  CantidadFinal[nnn],
+      instrumento : inst.instrumento,
+      set: setADesplegar,
+    } 
 
-          this.nuevarecibida = cantidad.valorCantidad
-      
-        let instrumental ={
-          Id: inst.instrumento.id, 
-          Instrumental: inst.instrumento.nombre, 
-          Cantidad: inst.cantidad, 
-          Cantidad_Recibida:  cantidad.valorCantidad , 
-          Marca_Comercial:inst.instrumento.marca, 
-        
-        }
-        this.enviar= [instrumental]
-        
-      
-      })
-      console.log(this.enviar)
-//      this.TraerInstSet.editarset(this.enviar, this.idSetValor).subscribe(data=>{
-      //  console.log(data)
-    //  })
-     
-   
-  
-      
-        
-    })
-  
-    this.dataSource.data = this.Instrumental_quirugico
-    var Cantidades1 = this.dataSource.data.map(data => data.Cantidad )
-    this.totalcantidades1 = Cantidades1.reduce((a,b) => a+b )
-
-
-    this.dataSource.data = this.Instrumental_quirugico
-    var Cantidades2 = this.dataSource.data.map(data => data.Cantidad_Recibida)
-    this.totalcantidades2 = Cantidades2.reduce((a,b) => a+b )
-
+  nnn++
+   this.TraerInstSet.editarset(instrumental, inst.id).subscribe(data=>{
+    console.log(data)
+   })   
+  }) 
  
-    
-    console.log(this.totalcantidades1)
-    console.log(this.totalcantidades2)
-  })
-   
 
-   
+  var Cantidades = this.dataSource.data.map(data => data.Cantidad )
+  var totalcantidades = Cantidades.reduce((a,b) => a+b )
+
+
+  var Cantidades2 = this.dataSource.data.map(data => data.Cantidad_Recibida )
+  var totalcantidades2 = Cantidades2.reduce((a,b) => a+b )
+
+  if ( totalcantidades2 ==  totalcantidades)
+    {
+      this.visibles=true;
+      this.visibles2=true;
+      this.visibles3=false;
+    }
+  else{
+    this.visibles=false;
+    this.visibles2=false;
+    this.visibles3=true;
+  }
+
+  console.log(totalcantidades + '/' + totalcantidades2)
+
+
+}) 
+
+
+
+
   }
 
   actualizarInstrumento(setADesplegar: SetEnviado) {
     this.Instrumental_quirugico=[]
 
-
     this.TraerInstSet.traercantidadinstrumento(setADesplegar.id).subscribe(InstrumentalSet=>{
-      console.log (InstrumentalSet)
       InstrumentalSet.forEach((inst,index)=>{
         let instrumental ={
           Id: inst.instrumento.id, 
@@ -345,31 +340,40 @@ enviar:any=[]
           Funcional:'', 
           insidencia:''
         }
-  
         this.Instrumental_quirugico.push(instrumental)
-        
+    })
+    this.dataSource.data = this.Instrumental_quirugico
+
+
+   
+   
+      var Cantidades = this.dataSource.data.map(data => data.Cantidad )
+      var totalcantidades = Cantidades.reduce((a,b) => a+b )
+
+
+      var Cantidades2 = this.dataSource.data.map(data => data.Cantidad_Recibida )
+      var totalcantidades2 = Cantidades2.reduce((a,b) => a+b )
+
+      if ( totalcantidades2 ==  totalcantidades)
+        {
+          this.visibles=true;
+          this.visibles2=true;
+          this.visibles3=false;
+        }
+      else{
+        this.visibles=false;
+        this.visibles2=false;
+        this.visibles3=true;
+      }
+
+      console.log(totalcantidades + '  ' + totalcantidades2)
+
     })
 
-    this.dataSource.data = this.Instrumental_quirugico
-    var Cantidades1 = this.dataSource.data.map(data => data.Cantidad )
-    this.totalcantidades1 = Cantidades1.reduce((a,b) => a+b )
+}
 
 
-    this.dataSource.data = this.Instrumental_quirugico
-    var Cantidades2 = this.dataSource.data.map(data => data.Cantidad_Recibida)
-    this.totalcantidades2 = Cantidades2.reduce((a,b) => a+b )
-
- 
-    
-    console.log(this.totalcantidades1)
-    console.log(this.totalcantidades2)
-  })
-
-
-  }
-
-
-  capturarProgCirug(): TicketOA {
+  Guardado(): TicketOA {
     const tickerCapturado: TicketOA = {
       id: Number(this.ticketAEditar),
       prioridad: Number(this.Recepcion?.get('Prioridad')?.value!),
@@ -388,7 +392,7 @@ enviar:any=[]
     // ***********************************************************
   }
 
-  capturarProgCirug2(): TicketOA {
+  Finzalizado(): TicketOA {
     const tickerCapturado: TicketOA = {
       id: Number(this.ticketAEditar),
       prioridad: Number(this.Recepcion?.get('Prioridad')?.value!),
@@ -414,7 +418,6 @@ enviar:any=[]
         const indexOfM = Object.keys(rs).indexOf( 'user' );
         const s:fromUser.UserState  = Object.values(rs)[indexOfM];
         this.usuario = JSON.parse(JSON.stringify(s.entity));  
-        console.log(this.usuario) 
     });
   }
 
@@ -425,28 +428,24 @@ enviar:any=[]
     )
   );
 
-  emergente1(){
-    this.dialogService.showDialog3(this.lazyLoadBetas$)
-    this.tipoOperacion = 5
-    
-  }
-
-
-
   tipoOperacion : number = 0;
   private lazyLoadBeta$ = from(
     import('@app/services/dialog/components/recibir/recibir.component').then(
       (component) => component.RecibirComponent
     )
   );
-
-  onBetaClicked() {
+  IncidenciaR(){
+    this.dialogService.showDialog3(this.lazyLoadBetas$)
+    this.tipoOperacion = 1
+    
+  }
+  Guardar() {
     this.dialogService.showDialog2(this.lazyLoadBeta$);
     this.tipoOperacion = 2
   }
-  onBetaClicked2() {
+  Finalizar() {
     this.dialogService.showDialog2(this.lazyLoadBeta$);
-    this.tipoOperacion = 4
+    this.tipoOperacion = 3
   }
 
 
@@ -459,7 +458,6 @@ hora=horaAA;
 
 Instrumental_quirugico:any =[]
 
-displayedColumns: string[] = ['Id', 'Instrumental', 'Cantidad', 'Marca_Comercial', 'Prelavado', 'Completo', 'Funcional', 'Cantidad_Recibida','insidencia'];
 
 
 disabledInput1: boolean = true;

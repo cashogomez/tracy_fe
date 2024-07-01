@@ -286,6 +286,7 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
     
 //__________________________-----------------------------------------------__________________________________________----------------------------------------
       this.Settraer.traerticketset(ticket).subscribe(setRecibidos=> {
+        console.log(setRecibidos)
         setRecibidos.forEach((set)=>{
           let setAgregar ={
 
@@ -296,21 +297,10 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
           }
           this.Tabla1.push(setAgregar)
         })
-
+        this.dataSource1=this.Tabla1
       })
     
-      this.Insttraer.traerticketinstrumento(ticket).subscribe(InstRecibidos=> {
-        InstRecibidos.forEach((inst)=>{
-          let instAgregar ={
-            ID:inst.instrumento.id,
-            Elemento: inst.instrumento.nombre,
-            Cantidad:inst.cantidad,
-            Entregados: 0,
-          }
-          this.Tabla1.push(instAgregar)
-        })
-        this.dataSource1 = this.Tabla1
-      })
+   
 //__________________________-----------------------------------------------__________________________________________----------------------------------------
       
     

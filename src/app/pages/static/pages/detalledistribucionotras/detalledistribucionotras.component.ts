@@ -339,8 +339,6 @@ labelPosition: 1 | 2 | 3 = 3;
                 Elemento: setRecibidos.nombre,
                 Entregados: 1,
                 Accion: '',
-            
-
               }
               this.Tabla2.push(setAgregar)
               this.dataSource.data = this.Tabla2

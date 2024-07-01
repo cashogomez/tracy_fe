@@ -25,7 +25,7 @@ import { TicketService } from '@app/services/ticket/ticket.service';
 
 
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { NotificationService, TurnoService } from '@app/services';
+import { CantidadInstrumentoService, NotificationService, TurnoService } from '@app/services';
 //--------------------pedir tablas set info --------------------------
 import { TicketsetService } from '@app/services/ticketset/ticketset.service';
 //--------------------pedir tablas set info --------------------------
@@ -34,6 +34,9 @@ import { TicketsetService } from '@app/services/ticketset/ticketset.service';
 import { TicketinstrumentoService } from '@app/services/ticketinstrumento/ticketinstrumento.service';
 import { from } from 'rxjs';
 import { Ticket } from '@app/models/backend/ticket';
+import { SetEnviado } from '@app/models/backend/set';
+
+import { CantidadInstrumentoEnviado } from '@app/models/backend';
 //--------------------pedir tablas set info --------------------------
 
 const date = new Date();const año = date.getFullYear();const mes = date.getMonth()+1;const mes2 = date.toLocaleString('default', { month: 'long' });const dia = date.getDate(); const hora = date.getHours();const minutos = date.getMinutes();
@@ -92,6 +95,32 @@ export interface Recepcion{
   styleUrl: './recibirrecepcionquirofano.component.scss'
 })
 export class RecibirrecepcionquirofanoComponent implements OnInit {
+
+//--------------------------------comienza auto generador --------------------------------
+
+step = 0;
+
+setStep(index: number) {
+  this.step = index;
+}
+cantidadset=1;
+noSets: any = [];
+dataSource: MatTableDataSource<any>;
+displayedColumns: string[] = ['Id', 'Instrumental', 'Cantidad', 'Marca_Comercial', 'Prelavado', 'Completo', 'Funcional', 'Cantidad_Recibida','insidencia'];
+
+totalcantidades = 0;
+totalcantidades2 = 0;
+valor = true;
+valor2 = false;
+visibles = true;
+visibles2 = true;
+visibles3 = false;
+cantidadfinal=0;
+Incidencia='';
+respuesta:string='';
+nombreEmer:string='';
+//-------------------------------- finaliza auto generador --------------------------------
+
   @Input()  ticketAEditar!: string;
   form!: FormGroup;
 
@@ -120,8 +149,6 @@ export class RecibirrecepcionquirofanoComponent implements OnInit {
   }
 
 
-  respuesta:any;
-  nombreEmer: any;
 
   constructor ( 
     private dialogService: DialogService,
@@ -142,26 +169,66 @@ export class RecibirrecepcionquirofanoComponent implements OnInit {
       private turnoService: TurnoService,
     private notification: NotificationService,
     private router: Router,
-  ){
+
+
+   private TraerInstSet: CantidadInstrumentoService,
+
+  )
+  {
    
-    this.dataSource1 = new MatTableDataSource(this.Instrumental_quirugico_sencillo);
-    this.dataSource2 = new MatTableDataSource(this.Instrumental_quirugico);
+    this.dataSource = new MatTableDataSource(this.Instrumental_quirugico);
 
 
     this.dataService.data$.subscribe(data => {
       var cortado = data
-      var cortado2 = cortado.split(':', 2)
+      var cortado2 = cortado.split(':', 3)
       this.respuesta = cortado2[0]
       this.nombreEmer = cortado2[1]
+      this.Incidencia = cortado2[2]
+
+
 
       if (this.respuesta=='true') {
+        console.log ('////////////////////////////////')
+        console.log (this.tipoOperacion)
+        console.log ('////////////////////////////////')
         switch(this.tipoOperacion) { 
+          
+          case 1: { 
+            this.tipoOperacion=0;
+            this.notification.success("Reporte de Incidencia Enviado!");
+
+            var Cantidades = this.dataSource.data.map(data => data.Cantidad )
+            var totalcantidades = Cantidades.reduce((a,b) => a+b )
+    
+    
+            var Cantidades2 = this.dataSource.data.map(data => data.Cantidad_Recibida )
+            var totalcantidades2 = Cantidades2.reduce((a,b) => a+b )
+    
+            if ( totalcantidades2 ==  totalcantidades)
+              {
+                this.visibles=true;
+                this.visibles2=true;
+                this.visibles3=false;
+              }
+            else{
+              this.visibles=false;
+              this.visibles2=false;
+              this.visibles3=true;
+            }
+    
+            console.log(totalcantidades + '/' + totalcantidades2)
+          
+              
+             break; 
+          } 
           case 2: { 
+            this.tipoOperacion=0;
             this.notification.success("Recibido!");
             this.router.navigate(['/static/welcome']);
              //statements;
               // ***********************************************************************************
-              let tickerCapturado = this.capturarProgCirug();
+              let tickerCapturado = this.Guardado();
               this.ticketServicio.editarticket(tickerCapturado, tickerCapturado.id).subscribe((ticket) => {})
 
          
@@ -169,11 +236,16 @@ export class RecibirrecepcionquirofanoComponent implements OnInit {
              break; 
           } 
           case 3: { 
-            this.notification.error("Operación cancelada");
-            this.router.navigate(['/static/welcome']);
-            //statements; 
-            break; 
-         } 
+          this.tipoOperacion=0;
+          this.router.navigate(['/static/welcome']);
+          this.notification.success("Guardado!");
+          //statements; 
+          let tickerCapturado = this.Finzalizado();
+          this.ticketServicio.editarticket(tickerCapturado, tickerCapturado.id).subscribe((ticket) => {})
+
+          break; 
+          } 
+
           default: { 
              //statements; 
              break; 
@@ -186,11 +258,142 @@ export class RecibirrecepcionquirofanoComponent implements OnInit {
       } 
     });
    
-   
+  }
+
+  
+  subirset(setADesplegar: SetEnviado){
+    this.notification.success("Guardado!");
+
+    this.TraerInstSet.traercantidadinstrumento(setADesplegar.id).subscribe(InstrumentalSet=>{
+      let nn=0
+      let CantidadFinal: number[]=[]
+      this.dataSource.data.forEach((data)=>{
+        CantidadFinal[nn] = data.Cantidad_Recibida
+        nn++
+  }) 
+  let nnn=0
+  InstrumentalSet.forEach((inst)=>{
+    let instrumental:CantidadInstrumentoEnviado  ={
+      id:  inst.instrumento.id, 
+      cantidad : inst.cantidad, 
+      cantidad_recibida :  CantidadFinal[nnn],
+      instrumento : inst.instrumento,
+      set: setADesplegar,
+    } 
+
+  nnn++
+   this.TraerInstSet.editarset(instrumental, inst.id).subscribe(data=>{
+    console.log(data)
+   })   
+  }) 
+ 
+
+  var Cantidades = this.dataSource.data.map(data => data.Cantidad )
+  var totalcantidades = Cantidades.reduce((a,b) => a+b )
+
+
+  var Cantidades2 = this.dataSource.data.map(data => data.Cantidad_Recibida )
+  var totalcantidades2 = Cantidades2.reduce((a,b) => a+b )
+
+  if ( totalcantidades2 ==  totalcantidades)
+    {
+      this.visibles=true;
+      this.visibles2=true;
+      this.visibles3=false;
+    }
+  else{
+    this.visibles=false;
+    this.visibles2=false;
+    this.visibles3=true;
+  }
+
+  console.log(totalcantidades + '/' + totalcantidades2)
+
+
+}) 
 
   }
 
-  capturarProgCirug(): Ticket {
+  actualizarInstrumento(setADesplegar: SetEnviado) {
+    this.Instrumental_quirugico=[]
+
+    this.TraerInstSet.traercantidadinstrumento(setADesplegar.id).subscribe(InstrumentalSet=>{
+      InstrumentalSet.forEach((inst,index)=>{
+        let instrumental ={
+          Id: inst.instrumento.id, 
+          Instrumental: inst.instrumento.nombre, 
+          Cantidad: inst.cantidad , 
+          Cantidad_Recibida: inst.cantidad_recibida, 
+          Marca_Comercial:inst.instrumento.marca, 
+          Prelavado:'', 
+          Completo:'', 
+          Funcional:'', 
+          insidencia:''
+        }
+        this.Instrumental_quirugico.push(instrumental)
+    })
+    this.dataSource.data = this.Instrumental_quirugico
+
+
+   
+   
+      var Cantidades = this.dataSource.data.map(data => data.Cantidad )
+      var totalcantidades = Cantidades.reduce((a,b) => a+b )
+
+
+      var Cantidades2 = this.dataSource.data.map(data => data.Cantidad_Recibida )
+      var totalcantidades2 = Cantidades2.reduce((a,b) => a+b )
+
+      if ( totalcantidades2 ==  totalcantidades)
+        {
+          this.visibles=true;
+          this.visibles2=true;
+          this.visibles3=false;
+        }
+      else{
+        this.visibles=false;
+        this.visibles2=false;
+        this.visibles3=true;
+      }
+
+      console.log(totalcantidades + '  ' + totalcantidades2)
+
+    })
+
+}
+
+
+  Guardado(): Ticket {
+    const tickerCapturado: Ticket = {
+      id:  Number(this.ticketAEditar),
+      fecha_cirugia:this.formaEdicion?.get('Fechacirugia')?.value!,
+      paciente: this.formaEdicion?.get('Paciente')?.value!,
+      registro: this.formaEdicion?.get('Registro')?.value!,
+      edad: this.formaEdicion?.get('Edad')?.value!,
+      fecha_nacimiento: this.formaEdicion?.get('Nacimiento')?.value!,
+      habitacion: this.formaEdicion?.get('Habitacion')?.value!,
+      sala: Number( this.formaEdicion?.get('Sala')?.value!),
+      turno: Number(this.formaEdicion?.get('Turno')?.value!),
+      diagnostico: this.formaEdicion?.get('Diagnostico')?.value!,
+      cirugia: this.formaEdicion?.get('Cirugia')?.value!,
+      solicita: this.formaEdicion?.get('Solicita')?.value!,
+      cirujano: this.formaEdicion?.get('Cirujano')?.value!,
+      anestesiologo: this.formaEdicion?.get('Anestesiologo')?.value!,
+      anestesia: this.formaEdicion?.get('Anestesia')?.value!,
+      residente: this.formaEdicion?.get('Ayudante')?.value!,
+      area_registro: this.formaEdicion?.get('AreaRegistro')?.value!,
+      enfermero: this.formaEdicion?.get('Enfermera')?.value!,
+      notas: this.formaEdicion?.get('Notas')?.value!,
+      estatus: 'En Espera',
+      prioridad: this.formaEdicion?.get('Prioridad')?.value!,
+      activo: true
+    };
+    //console.log(tickerCapturado)
+    return tickerCapturado;
+    // ***********************************************************
+  }
+
+  Finzalizado(): Ticket {
     const tickerCapturado: Ticket = {
       id:  Number(this.ticketAEditar),
       fecha_cirugia:this.formaEdicion?.get('Fechacirugia')?.value!,
@@ -220,6 +423,7 @@ export class RecibirrecepcionquirofanoComponent implements OnInit {
     // ***********************************************************
   }
 
+
   recargar(): void {
     this.store.select(fromUser.getUserState).subscribe( rs => {
         const indexOfM = Object.keys(rs).indexOf( 'user' );
@@ -228,6 +432,34 @@ export class RecibirrecepcionquirofanoComponent implements OnInit {
         console.log(this.usuario) 
     });
   }
+
+
+  private lazyLoadBetas$ = from(
+    import('@app/services/dialog/components/dialogo/dialogo.component').then(
+      (component) => component.DialogoComponent
+    )
+  );
+
+  tipoOperacion : number = 0;
+  private lazyLoadBeta$ = from(
+    import('@app/services/dialog/components/recibir/recibir.component').then(
+      (component) => component.RecibirComponent
+    )
+  );
+  IncidenciaR(){
+    this.dialogService.showDialog3(this.lazyLoadBetas$)
+    this.tipoOperacion = 1
+    
+  }
+  Guardar() {
+    this.dialogService.showDialog2(this.lazyLoadBeta$);
+    this.tipoOperacion = 2
+  }
+  Finalizar() {
+    this.dialogService.showDialog2(this.lazyLoadBeta$);
+    this.tipoOperacion = 3
+  }
+
   fechaN:any;
   usuario: UserResponse | null = null;
 
@@ -238,23 +470,13 @@ export class RecibirrecepcionquirofanoComponent implements OnInit {
   
   ngOnInit() {
     
-//------------------------_______________________-----------------TURNO----------------_______________________-------------------------
-        if (horaA >= 7 && horaA < 14 ) {this.Turno1 = 1;}
 
-        if (horaA >=14  && horaA < 21 ) { this.Turno1 = 2;}
+    if (horaA >= 7 && horaA < 14 ) {this.Turno1 = 1;}
 
-        if (horaA >=21  && horaA < 7 ){this.Turno1 = 3;}
-     console.log (horaA)
-    this.turnoService.traerUNturno(this.Turno1).subscribe (turnoRecibido => {
-        let turnoAgregar ={
-          Numero: turnoRecibido.id,
-          Inicio: turnoRecibido.inicio,
-          Fin: turnoRecibido.fin,
-          Id: turnoRecibido.id
-        }
-       this.TurnoAct= turnoRecibido.id
-    })
-//------------------------_______________________-----------------TURNO----------------_______________________-------------------------
+    if (horaA >=14  && horaA < 21 ) { this.Turno1 = 2;}
+
+    if (horaA < 7 && horaA >=21   ){this.Turno1 = 3;}
+
     this.recargar()
    
  
@@ -300,99 +522,51 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
     
       })
     
-           
-      this.Insttraer.traerticketinstrumento(ticket).subscribe(InstRecibidos=> {
-        InstRecibidos.forEach((inst)=>{
-          let instAgregar ={
-            Id: inst.instrumento.id,
-            Instrumental: inst.instrumento.nombre,
-            Cantidad: inst.cantidad,
-            Marca_Comercial: inst.instrumento.marca,
-            Completo:'', 
-            Funcional:'', 
-            Cantidad_Recibida:''
-          }
-          this.Instrumental_quirugico_sencillo.push(instAgregar)
-        })
-        this.dataSource1.data = this.Instrumental_quirugico_sencillo
-      })
+      this.formaEdicion = this.fb.nonNullable.group({
+
+        nombre: [''],
+        FechaCirugia: [''],
+        Hora:  [''],
+        DxOperatorio: [''],
+        NoQx: [''],
+        Entrega: [''],
+        IDEntrega: [''],
+        Recepcion: [''],
+        IDRecepcion: [''],
+        Devolucion:  [''],
+        IDDevolucion: [''],
+        CirugíaProgramada: [''],
+        Sala: [''],
+        AreaRegistro: [''],
+        Turno: [''],
+        Enfermera:  [''],
+        NotasAdd: [''],
+        Prioridad: [''],
+     });
     
+ 
       this.Settraer.traerticketset(ticket).subscribe(setRecibidos=> {
         setRecibidos.forEach((set)=>{
-          let setAgregar ={
-            Id: set.set.id,
-            Instrumental: set.set.nombre,
-            Cantidad: set.cantidad,
-            Completo:'', 
-            Funcional:'', 
-            Cantidad_Recibida:''
-          }
-          this.Instrumental_quirugico.push(setAgregar)
+            this.noSets.push(set)
+            this.cantidadset = set.cantidad
+
+        
         })
-        this.dataSource2.data = this.Instrumental_quirugico
-      })
 
-    
-
-  this.formaEdicion = this.fb.nonNullable.group({
-
-    nombre: [''],
-    FechaCirugia: [''],
-    Hora:  [''],
-    DxOperatorio: [''],
-    NoQx: [''],
-    Entrega: [''],
-    IDEntrega: [''],
-    Recepcion: [''],
-    IDRecepcion: [''],
-    Devolucion:  [''],
-    IDDevolucion: [''],
-    CirugíaProgramada: [''],
-    Sala: [''],
-    AreaRegistro: [''],
-    Turno: [''],
-    Enfermera:  [''],
-    NotasAdd: [''],
-    Prioridad: [''],
- });
-
-
-
+        
+      
+      }) 
 
   }
 
 
-  tipoOperacion : number = 0;
-  private lazyLoadBeta$ = from(
-    import('@app/services/dialog/components/dialogo/dialogo.component').then(
-      (component) => component.DialogoComponent
-    )
-  );
-  private lazyLoadBetas$ = from(
-    import('@app/services/dialog/components/recibir/recibir.component').then(
-      (component) => component.RecibirComponent
-    )
-  );
-  onBetaClicked() {
-    this.dialogService.showDialog2(this.lazyLoadBeta$);
-    this.tipoOperacion = 2
-  }
-  onBetaClicked2() {
-    this.dialogService.showDialog2(this.lazyLoadBetas$);
-    this.tipoOperacion = 2
-  }
+ 
 
 ticketC =100;
 fecha=fechaA;
 turno=2;
 hora=horaA;
 
-
-
-dataSource1: MatTableDataSource<Element>;
-displayedColumns1: string[] = ['Id', 'Instrumental', 'Cantidad', 'Marca_Comercial', 'Prelavado', 'Completo', 'Funcional', 'Cantidad_Recibida','insidencia'];
-dataSource2: MatTableDataSource<Element>;
-displayedColumns2: string[] = ['Id', 'Instrumental', 'Cantidad', 'Marca_Comercial', 'Prelavado', 'Completo', 'Funcional', 'Cantidad_Recibida','insidencia'];
 
 
 disabledInput1: boolean = true;

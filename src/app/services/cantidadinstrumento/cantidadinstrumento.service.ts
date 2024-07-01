@@ -58,6 +58,6 @@ export class CantidadInstrumentoService {
       headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`})
     };
     console.log(`${environment.url}ceye/cantidadinstrumento/${pk}`);
-    return  this.http.put<CantidadInstrumentoEnviado>(`${environment.url}ceye/cantidadinstrumento/${pk}`, editarSet, httpOptions)
+    return  this.http.put<CantidadInstrumentoEnviado>(`${environment.url}ceye/set/instrumentoset/${pk}`, editarSet, httpOptions)
   }
 }
