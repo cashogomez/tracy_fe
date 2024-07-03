@@ -23,7 +23,6 @@
     </div>
 </div>
 
-
 <form [formGroup]="formaEdicion" >
 
 <table class="alinear-input" align="center">
@@ -54,7 +53,7 @@
     
     <!------------------------------------------------------------              fila 2                                ----------------------------------------------------------------->
     <tbody>
-      <tr>
+      <tr >
         <td>
           <mat-label>Dx Pre Operatorio: &nbsp;</mat-label>
         </td>
@@ -76,80 +75,50 @@
         </td>
       </tr>
     
-    <!------------------------------------------------------------              fila 3                                ----------------------------------------------------------------->
-    
-      <tr>
-        <td>
-          <mat-label>Entrega: &nbsp;</mat-label>
-        </td>
-    
-        <td>
-          <mat-form-field class="input1">
-            <input matInput type="text" placeholder="Casimiro Gomez" formControlName="Entrega" >
-            </mat-form-field>
-        </td>
-    
-        <td>
-          <mat-label>ID: &nbsp;</mat-label>
-        </td>
-    
-        <td>
-          <mat-form-field class="input2">
-            <input matInput type="text" placeholder="123452" formControlName="IDEntrega" >
-          </mat-form-field>
-        </td>
-      </tr>
-    
-    <!------------------------------------------------------------              fila 4                                ----------------------------------------------------------------->
-    
-      <tr>
-        <td>
-          <mat-label>Recepción: &nbsp;</mat-label>
-        </td>
-    
-        <td>
-          <mat-form-field class="input1">
-            <input matInput type="text" placeholder="José Lino" formControlName="Recepcion" readonly >
-            </mat-form-field>
-        </td>
-    
-        <td>
-          <mat-label>ID: &nbsp;</mat-label>
-        </td>
-    
-        <td>
-          <mat-form-field class="input2">
-            <input matInput type="text" placeholder="783516" formControlName="IDRecepcion" readonly>
-          </mat-form-field>
-        </td>
-      </tr>
-    
-    <!------------------------------------------------------------              fila 5                                ----------------------------------------------------------------->
-    <tr>
-      <td>
-        <mat-label>Devolución: &nbsp;</mat-label>
-      </td>
-    
-      <td>
-        <mat-form-field class="input1">
-          <input matInput type="text" placeholder="Yaz Huerta" formControlName="Devolucion">
-          </mat-form-field>
-      </td>
-    
-      <td>
-        <mat-label>ID: &nbsp;</mat-label>
-      </td>
-    
-      <td>
-        <mat-form-field class="input2">
-          <input matInput type="text" placeholder="561432"  formControlName="IDDevolucion">
-        </mat-form-field>
-      </td>
-    </tr>
 </tbody>
     
 
 </table><br>
+
+
+<table class="alinear-input" align="center"> 
+  <tbody>
+        <tr style="width: 100%;">
+          <td style="width: 14%;">
+            <mat-label>Entrega: </mat-label>
+          </td>
+      
+          <td style="width: 86%;">
+            <mat-form-field class="textarea">
+              <input matInput type="text" placeholder="Casimiro Gomez" formControlName="Entrega" readonly>
+              </mat-form-field>
+          </td>
+      </tr>
+    <tr style="width: 100%;">
+      <td style="width: 14%;">
+        <mat-label>Recepción: &nbsp;</mat-label>
+      </td>
+  
+      <td style="width: 86%;">
+        <mat-form-field class="textarea">
+          <input matInput type="text" placeholder="José Lino" formControlName="Recepcion" readonly >
+          </mat-form-field>
+      </td>
+  
+    </tr>
+    <tr style="width: 100%;">
+      <td style="width: 14%;">
+        <mat-label>Devolución: &nbsp;</mat-label>
+      </td>
+    
+      <td style="width: 86%;">
+        <mat-form-field class="textarea">
+          <input matInput type="text" placeholder="Yaz Huerta" formControlName="Devolucion">
+          </mat-form-field>
+      </td>
+    </tr>
+</tbody>
+  </table>
 
 </form>
 

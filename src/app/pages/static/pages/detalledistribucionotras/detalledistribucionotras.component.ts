@@ -127,6 +127,9 @@ export class DetalledistribucionotrasComponent implements OnInit {
       if (this.respuesta=='true') {
         switch(this.tipoOperacion) { 
           case 2: { 
+            this.tipoOperacion =0;
+            this.dataSource.data=[]
+            this.Tabla2=[]
             this.notification.success("Préstamo Generado!");
             this.router.navigate(['/static/distribucionotrasareas']);
              //statements;
@@ -163,12 +166,18 @@ export class DetalledistribucionotrasComponent implements OnInit {
              break; 
           } 
           case 3: { 
+            this.tipoOperacion =0;
+            this.dataSource.data=[]
+            this.Tabla2=[]
             this.notification.error("Operación cancelada");
             this.router.navigate(['/static/quirofanoinformacion']);
             //statements; 
             break; 
          } 
           default: { 
+            this.dataSource.data=[]
+            this.Tabla2=[]
+            this.tipoOperacion =0;
              //statements; 
              break; 
           } 
@@ -176,6 +185,9 @@ export class DetalledistribucionotrasComponent implements OnInit {
         
       }
       else {
+         this.dataSource.data=[]
+            this.Tabla2=[]
+        this.tipoOperacion =0;
         this.notification.error("¡Se canceló la operación");
       } 
     })

@@ -39,6 +39,10 @@ import { SetEnviado } from '@app/models/backend/set';
 import { CantidadInstrumentoEnviado } from '@app/models/backend';
 //--------------------pedir tablas set info --------------------------
 
+import { ReporteincidenciaService } from '@app/services/reporteincidencia/reporteincidencia.service';
+import { ReporteIncidenciaRequest } from '@app/models/backend/resporteincidencia';
+
+
 const date = new Date();const año = date.getFullYear();const mes = date.getMonth()+1;const mes2 = date.toLocaleString('default', { month: 'long' });const dia = date.getDate(); const hora = date.getHours();const minutos = date.getMinutes();
 
 
@@ -117,6 +121,7 @@ visibles2 = true;
 visibles3 = false;
 cantidadfinal=0;
 Incidencia='';
+comentario=''
 respuesta:string='';
 nombreEmer:string='';
 //-------------------------------- finaliza auto generador --------------------------------
@@ -171,7 +176,9 @@ nombreEmer:string='';
     private router: Router,
 
 
-   private TraerInstSet: CantidadInstrumentoService,
+    private TraerInstSet: CantidadInstrumentoService,
+
+    private ReporteIncidencia: ReporteincidenciaService,
 
   )
   {
@@ -183,10 +190,13 @@ nombreEmer:string='';
       var cortado = data
       var cortado2 = cortado.split(':', 3)
       this.respuesta = cortado2[0]
-      this.nombreEmer = cortado2[1]
-      this.Incidencia = cortado2[2]
-
-
+      this.Incidencia = cortado2[1]
+      this.comentario = cortado2[2]
+      
+      
+      console.log ('hola soy la respuesta:     ' + this.respuesta)
+      console.log ('hola soy la la incidencia:     ' + this.Incidencia)
+      console.log ('hola soy el comentario:     ' + this.comentario)
 
       if (this.respuesta=='true') {
         console.log ('////////////////////////////////')
@@ -195,6 +205,11 @@ nombreEmer:string='';
         switch(this.tipoOperacion) { 
           
           case 1: { 
+            let reporte = this.ReporteIncidencias();
+            this.ReporteIncidencia.altaReporteIncidencia(reporte).subscribe(data =>{
+              console.log(data)
+            })
+  
             this.tipoOperacion=0;
             this.notification.success("Reporte de Incidencia Enviado!");
 
@@ -219,7 +234,10 @@ nombreEmer:string='';
     
             console.log(totalcantidades + '/' + totalcantidades2)
           
-              
+       
+
+
+
              break; 
           } 
           case 2: { 
@@ -247,6 +265,7 @@ nombreEmer:string='';
           } 
 
           default: { 
+            this.tipoOperacion =0;
              //statements; 
              break; 
           } 
@@ -254,6 +273,7 @@ nombreEmer:string='';
         
       }
       else {
+        this.tipoOperacion =0;
         this.notification.error("¡Se canceló la operación");
       } 
     });
@@ -314,6 +334,23 @@ nombreEmer:string='';
 
   }
 
+
+  ReporteIncidencias(): ReporteIncidenciaRequest {
+    const tickerCapturado: ReporteIncidenciaRequest = {
+      lugar: 'Recepcion Quirófano',
+      fecha: this.today,
+      usuario: this.usuario?.nombre + ' ' + this.usuario?.paterno,
+      turno: this.Turno1,
+      incidencia:this.Incidencia ,
+      comentario: this.comentario,
+    };
+    console.log(tickerCapturado)
+    return tickerCapturado;
+    // ***********************************************************
+  }
+
+
+
   actualizarInstrumento(setADesplegar: SetEnviado) {
     this.Instrumental_quirugico=[]
 
@@ -365,14 +402,14 @@ nombreEmer:string='';
 
   Guardado(): Ticket {
     const tickerCapturado: Ticket = {
-      id:  Number(this.ticketAEditar),
-      fecha_cirugia:this.formaEdicion?.get('Fechacirugia')?.value!,
+      id: Number(this.ticketAEditar),
+      fecha_cirugia: this.formaEdicion?.get('Fechacirugia')?.value!,
       paciente: this.formaEdicion?.get('Paciente')?.value!,
       registro: this.formaEdicion?.get('Registro')?.value!,
       edad: this.formaEdicion?.get('Edad')?.value!,
       fecha_nacimiento: this.formaEdicion?.get('Nacimiento')?.value!,
       habitacion: this.formaEdicion?.get('Habitacion')?.value!,
-      sala: Number( this.formaEdicion?.get('Sala')?.value!),
+      sala: Number(this.formaEdicion?.get('Sala')?.value!),
       turno: Number(this.formaEdicion?.get('Turno')?.value!),
       diagnostico: this.formaEdicion?.get('Diagnostico')?.value!,
       cirugia: this.formaEdicion?.get('Cirugia')?.value!,
@@ -386,7 +423,11 @@ nombreEmer:string='';
       notas: this.formaEdicion?.get('Notas')?.value!,
       estatus: 'En Espera',
       prioridad: this.formaEdicion?.get('Prioridad')?.value!,
-      activo: true
+      activo: true,
+      recepcion_usuario:this.formaEdicion?.get('Entrega')?.value!,
+      recepcion_usuario_recepcion: this.formaEdicion?.get('Recepcion')?.value!,
+      devolucion_usuario: this.formaEdicion?.get('Devolucion')?.value!,
+      entrega_usuario: this.formaEdicion?.get('EntregaUsuario')?.value!,
     };
     //console.log(tickerCapturado)
     return tickerCapturado;
@@ -395,14 +436,14 @@ nombreEmer:string='';
 
   Finzalizado(): Ticket {
     const tickerCapturado: Ticket = {
-      id:  Number(this.ticketAEditar),
-      fecha_cirugia:this.formaEdicion?.get('Fechacirugia')?.value!,
+      id: Number(this.ticketAEditar),
+      fecha_cirugia: this.formaEdicion?.get('Fechacirugia')?.value!,
       paciente: this.formaEdicion?.get('Paciente')?.value!,
       registro: this.formaEdicion?.get('Registro')?.value!,
       edad: this.formaEdicion?.get('Edad')?.value!,
       fecha_nacimiento: this.formaEdicion?.get('Nacimiento')?.value!,
       habitacion: this.formaEdicion?.get('Habitacion')?.value!,
-      sala: Number( this.formaEdicion?.get('Sala')?.value!),
+      sala: Number(this.formaEdicion?.get('Sala')?.value!),
       turno: Number(this.formaEdicion?.get('Turno')?.value!),
       diagnostico: this.formaEdicion?.get('Diagnostico')?.value!,
       cirugia: this.formaEdicion?.get('Cirugia')?.value!,
@@ -416,7 +457,11 @@ nombreEmer:string='';
       notas: this.formaEdicion?.get('Notas')?.value!,
       estatus: 'recibido',
       prioridad: this.formaEdicion?.get('Prioridad')?.value!,
-      activo: true
+      activo: true,
+      recepcion_usuario:this.formaEdicion?.get('Entrega')?.value!,
+      recepcion_usuario_recepcion: this.formaEdicion?.get('Recepcion')?.value!,
+      devolucion_usuario: this.formaEdicion?.get('Devolucion')?.value!,
+      entrega_usuario: this.formaEdicion?.get('EntregaUsuario')?.value!,
     };
     //console.log(tickerCapturado)
     return tickerCapturado;
@@ -467,8 +512,15 @@ nombreEmer:string='';
   Turno1: number = 0;
   TurnoAct:number = 0;
 
-  
+  today:any;
   ngOnInit() {
+
+    this.today = date.getFullYear() + '-'
+    + ('0' + (date.getMonth() + 1)).slice(-2) + '-'
+    + ('0' + date.getDate()).slice(-2)+ 'T' +date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
+   
+
+
     
 
     if (horaA >= 7 && horaA < 14 ) {this.Turno1 = 1;}
@@ -512,9 +564,11 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
         this.formaEdicion?.get('DxOperatorio')?.setValue(data.diagnostico!)
         this.formaEdicion?.get('NoQx')?.setValue(data.registro!)
         this.ticketC = data.id;
-        this.formaEdicion?.get('Recepcion')?.setValue(this.usuario?.nombre!)
-        this.formaEdicion?.get('IDRecepcion')?.setValue(this.usuario?.numeroEmpleado!)
+        this.formaEdicion?.get('Recepcion')?.setValue(this.usuario?.nombre! + ' ' + this.usuario?.paterno! )
+        this.formaEdicion?.get('Entrega')?.setValue(data.recepcion_usuario!)
 
+        this.formaEdicion?.get('Devolucion')?.setValue(data.devolucion_usuario!)
+        this.formaEdicion?.get('EntregaUsuario')?.setValue(data.entrega_usuario!)
         this.turno = data.turno
         this.fechaN = data.fecha_cirugia
         console.log(this.fechaN)
@@ -542,10 +596,12 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
         Enfermera:  [''],
         NotasAdd: [''],
         Prioridad: [''],
+        EntregaUsuario: [''],
      });
     
  
       this.Settraer.traerticketset(ticket).subscribe(setRecibidos=> {
+        console.log(setRecibidos);
         setRecibidos.forEach((set)=>{
             this.noSets.push(set)
             this.cantidadset = set.cantidad
@@ -606,4 +662,5 @@ interface TicketForma {
   Enfermera:  FormControl<string>;
   NotasAdd: FormControl<string>;
   Prioridad:  FormControl<any>;
+  EntregaUsuario:FormControl<any>;
 }

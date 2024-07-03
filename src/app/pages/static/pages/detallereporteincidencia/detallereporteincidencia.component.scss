@@ -37,7 +37,7 @@
 
 
   .textarea {
-    width: 92%;
+    width: 100%;
   }
 
 .listabicolor {
@@ -73,28 +73,19 @@
     font-weight: 700;
 }
 
- .icono{
- width: 50px; height: 50px; font-size: 50px; 
- }
-
- .icono2{
-  color:orange;
-  width: 40px; height: 40px; font-size: 40px; 
-  }
-
-  h1{
+h1{
     color: #0f8f95;
+    font-weight: bold;
 }
 
 
-  .container {
+.container {
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
   }
-  
   .line {
     flex: 1;
   }

@@ -30,7 +30,7 @@ import * as fromUser from '@app/store/user';
 
 
 import { SetService } from '@app/services/set/set.service';
-import { TicketSetRequest } from '@app/models/backend/ticketset';
+import { TicketSet, TicketSetRequest } from '@app/models/backend/ticketset';
 //--------------------pedir tablas set info --------------------------
 import { TicketsetService } from '@app/services/ticketset/ticketset.service';
 //--------------------pedir tablas set info --------------------------
@@ -41,6 +41,8 @@ import { InstrumentoService } from '@app/services/instrumento/instrumento.servic
 import { from } from 'rxjs';
 import { Console } from 'node:console';
 import { SetEnviado } from '@app/models/backend/set';
+import { CantidadInstrumentoService } from '@app/services/cantidadinstrumento/cantidadinstrumento.service';
+import { CantidadInstrumentoEnviado } from '@app/models/backend';
 
 export interface Distribucion_1 {
   FechaCirugia: string;
@@ -126,7 +128,8 @@ fecha = fechaA
 fechaN:any;
   ticketC:any;
   displayedColumns1: string[] = ['ID','Elemento', 'Cantidad', 'Entregados'];
-  dataSource1 = [...this.Tabla1];
+
+  dataSource1: MatTableDataSource<any>;
 
 
   displayedColumns2: string[] = ['ID', 'Elemento', 'Cantidad', 'Accion'];
@@ -145,7 +148,8 @@ fechaN:any;
   respuesta:any;
   nombreEmer: any;
   constructor ( private dialogService: DialogService,
-
+ 
+    private TraerInstSet: CantidadInstrumentoService,
     private fb: FormBuilder,
     private ticketService: TicketService,
     private ticketServicio: TicketService,
@@ -172,6 +176,10 @@ fechaN:any;
    private instElement:InstrumentoService,
    //--------------------traer tablas Inst info --------------------------
   ){
+
+
+    this.dataSource1 = new MatTableDataSource(this.Tabla1);
+
     this.dataService.data$.subscribe(data => {
       var cortado = data
       var cortado2 = cortado.split(':', 2)
@@ -181,24 +189,30 @@ fechaN:any;
       if (this.respuesta=='true') {
         switch(this.tipoOperacion) { 
           case 2: { 
+            this.tipoOperacion =0;
+          
             this.notification.success("Material enviado");
             this.router.navigate(['/static/recepcionquirofano']);
              //statements;
               // ***********************************************************************************
               let tickerCapturado = this.capturarProgCirug();
-              this.ticketServicio.editarticket(tickerCapturado, tickerCapturado.id).subscribe((ticket) => {})
+              this.ticketServicio.editarticket(tickerCapturado, tickerCapturado.id).subscribe((ticket) => {
+              })
 
-              this.subirset();
+              this.Actualizarset();
+            
               
              break; 
           } 
           case 3: { 
+            this.tipoOperacion =0;
             this.notification.error("Operación cancelada");
             this.router.navigate(['/static/quirofanoinformacion']);
             //statements; 
             break; 
          } 
           default: { 
+            this.tipoOperacion =0; 
              //statements; 
              break; 
           } 
@@ -206,6 +220,7 @@ fechaN:any;
         
       }
       else {
+        this.tipoOperacion =0;
         this.notification.error("¡Se canceló la operación");
       } 
     });
@@ -219,14 +234,14 @@ fechaN:any;
 
   capturarProgCirug(): Ticket {
     const tickerCapturado: Ticket = {
-      id:  Number(this.ticketAEditar),
-      fecha_cirugia:this.formaEdicion?.get('Fechacirugia')?.value!,
+      id: Number(this.ticketAEditar),
+      fecha_cirugia: this.formaEdicion?.get('Fechacirugia')?.value!,
       paciente: this.formaEdicion?.get('Paciente')?.value!,
       registro: this.formaEdicion?.get('Registro')?.value!,
       edad: this.formaEdicion?.get('Edad')?.value!,
       fecha_nacimiento: this.formaEdicion?.get('Nacimiento')?.value!,
       habitacion: this.formaEdicion?.get('Habitacion')?.value!,
-      sala: Number( this.formaEdicion?.get('Sala')?.value!),
+      sala: Number(this.formaEdicion?.get('Sala')?.value!),
       turno: Number(this.formaEdicion?.get('Turno')?.value!),
       diagnostico: this.formaEdicion?.get('Diagnostico')?.value!,
       cirugia: this.formaEdicion?.get('Cirugia')?.value!,
@@ -240,7 +255,11 @@ fechaN:any;
       notas: this.formaEdicion?.get('Notas')?.value!,
       estatus: 'En Espera',
       prioridad: this.formaEdicion?.get('Prioridad')?.value!,
-      activo: true
+      activo: true,
+      recepcion_usuario: this.nombreEmer,
+      recepcion_usuario_recepcion: '',
+      devolucion_usuario: '',
+      entrega_usuario: this.usuario?.nombre + ' ' + this.usuario?.paterno,
     };
     //console.log(tickerCapturado)
     return tickerCapturado;
@@ -293,11 +312,11 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
             ID:set.set.id,
             Elemento: set.set.nombre,
             Cantidad: set.cantidad,
-            Entregados: 0,
+            Entregados: set.entregados,
           }
           this.Tabla1.push(setAgregar)
         })
-        this.dataSource1=this.Tabla1
+        this.dataSource1.data=this.Tabla1
       })
     
    
@@ -344,14 +363,14 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
     )
   );
   
-  onBetaClicked() {
-    this.dialogService.showDialog(this.lazyLoadBeta$);
+  Finalizar() {
+    this.dialogService.showDialog(this.lazyLoadBetas$);
     this.tipoOperacion = 2
   }
 
 
-  onBetaClicked2() {
-    this.dialogService.showDialog(this.lazyLoadBetas$);
+  Guardar() {
+    this.dialogService.showDialog(this.lazyLoadBeta$);
     this.tipoOperacion = 2
   }
   emergente2(){
@@ -382,11 +401,11 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
   estado2 =true
 
   Subir2() {
-    var Cantidades = this.dataSource1.map(data => data.Cantidad )
+    var Cantidades = this.dataSource1.data.map(data => data.Cantidad )
     var totalcantidades = Cantidades.reduce((a,b) => a+b )
      
      
-    var entregados = this.dataSource1.map(data => data.Entregados ) 
+    var entregados = this.dataSource1.data.map(data => data.Entregados ) 
 
     var totalentregados = entregados.reduce((a,b) => a+b  ) 
 
@@ -410,13 +429,13 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
     this.valorres1 =  splitted[2]
     
     
-        let comparable = this.dataSource1.filter((IDcomp) => IDcomp.ID == Number(this.ValorID1))
+        let comparable = this.dataSource1.data.filter((IDcomp) => IDcomp.ID == Number(this.ValorID1))
      
         if (comparable.length > 0 ){
           let num = 0;
-          this.dataSource1.forEach(data =>{
+          this.dataSource1.data.forEach(data =>{
             if (data.ID  == Number(this.ValorID1 )&& data.Entregados < data.Cantidad ) {
-              this.dataSource1[num].Entregados = this.dataSource1[num].Entregados+1
+              this.dataSource1.data[num].Entregados = this.dataSource1.data[num].Entregados+1
             }
            
             num++
@@ -434,6 +453,7 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
 
 
       cantidadnuevoset:number=1;
+      Entregarnuevoset2:number=1;
 
     Subir() {
       //______________
@@ -458,7 +478,7 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
                 if (data.ID == Number(this.ValorID)) {
                   this.dataSource2[num].Cantidad = this.dataSource2[num].Cantidad+1
                   this.cantidadnuevoset = this.dataSource2[num].Cantidad
-
+                  this.Entregarnuevoset2 = this.cantidadnuevoset
                 }
                 num++
 
@@ -500,7 +520,7 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
           this.table.renderRows();
         }
       
-      
+/*       
   subirset(){
         let ticket = Number(this.ticketAEditar)
         this.Settraer.traerticketset(ticket).subscribe(setRecibidoss=> {
@@ -510,25 +530,27 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
               ID:set.set.id,
               Elemento: set.set.nombre,
               Cantidad: set.cantidad,
-              Entregados: 0,
+              Entregados: set.entregados,
             }
             let comparable = this.dataSource2.filter((IDcomp) => IDcomp.ID == setAgregar.ID)
-            console.log(setAgregar)
-            
-            if (comparable.length > 0 ){
+            console.log(comparable.length)
+            if (comparable.length >= 1 ){
               let num = 0;
               this.dataSource2.forEach(data =>{
                 if (data.ID == Number(setAgregar.ID)) {
                   
                   this.dataSource2[num].Cantidad = this.dataSource2[num].Cantidad
 
-                  set.cantidad= this.dataSource2[num].Cantidad + this.dataSource1[num].Cantidad
-
+                  set.entregados= this.dataSource2[num].Cantidad + this.dataSource1.data[num].Entregados
+                  set.cantidad= this.dataSource2[num].Cantidad + this.dataSource1.data[num].Cantidad
+                  
                   this.Settraer.editarticketset(set , set.id).subscribe((ticketSet)=>{
                     console.log ('-------------------------------------------------------')
                     console.log (ticketSet)
                     console.log ('-------------------------------------------------------')
                   })
+
+                  
 
                 }
       
@@ -541,30 +563,24 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
                     let ticketSetSubir:TicketSetRequest ={
                       set: setencontrado,
                       ticket: set.ticket,
-                      cantidad:   this.cantidadnuevoset
+                      cantidad: this.cantidadnuevoset,
+                      entregados: this.Entregarnuevoset2
                     }
     
                     this.Settraer.editarticketset(set , set.id).subscribe(subidos=>{
                       console.log(subidos)
                     })
                   })
-    
-    
-    
-    
-    
-    
-    
                 }
                   
 
                 num++
               })
         
-               //  this.dataSource2[indice].Entregados =     this.dataSource2[indice].Entregados + 1
-        
                this.Distribucion_2.value.QR=''
             }
+          
+              
             else{
                   
 
@@ -574,7 +590,8 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
                 let ticketSetSubir:TicketSetRequest ={
                   set: setencontrado,
                   ticket: set.ticket,
-                  cantidad:   this.cantidadnuevoset
+                  cantidad: this.cantidadnuevoset,
+                  entregados: this.cantidadnuevoset,
                 }
 
                 this.Settraer.altaticketset(ticketSetSubir).subscribe(subidos=>{
@@ -589,17 +606,134 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
 
 
             }
-              
 
-
-          console.log(comparable)
           })
   
         })
        
         
       }
+ */
 
+      subirset(){
+        let ticket = Number(this.ticketAEditar)
+        var listaNOencontrados:number[]=[]
+        var listafinal:number[]=[]
+        this.Settraer.traerticketset(ticket).subscribe(setRecibidoss=> {
+        
+          setRecibidoss.forEach((ticketset)=>{
+            let setAgregar ={
+              ID:ticketset.set.id,
+              Elemento: ticketset.set.nombre,
+              Cantidad: ticketset.cantidad,
+              Entregados: ticketset.entregados,
+            }
+            
+            let comparable = this.dataSource2.filter((IDcomp) => IDcomp.ID == setAgregar.ID)
+            console.log(setAgregar)
+            
+            if (comparable.length > 0 ){
+              let num = 0;
+              this.dataSource2.forEach(data =>{
+                if (data.ID == Number(setAgregar.ID)) {
+                
+                  this.dataSource2[num].Cantidad = this.dataSource2[num].Cantidad
+
+                  ticketset.cantidad= this.dataSource2[num].Cantidad + this.dataSource1.data[num].Cantidad
+                  ticketset.entregados = this.dataSource2[num].Cantidad + this.dataSource1.data[num].Entregados
+                  this.Settraer.editarticketset(ticketset , ticketset.id).subscribe((ticketSet2)=>{
+                    console.log ('-------------------------------------------------------')
+                    console.log (ticketSet2)
+                    console.log ('-------------------------------------------------------')
+                  })
+
+                }
+
+                num++
+              })
+        
+               //  this.dataSource2[indice].Entregados =     this.dataSource2[indice].Entregados + 1
+        
+               this.Distribucion_2.value.QR=''
+            }
+       
+          })
+          this.dataSource2.forEach(data =>{listaNOencontrados.push(data.ID)})
+          console.log (listaNOencontrados)
+          listaNOencontrados.forEach((idset) => {
+            let comparable = listafinal.filter((IDcomp) => IDcomp != idset)
+            if (comparable.length <= 0) {
+              listafinal.push(idset)
+            }
+
+
+          })
+          console.log(listafinal)
+           if (listafinal.length > 0){
+            listafinal.forEach((number) =>{
+              this.setService.traerUNset(Number(number)).subscribe((setencontrado)=>{
+
+
+                let ticketSetSubir:TicketSetRequest ={
+                  set: setencontrado,
+                  ticket: setRecibidoss[0].ticket,
+                  cantidad: this.cantidadnuevoset,
+                  entregados: this.cantidadnuevoset
+                }
+
+                 this.Settraer.altaticketset(ticketSetSubir).subscribe(subidos=>{
+                  console.log(subidos)
+                })
+ 
+                console.log(ticketSetSubir)
+              })
+            })
+           }
+                 
+
+         
+        })
+      }
+
+
+      Actualizarset(){
+        let ticket = Number(this.ticketAEditar)
+
+        this.Settraer.traerticketset(ticket).subscribe(setRecibidos=> {
+          let nn=0
+          let CantidadFinal: number[]=[]
+          this.dataSource1.data.forEach((data)=>{
+            CantidadFinal[nn] = data.Entregados
+            nn++
+               }) 
+
+      let nnn=0
+console.log(CantidadFinal)
+       setRecibidos.forEach((inst)=>{
+        let instrumental:TicketSet  ={
+          id: inst.id,
+          cantidad : inst.cantidad,
+          set : inst.set,
+          ticket: inst.ticket,
+          entregados: CantidadFinal[nnn],
+        
+        } 
+    
+      nnn++
+      console.log(instrumental)
+       this.Settraer.editarticketset(instrumental, inst.id).subscribe(data=>{
+        console.log(data)
+       })   
+      }) 
+    
+    
+    }) 
+    
+    
+    
+    
+      }
+    
     
 }
 

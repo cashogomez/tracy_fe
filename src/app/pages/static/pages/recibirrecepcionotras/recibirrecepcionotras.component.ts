@@ -35,6 +35,8 @@ import { NotificationService } from '@app/services/notification/notification.ser
 import { Router } from '@angular/router';
 import { CantidadInstrumentoEnviado } from '@app/models/backend';
 import { TicketSetOA } from '@app/models/backend/ticketsetoa';
+import { ReporteincidenciaService } from '@app/services/reporteincidencia/reporteincidencia.service';
+import { ReporteIncidenciaRequest } from '@app/models/backend/resporteincidencia';
 
  
 
@@ -116,6 +118,7 @@ nombreEmer:string='';
     private router: Router,
     private instrumentosenset:TicketinstrumentoService,
    private TraerInstSet: CantidadInstrumentoService,
+   private ReporteIncidencia: ReporteincidenciaService,
   ){
 
 
@@ -126,8 +129,8 @@ nombreEmer:string='';
       var cortado = data
       var cortado2 = cortado.split(':', 3)
       this.respuesta = cortado2[0]
-      this.nombreEmer = cortado2[1]
-      this.Incidencia = cortado2[2]
+      this.Incidencia = cortado2[1]
+      this.comentario = cortado2[2]
 
 
 
@@ -138,6 +141,10 @@ nombreEmer:string='';
         switch(this.tipoOperacion) { 
           
           case 1: { 
+            let reporte = this.ReporteIncidencias();
+            this.ReporteIncidencia.altaReporteIncidencia(reporte).subscribe(data =>{
+              console.log(data)
+            })
             this.tipoOperacion=0;
             this.notification.success("Reporte de Incidencia Enviado!");
 
@@ -208,7 +215,10 @@ nombreEmer:string='';
 
  nombreSet='';
   ngOnInit(): void {
-
+    this.today = date.getFullYear() + '-'
+    + ('0' + (date.getMonth() + 1)).slice(-2) + '-'
+    + ('0' + date.getDate()).slice(-2)+ 'T' +date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
+   
 
 
     if (horaA >= 7 && horaA < 14 ) {this.Turno1 = 1;}
@@ -267,6 +277,21 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
   nuevarecibida=0;
 enviar:any=[]
 
+comentario=''
+today:any;
+ReporteIncidencias(): ReporteIncidenciaRequest {
+  const tickerCapturado: ReporteIncidenciaRequest = {
+    lugar: 'Recepcion Otras Áreas Hospitalarias',
+    fecha: this.today,
+    usuario: this.usuario?.nombre + ' ' + this.usuario?.paterno,
+    turno: this.Turno1,
+    incidencia:this.Incidencia ,
+    comentario: this.comentario,
+  };
+  console.log(tickerCapturado)
+  return tickerCapturado;
+  // ***********************************************************
+}
 
   subirset(setADesplegar: SetEnviado){
     this.notification.success("Guardado!");

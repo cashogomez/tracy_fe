@@ -121,6 +121,7 @@ export class EditarprogramacioncirugiaComponent {
           if (data==true) {
             switch(this.tipoOperacion) { 
               case 1: { 
+                this.tipoOperacion =0;
                 if (this.borrarRegistro != undefined) {
                   this.ELEMENT_DATA = this.ELEMENT_DATA.filter((data) => data.id != this.borrarRegistro.id)
                   this.dataSource.data = this.ELEMENT_DATA;
@@ -150,6 +151,7 @@ export class EditarprogramacioncirugiaComponent {
                  break; 
               } 
               case 2: { 
+                this.tipoOperacion =0;
                 this.notification.success("Ticket generado");
                 this.router.navigate(['/static/welcome']);
                  //statements;
@@ -199,7 +201,8 @@ export class EditarprogramacioncirugiaComponent {
                                   let ticketset = {
                                      set: setSeleccionado[0],
                                      ticket: ticket,
-                                     cantidad: elemento.Cantidad
+                                     cantidad: elemento.Cantidad,
+                                     entregados: 0,
                                    }
                                   this.ticketsetServicio.altaticketset(ticketset).subscribe((ticketsetR) => {
                                     //console.log(ticketsetR)
@@ -212,7 +215,8 @@ export class EditarprogramacioncirugiaComponent {
                                     id: ticketSetR2[0].id,
                                     set: setSeleccionado[0],
                                     ticket: ticket,
-                                    cantidad: elemento.Cantidad
+                                    cantidad: elemento.Cantidad,
+                                    entregados: 0,
                                   }
                                   this.ticketsetServicio.editarticketset(ticketsetR3, ticketsetR3.id).subscribe((ticketsetR) => {
                                     //console.log(ticketsetR)
@@ -237,12 +241,14 @@ export class EditarprogramacioncirugiaComponent {
                  break; 
               } 
               case 3: { 
+                this.tipoOperacion =0;
                 this.notification.error("Operación cancelada");
                 this.router.navigate(['/static/quirofanoinformacion']);
                 //statements; 
                 break; 
              } 
               default: { 
+                this.tipoOperacion =0;
                  //statements; 
                  break; 
               } 
@@ -250,6 +256,7 @@ export class EditarprogramacioncirugiaComponent {
             
           }
           else {
+            this.tipoOperacion =0;
             this.notification.error("¡Se canceló la operación");
           }
         });
@@ -414,8 +421,8 @@ export class EditarprogramacioncirugiaComponent {
   }
   capturarProgCirug(): Ticket {
     const tickerCapturado: Ticket = {
-      id:  Number(this.ticketAEditar),
-      fecha_cirugia:this.today,
+      id: Number(this.ticketAEditar),
+      fecha_cirugia: this.today,
       paciente: this.formaEdicion?.get('Paciente')?.value!,
       registro: this.formaEdicion?.get('Registro')?.value!,
       edad: this.formaEdicion?.get('Edad')?.value!,
@@ -435,7 +442,11 @@ export class EditarprogramacioncirugiaComponent {
       notas: this.formaEdicion?.get('Notas')?.value!,
       estatus: 'pendiente',
       prioridad: this.prioridad,
-      activo: true
+      activo: true,
+      recepcion_usuario: '',
+      recepcion_usuario_recepcion: '',
+      devolucion_usuario: '',
+      entrega_usuario: ''
     };
     //console.log(tickerCapturado)
     return tickerCapturado;

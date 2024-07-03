@@ -22,7 +22,7 @@ export class TicketsetService {
     };
     var direccion = `${environment.url}ceye/ticket/${registrarTicketSet.ticket.id}/set/${registrarTicketSet.set.id}`
     console.log(registrarTicketSet);
-    return this.http.post<any>(direccion, {'set':registrarTicketSet.set, 'ticket': registrarTicketSet.ticket, 'cantidad': registrarTicketSet.cantidad }, httpOptions)
+    return this.http.post<any>(direccion, {'set':registrarTicketSet.set, 'ticket': registrarTicketSet.ticket, 'cantidad': registrarTicketSet.cantidad, 'entregados': registrarTicketSet.entregados }, httpOptions)
   }
 
   traerticketset(pk:number): Observable<TicketSet[]> {

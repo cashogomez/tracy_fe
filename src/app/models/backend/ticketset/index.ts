@@ -6,5 +6,6 @@ export interface TicketSet {
     cantidad : number;
     set : SetEnviado;
     ticket: Ticket;
+    entregados: number;
   }
   export type TicketSetRequest = Omit<TicketSet, 'id'>;

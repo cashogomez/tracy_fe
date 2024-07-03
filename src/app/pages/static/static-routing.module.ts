@@ -135,6 +135,10 @@ const routes: Routes = [
     path: 'crear-lavadoras',
     loadComponent: () => import('./pages/crear-lavadoras/crear-lavadoras.component').then((m) => m.CrearLavadorasComponent),
   },
+  {
+    path: 'reporte-incidencia',
+    loadComponent: () => import('./pages/reporteincidencia/reporteincidencia.component').then((m) => m.ReporteincidenciaComponent),
+  },
 ];
 
 

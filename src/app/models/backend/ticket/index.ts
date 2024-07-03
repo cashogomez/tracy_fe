@@ -24,5 +24,11 @@ export interface Ticket {
     notas: string;
 
     activo: Boolean;
+
+
+    recepcion_usuario:  string
+    recepcion_usuario_recepcion:  string
+    devolucion_usuario:  string
+    entrega_usuario: string
   }
   export type TicketRequest = Omit<Ticket, 'id'>;

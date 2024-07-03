@@ -1,0 +1,43 @@
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .line {
+    flex: 1;
+  }
+  
+  .text {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .botones {
+    width: 100px;
+    height: 40px;
+    text-align: center;
+    background-color: #0f8f95;
+    border: none;
+    color: white;
+    font-weight: 700;
+    border-radius: 15px;
+  }
+  
+  
+  .botones:hover {
+    text-align: center;
+    background-color: #38b6ff;
+    border: none;
+    color: white;
+    font-weight: 700;
+  }
+
+  .botones:disabled {
+    text-align: center;
+    background-color: #808080;
+    border: none;
+    color: white;
+    font-weight: 700;
+  }

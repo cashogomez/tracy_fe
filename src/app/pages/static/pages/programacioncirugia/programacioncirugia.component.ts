@@ -125,6 +125,7 @@ export class ProgramacioncirugiaComponent implements OnInit {
           if (data==true) {
             switch(this.tipoOperacion) { 
               case 1: { 
+                this.tipoOperacion =0;
                 if (this.borrarRegistro!= undefined) {
                   this.ELEMENT_DATA5 = this.ELEMENT_DATA5.filter((data) => data.id != this.borrarRegistro.id)
                   this.dataSource.data = this.ELEMENT_DATA5;
@@ -137,6 +138,7 @@ export class ProgramacioncirugiaComponent implements OnInit {
                  break; 
               } 
               case 2: { 
+                this.tipoOperacion =0;
                 this.notification.success("Ticket generado");
                 this.router.navigate(['/static/quirofanoinformacion']);
                  //statements;
@@ -153,7 +155,8 @@ export class ProgramacioncirugiaComponent implements OnInit {
                            let ticketset = {
                              set: setSeleccionado[0],
                              ticket: ticket,
-                             cantidad: elemento.Cantidad
+                             cantidad: elemento.Cantidad,
+                             entregados: 0,
                            }
                            this.ticketsetServicio.altaticketset(ticketset).subscribe((ticketset) => {
                              console.log(ticketset)
@@ -161,6 +164,7 @@ export class ProgramacioncirugiaComponent implements OnInit {
                            break; 
                         } 
                         default: { 
+                          this.tipoOperacion =0;
                            //statements; 
                            break; 
                         } 
@@ -171,12 +175,14 @@ export class ProgramacioncirugiaComponent implements OnInit {
                  break; 
               } 
               case 3: { 
+                this.tipoOperacion =0;
                 this.notification.error("Operación cancelada");
                 this.router.navigate(['/static/quirofanoinformacion']);
                 //statements; 
                 break; 
              } 
               default: { 
+                this.tipoOperacion =0;
                  //statements; 
                  break; 
               } 
@@ -184,6 +190,7 @@ export class ProgramacioncirugiaComponent implements OnInit {
             
           }
           else {
+            this.tipoOperacion =0;
             this.notification.error("¡Se canceló la operación");
           }
         });
@@ -379,7 +386,11 @@ capturarProgCirug(): TicketRequest {
     notas: this.formaEdicion?.get('Notas')?.value!,
     estatus: 'pendiente',
     prioridad: this.labelPosition,
-    activo: true
+    activo: true,
+    recepcion_usuario: '',
+    recepcion_usuario_recepcion: '',
+    devolucion_usuario: '',
+    entrega_usuario: ''
   };
   console.log(tickerCapturado)
   return tickerCapturado;

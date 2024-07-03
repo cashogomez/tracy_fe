@@ -1,0 +1,103 @@
+<h2 align="center">Reporte de incidencia</h2>
+
+<div class="container">
+  <div class="line"><mat-divider></mat-divider></div>
+  <div class="text mat-typography">Detalles</div>
+  <div class="line"><mat-divider></mat-divider></div>
+</div><br>
+
+
+<form [formGroup]="Datoos">  
+    <table class="alinear-input" align="center">
+        <!------------------------------------------------------------              fila 1                                ----------------------------------------------------------------->
+        <tbody> 
+        <tr>
+          <td>
+            <mat-label>Fecha de Incidencia: &nbsp;</mat-label>
+          </td>
+      
+          <td>
+            <mat-form-field class="input2">
+              <input matInput type="text"  value="{{fechaN | date : 'dd/MM/yyyy'}} "  readonly>
+            </mat-form-field>
+          </td>
+            <td>
+              <mat-label>Hora:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</mat-label>
+            </td>
+        
+            <td>
+              <mat-form-field class="input1">
+                <input matInput type="text" value="{{fechaN | date : 'h:mm a'}} "  readonly>
+              </mat-form-field>
+            </td>
+        
+           
+          </tr>
+        
+        <!------------------------------------------------------------              fila 2                                ----------------------------------------------------------------->
+        
+          <tr>
+            <td>
+              <mat-label>Módulo: &nbsp;</mat-label>
+            </td>
+        
+            <td>
+              <mat-form-field class="input1">
+                <input matInput type="text" formControlName="lugar" readonly>
+                </mat-form-field>
+            </td>
+        
+            <td>
+              <mat-label>Usuario: &nbsp;</mat-label>
+            </td>
+        
+            <td>
+              <mat-form-field class="input2">
+                <input matInput type="text" formControlName="usuario"  readonly>
+              </mat-form-field>
+            </td>
+          </tr>
+
+
+
+
+          <tr>
+            <td>
+              <mat-label>Tipo de Incidencia: &nbsp;</mat-label>
+            </td>
+        
+            <td>
+              <mat-form-field class="input1">
+                <input matInput type="text"formControlName="incidencia" readonly>
+                </mat-form-field>
+            </td>
+        
+            <td>
+              <mat-label>Turno: &nbsp;</mat-label>
+            </td>
+        
+            <td>
+              <mat-form-field class="input2">
+                <input matInput type="text" formControlName="turno"  readonly>
+              </mat-form-field>
+            </td>
+          </tr>
+        </tbody>
+        </table>
+
+         
+<br>
+        <div  align="center">
+            <h1 style="text-align: center;">
+                Comentarios del reporte: {{NumeroReporte}}
+            </h1>
+            <textarea style="width: 78%; height:150px; text-align:center; font-size:15px" formControlName="comentario" readonly></textarea>
+        </div>
+
+
+</form>     
+<br><br>    
+<div  align="end" style=" margin-right: 11%;" >
+    <button class="botones" >Regresar</button>
+</div>
+       

@@ -42,6 +42,9 @@ import {  MaterialesterilizadorService} from '@app/services/materialesterilizado
 
 
 import {DataSource} from '@angular/cdk/collections';
+import { ReporteIncidenciaRequest } from '@app/models/backend/resporteincidencia';
+import { ReporteincidenciaService } from '@app/services/reporteincidencia/reporteincidencia.service';
+import { Router } from '@angular/router';
 
 
 export interface esterilizadorTable {
@@ -132,38 +135,94 @@ export class DetalleesterilizadorComponent implements OnInit {
                 private notification: NotificationService,
                 private store: Store<fromRoot.State>, 
                 private eventoesterilizacion:EventoesterilizacionService,
-                private materialEsterilizador: MaterialesterilizadorService
+                private materialEsterilizador: MaterialesterilizadorService,
+                private router: Router,
+                private ReporteIncidencia: ReporteincidenciaService,
+                
   ){
     this.dataService.data$.subscribe(data => {
       var cortado = data
       var cortado2 = cortado.split(':', 3)
       this.respuesta = cortado2[0]
-      this.InsidenciaValor = cortado2[1]
-      this.InsidenciaComentario = cortado2[2]
+      this.Incidencia = cortado2[1]
+      this.comentario = cortado2[2]
 
 
-      console.log('hola soy la respuesta:   ' + this.respuesta)
-      console.log('hola soy la la insicencia:   ' + this.InsidenciaValor)
-      console.log('hola soy la el comentario extra:   ' + this.InsidenciaComentario)
-    })
+
+      if (this.respuesta=='true') {
+        console.log ('////////////////////////////////')
+        console.log (this.tipoOperacion)
+        console.log ('////////////////////////////////')
+        switch(this.tipoOperacion) { 
+          
+          case 1: { 
+            let reporte = this.ReporteIncidencias();
+            this.ReporteIncidencia.altaReporteIncidencia(reporte).subscribe(data =>{
+              console.log(data)
+            })
+            this.tipoOperacion=0;
+            this.notification.success("Reporte de Incidencia Enviado!");        
+              
+             break; 
+          } 
+      
+          case 2: { 
+            this.tipoOperacion=0;
+            this.notification.success("Ciclo Terminado!");
+            this.router.navigate(['/static/welcome']);
+
+             break; 
+          } 
+          case 3: { 
+           this.tipoOperacion=0;
+           this.stop();
+
+             break; 
+          } 
+          case 4: { 
+            this.tipoOperacion=0;
+            this.router.navigate(['/static/welcome']);
+            this.notification.success("Datos Guardados!");
+            //this.SubirDatosEsterilizador();
+ 
+              break; 
+           } 
+          default: { 
+             //statements; 
+             break; 
+          } 
+       }
+        
+      }
+      else {
+        this.notification.error("¡Se canceló la operación");
+      } 
+    });
   
   }
-
+  Incidencia='';
 dataSource!: MatTableDataSource<esterilizadorTable>;
 nombreequipo:string="";
 endTime:any;
 
-stop() {
-  this.remainingTime=0;
-  this.endTime=0;
-  this.bloquear=false
-  localStorage.removeItem('est'+ this.EquipoADetallar)
-  localStorage.removeItem('Usuario'+ this.EquipoADetallar )
-  localStorage.removeItem('horaActual'+ this.EquipoADetallar )
-  localStorage.removeItem('FechaActual'+ this.EquipoADetallar)
-  localStorage.removeItem('TempM'+ this.EquipoADetallar)
-  localStorage.removeItem('CicloN'+ this.EquipoADetallar)
+
+comentario=''
+today:any;
+ReporteIncidencias(): ReporteIncidenciaRequest {
+  const tickerCapturado: ReporteIncidenciaRequest = {
+    lugar: 'Esterilizador',
+    fecha: this.today,
+    usuario: this.usuario?.nombre + ' ' + this.usuario?.paterno,
+    turno: this.Turno1,
+    incidencia:this.Incidencia ,
+    comentario: this.comentario,
+  };
+  console.log(tickerCapturado)
+  return tickerCapturado;
+  // ***********************************************************
 }
+
+
 FechaInicioA='';
 FechaFinalA='';
 FechaFinalB='';
@@ -174,7 +233,26 @@ UsuarioInicial='';
 UsuarioInicial2='';
 UsuarioFinal='';
 tiempof='';
+
+
+stop() {
+  this.notification.error("El ciclo ha sido detenido!");
+  this.endTime=0;
+  this.bloquear=false
+  localStorage.removeItem('est'+ this.EquipoADetallar)
+  localStorage.removeItem('Usuario'+ this.EquipoADetallar )
+  localStorage.removeItem('horaActual'+ this.EquipoADetallar )
+  localStorage.removeItem('FechaActual'+ this.EquipoADetallar)
+  localStorage.removeItem('TempM'+ this.EquipoADetallar)
+  localStorage.removeItem('CicloN'+ this.EquipoADetallar) 
+this.subscriptionToTimer.unsubscribe()
+ 
+}
+
+
+
 start() {
+  this.notification.success("El ciclo ha sido iniciado!");
   this.CicloCuenta = this.CicloCuenta+1;
   this.bloquear = true;
   let terminado = false
@@ -226,7 +304,9 @@ start() {
 
     }
 
-
+    goPlaces(){
+      this.router.navigate(['static/welcome'])
+    }
 
     Turno1: number = 0;
     TurnoAct:number = 0;
@@ -236,7 +316,10 @@ start() {
     tempo1=0;
     tempo2=0;
   ngOnInit(): void {
-
+    this.today = date.getFullYear() + '-'
+    + ('0' + (date.getMonth() + 1)).slice(-2) + '-'
+    + ('0' + date.getDate()).slice(-2)+ 'T' +date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
+   
 
     this.equiposServicio.traerUNequipo(Number(this.EquipoADetallar)).subscribe((DatosEst)=>{
       let esterilizadorDatos ={
@@ -568,11 +651,48 @@ start() {
           (component) => component.DialogoComponent
         )
       );
-      emergente1() {
-        this.dialogService.showDialog3(this.lazyLoadBeta$);
-        this.tipoOperacion = 2
+      IncidenciaR(){
+        this.dialogService.showDialog3(this.lazyLoadBeta$)
+        this.tipoOperacion = 1
+        
       }
-  
+
+      private lazyLoadBetas$ = from(
+        import('@app/services/dialog/components/esterilizador/esterilizador.component').then(
+          (component) => component.EsterilizadorComponent
+        )
+      );
+
+      Finalizar(){
+        this.dialogService.showDialog2(this.lazyLoadBetas$)
+        this.tipoOperacion = 2
+        
+      }
+
+
+      private lazyLoadBeta2$ = from(
+        import('@app/services/dialog/components/esterilizadorparo/esterilizadorparo.component').then(
+          (component) => component.EsterilizadorparoComponent
+        )
+      );
+
+      Paro(){
+        this.dialogService.showDialog2(this.lazyLoadBeta2$)
+        this.tipoOperacion = 3
+        
+      }
+
+       private lazyLoadBeta3$ = from(
+        import('@app/services/dialog/components/esterilizadorguardar/esterilizadorguardar.component').then(
+          (component) => component.EsterilizadorguardarComponent
+        )
+      );
+
+      Guardar(){
+        this.dialogService.showDialog2(this.lazyLoadBeta3$)
+        this.tipoOperacion = 4
+        
+      }
 
 
       limpiarEsterilizador(){
@@ -1192,7 +1312,7 @@ submit(){
 
 
       openSnackBar() {
-        this.notification.success("Condirmado!");
+        this.notification.success("Confirmado!");
       }
 
       openSnackBar2() {

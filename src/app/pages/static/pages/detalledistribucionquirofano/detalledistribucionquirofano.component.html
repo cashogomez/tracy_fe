@@ -175,7 +175,7 @@
       </form>
     
     
-    <form [formGroup]="Distribucion_2">
+
     
     <br><br>
     <div style="width: 90%; margin-left: 5%; margin-right: 5%;">
@@ -188,7 +188,7 @@
                   
                 </mat-expansion-panel-header>
               <br><br>
-                
+<form [formGroup]="Distribucion_2">     
               <div style=" width: 40%; margin-left:30%; margin-right:30%;">
                 <label >Ingresa QR:</label><br>
                 <mat-form-field  style=" width: 100%" >
@@ -198,7 +198,9 @@
                 <button (click)='Subir()' hidden="true">Add Row</button>
                
                 </div>
-    
+           
+     
+  </form>
     
     <br>
     <div style="width: 90%; margin-left: 5%; margin-right: 5%;">
@@ -230,22 +232,23 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
           </table>
-          
+          <br><br>
+
+        <div  align="end" >
+          <button class="botones" (click)="subirset()" >Guardar</button>
         </div>
-    <br><br><br>
-    
-    
+        </div>
+    <br>
     
               </mat-expansion-panel>
          
         </mat-accordion>
     </div>
-    
-    </form>
+   
     
     <br><br>
     <div style="display: flex; justify-content: right;">
-        <button class="botones" style=" margin-right: 2%;" (click)="subirset()">Cancelar</button>
-        <button class="botones" style=" margin-right: 5%;"  (click)="onBetaClicked()"  [hidden]="estado">Guardar</button>
-        <button class="botones" style=" margin-right: 5%;"  (click)="onBetaClicked2()"  [hidden]="estado2">Guardar</button>
+        <button class="botones" style=" margin-right: 2%;" >Cancelar</button>
+        <button class="botones" style=" margin-right: 5%;"  (click)="Guardar()"  [hidden]="estado">Guardar</button>
+        <button class="botones" style=" margin-right: 5%;"  (click)="Finalizar()"  [hidden]="estado2">Finalizar</button>
       </div>
