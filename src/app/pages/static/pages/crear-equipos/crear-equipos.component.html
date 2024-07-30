@@ -35,11 +35,7 @@
             <mat-form-field style=" width: 100%">
         
               <input matInput type="text"  placeholder="ESTERILIZADOR 1" formControlName="Nombre">
-
-              <button matSuffix mat-icon-button aria-label="Clear" >
-                <mat-icon>close</mat-icon>
-              </button>
-                          
+  
             </mat-form-field>  </div>
     </div>
 
@@ -56,10 +52,7 @@
         
               <input matInput type="text"  formControlName="Marca">
          
-              <button matSuffix mat-icon-button aria-label="Clear" >
-                <mat-icon>close</mat-icon>
-              </button>
-                          
+          
             </mat-form-field>  
         </div>
 
@@ -72,9 +65,6 @@
               
                 <input matInput type="text"  formControlName="Modelo">
             
-                <button matSuffix mat-icon-button aria-label="Clear" >
-                    <mat-icon>close</mat-icon>
-                </button>
                                 
             </mat-form-field>  
         </div>
@@ -88,9 +78,7 @@
               
                 <input matInput type="text"  formControlName="NumSerie">
            
-                <button matSuffix mat-icon-button aria-label="Clear" >
-                    <mat-icon>close</mat-icon>
-                </button>
+               
                                 
             </mat-form-field>  
         </div>
@@ -126,9 +114,7 @@
         
           <mat-form-field style=" width: 100%">
               <input matInput type="text"  formControlName="TiempCiclo">
-              <button matSuffix mat-icon-button aria-label="Clear" >
-                  <mat-icon>close</mat-icon>
-              </button>             
+                      
           </mat-form-field>  
       </div>
 
@@ -139,10 +125,7 @@
           <mat-form-field style=" width: 100%">
             
               <input matInput type="text"  formControlName="Temperatura">
-             
-              <button matSuffix mat-icon-button aria-label="Clear" >
-                  <mat-icon>close</mat-icon>
-              </button>
+           
                               
           </mat-form-field>  
       </div>
@@ -166,9 +149,7 @@
  
           <mat-form-field style=" width: 100%">
               <input matInput type="text"  formControlName="nombreCrear">
-              <button matSuffix mat-icon-button aria-label="Clear" >
-                  <mat-icon>close</mat-icon>
-              </button>
+         
                               
           </mat-form-field>  
       </div>
@@ -184,9 +165,7 @@
             
               <input matInput type="text"  formControlName="TiempoCicloCrear">
         
-              <button matSuffix mat-icon-button aria-label="Clear" >
-                  <mat-icon>close</mat-icon>
-              </button>
+            
                               
           </mat-form-field>  
       </div>
@@ -198,10 +177,7 @@
           <mat-form-field style=" width: 100%">
             
               <input matInput type="text"  formControlName="TemperaturaCrear">
-             
-              <button matSuffix mat-icon-button aria-label="Clear" >
-                  <mat-icon>close</mat-icon>
-              </button>
+         
                               
           </mat-form-field>  
       </div>
@@ -214,17 +190,20 @@
     </div>
 
 
-    <div style="display: flex; align-items: center;">
-        <div style=" width: 80%; margin-left:10%; margin-right: 10%;">
+    <div style="display: flex;  width: 80%; margin-left:10%; margin-right: 10%; align-items: center; ">
+        <div style="width: 85%;">
           <label>Tiempo de Activación Prueba Bowie and Dick:</label> <br>
             <mat-form-field style=" width: 100%">
                 <mat-select disableRipple  formControlName="TiempoActBD">
-                    <mat-option value="N/A" >N/A</mat-option>
-                    <mat-option value="8" >8 hrs</mat-option>
-                    <mat-option value="12" >12 hrs</mat-option>
                     <mat-option value="24" >24 hrs</mat-option>
                   </mat-select>
-            </mat-form-field>  </div>
+               
+            </mat-form-field> 
+           
+        </div>
+        <div style="width: 15%; text-align: center;">
+           <button  class="botones" (click)="Bowie()" >Generar</button>
+        </div>
     </div>
 
 

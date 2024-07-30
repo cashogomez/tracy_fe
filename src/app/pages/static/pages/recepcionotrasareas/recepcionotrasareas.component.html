@@ -52,13 +52,13 @@
           The actual rendered columns are set as a property on the row definition" -->
 
     <!-- Position Column -->
-    <ng-container matColumnDef="ticket">
+    <ng-container matColumnDef="Ticket">
       <mat-header-cell *matHeaderCellDef> Ticket </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.Ticket}} </mat-cell>
     </ng-container>
 
     <!-- Name Column -->
-    <ng-container matColumnDef="fecha">
+    <ng-container matColumnDef="Fecha">
       <mat-header-cell *matHeaderCellDef matTooltip="Fecha de la cirugía"> Fecha </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.Fecha | date: 'dd/MM/yyyy'}} </mat-cell>
     </ng-container>
@@ -73,7 +73,7 @@
     </ng-container>
 
     <!-- Symbol Column -->
-    <ng-container matColumnDef="estatus">
+    <ng-container matColumnDef="Estatus">
       <mat-header-cell *matHeaderCellDef> Estatus </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.Estatus}} </mat-cell>
     </ng-container>

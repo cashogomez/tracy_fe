@@ -614,13 +614,18 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
         
       }
  */
-
+// falta resolver que al guardar en la tabla, esta modifica los datos que existen, sube mal por separado el set que no encuentra y así mismo, sube mal cuando quremos actualizar
+// un dato que ya está sin poner el que falta
       subirset(){
+        this.notification.success("Material Agregado a la solicitud");
         let ticket = Number(this.ticketAEditar)
         var listaNOencontrados:number[]=[]
         var listafinal:number[]=[]
         this.Settraer.traerticketset(ticket).subscribe(setRecibidoss=> {
         
+          
+
+
           setRecibidoss.forEach((ticketset)=>{
             let setAgregar ={
               ID:ticketset.set.id,
@@ -641,6 +646,7 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
 
                   ticketset.cantidad= this.dataSource2[num].Cantidad + this.dataSource1.data[num].Cantidad
                   ticketset.entregados = this.dataSource2[num].Cantidad + this.dataSource1.data[num].Entregados
+                  this.dataSource1.data.push(ticketset)
                   this.Settraer.editarticketset(ticketset , ticketset.id).subscribe((ticketSet2)=>{
                     console.log ('-------------------------------------------------------')
                     console.log (ticketSet2)
@@ -658,6 +664,8 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
             }
        
           })
+
+
           this.dataSource2.forEach(data =>{listaNOencontrados.push(data.ID)})
           console.log (listaNOencontrados)
           listaNOencontrados.forEach((idset) => {
@@ -708,7 +716,7 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
                }) 
 
       let nnn=0
-console.log(CantidadFinal)
+            console.log(CantidadFinal)
        setRecibidos.forEach((inst)=>{
         let instrumental:TicketSet  ={
           id: inst.id,

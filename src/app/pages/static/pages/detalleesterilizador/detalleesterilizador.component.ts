@@ -180,10 +180,11 @@ export class DetalleesterilizadorComponent implements OnInit {
              break; 
           } 
           case 4: { 
+            this.SubirDatosEsterilizador();
             this.tipoOperacion=0;
             this.router.navigate(['/static/welcome']);
             this.notification.success("Datos Guardados!");
-            //this.SubirDatosEsterilizador();
+        
  
               break; 
            } 

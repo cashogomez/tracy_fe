@@ -41,6 +41,7 @@ import { CantidadInstrumentoEnviado } from '@app/models/backend';
 
 import { ReporteincidenciaService } from '@app/services/reporteincidencia/reporteincidencia.service';
 import { ReporteIncidenciaRequest } from '@app/models/backend/resporteincidencia';
+import { TicketSet } from '@app/models/backend/ticketset';
 
 
 const date = new Date();const año = date.getFullYear();const mes = date.getMonth()+1;const mes2 = date.toLocaleString('default', { month: 'long' });const dia = date.getDate(); const hora = date.getHours();const minutos = date.getMinutes();
@@ -256,7 +257,7 @@ nombreEmer:string='';
           case 3: { 
           this.tipoOperacion=0;
           this.router.navigate(['/static/welcome']);
-          this.notification.success("Guardado!");
+          this.notification.success("Materiales Recibidos!");
           //statements; 
           let tickerCapturado = this.Finzalizado();
           this.ticketServicio.editarticket(tickerCapturado, tickerCapturado.id).subscribe((ticket) => {})
@@ -295,7 +296,7 @@ nombreEmer:string='';
   InstrumentalSet.forEach((inst)=>{
     let instrumental:CantidadInstrumentoEnviado  ={
       id:  inst.instrumento.id, 
-      cantidad : inst.cantidad, 
+      cantidad : inst.cantidad , 
       cantidad_recibida :  CantidadFinal[nnn],
       instrumento : inst.instrumento,
       set: setADesplegar,
@@ -351,7 +352,7 @@ nombreEmer:string='';
 
 
 
-  actualizarInstrumento(setADesplegar: SetEnviado) {
+  actualizarInstrumento(setADesplegar: SetEnviado, setADesplegar2: TicketSet) {
     this.Instrumental_quirugico=[]
 
     this.TraerInstSet.traercantidadinstrumento(setADesplegar.id).subscribe(InstrumentalSet=>{
@@ -359,7 +360,7 @@ nombreEmer:string='';
         let instrumental ={
           Id: inst.instrumento.id, 
           Instrumental: inst.instrumento.nombre, 
-          Cantidad: inst.cantidad , 
+          Cantidad: inst.cantidad * setADesplegar2.cantidad, 
           Cantidad_Recibida: inst.cantidad_recibida, 
           Marca_Comercial:inst.instrumento.marca, 
           Prelavado:'', 

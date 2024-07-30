@@ -154,7 +154,7 @@ export class RecepcionotrasareasComponent {
   dataSource: MatTableDataSource<Element>;
 // **********************************************************
 
-  displayedColumns = ['ticket', 'fecha',  'Area', 'estatus', 'accion' ];
+  displayedColumns = ['Ticket', 'Fecha',  'Area', 'Estatus', 'accion' ];
 
   eliminarFila(element: Element) {
     this.borrarRegistro=element;
@@ -205,7 +205,7 @@ function table(data: { [x: string]: { toString: () => any; }; }[] | { name: stri
   return {
     style: 'tableExample',
       table: {
-        widths: ['15%','15%', '20%', '20%','15%','15%'],
+        widths: ['25%','25%','25%','25%','25%'],
           headerRows: 1,
           body: buildTableBody(data, columns),
       },layout: 'noBorders'
@@ -274,7 +274,7 @@ function getBase64ImageFromURL(url: string) {
 
     content: [
       
-       table(fuenteDatos, ['Ticket', 'Fecha', 'Area', 'Sala','Turno', 'Estatus'], ),
+       table(fuenteDatos, ['Ticket', 'Fecha',  'Area', 'Estatus'], ),
   ],
   
 images:{

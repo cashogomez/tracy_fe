@@ -25,7 +25,7 @@
     </mat-form-field>
     
     <button  (click)="applyFilter2()" class="botones" style=" margin: 10px;" matTooltip="Aplicar filtro">Aplicar</button>
-    <button  (click)="generarPDF()" class="botones" style=" margin: 10px;" matTooltip="Aplicar filtro">Reporte</button>
+    <button  (click)="generarPDF()" class="botones" style=" margin: 10px;" matTooltip="Generar Reporte">Reporte</button>
    
   </form>
   </div>
@@ -52,32 +52,32 @@
             The actual rendered columns are set as a property on the row definition" -->
   
       <!-- Position Column -->
-      <ng-container matColumnDef="ticket" >
+      <ng-container matColumnDef="Ticket" >
         <mat-header-cell *matHeaderCellDef style="width:16.5%; text-align: center;"> Ticket </mat-header-cell>
         <mat-cell *matCellDef="let element" style="width:16.5%; text-align: center;"> {{element.Ticket}} </mat-cell>
       </ng-container>
   
       <!-- Name Column -->
-      <ng-container matColumnDef="fecha">
+      <ng-container matColumnDef="Fecha">
         <mat-header-cell *matHeaderCellDef style="width:16.5%; text-align: center;"> Fecha </mat-header-cell>
         <mat-cell *matCellDef="let element" style="width:16.5%; text-align: center;"> {{element.Fecha| date: 'dd/MM/yyyy'}} </mat-cell>
       </ng-container>
   
   
       <!-- Symbol Column -->
-      <ng-container matColumnDef="tipo">
+      <ng-container matColumnDef="Incidencia">
         <mat-header-cell *matHeaderCellDef style="width:16.5%; text-align: center;"> Tipo </mat-header-cell>
         <mat-cell *matCellDef="let element" style="width:16.5%; text-align: center;"> {{element.Incidencia}} </mat-cell>
       </ng-container>
   
       <!-- Symbol Column -->
-      <ng-container matColumnDef="lugar">
+      <ng-container matColumnDef="Lugar">
         <mat-header-cell *matHeaderCellDef style="width:16.5%; text-align: center;">Modulo</mat-header-cell>
         <mat-cell *matCellDef="let element" style="width:16.5%; text-align: center;"> {{element.Lugar}} </mat-cell>
       </ng-container>
   
       <!-- Symbol Column -->
-      <ng-container matColumnDef="turno" >
+      <ng-container matColumnDef="Turno" >
         <mat-header-cell *matHeaderCellDef style="width:16.5%; text-align: center;"> Turno </mat-header-cell>
         <mat-cell *matCellDef="let element" style="width:16.5%; text-align: center;"> {{element.Turno}} </mat-cell>
       </ng-container>

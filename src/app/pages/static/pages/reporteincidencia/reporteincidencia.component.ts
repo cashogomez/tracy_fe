@@ -207,7 +207,7 @@ export class ReporteincidenciaComponent {
   dataSource: MatTableDataSource<Element>;
 // **********************************************************
 
-  displayedColumns = ['ticket', 'fecha', 'tipo', 'lugar', 'turno', 'accion' ];
+  displayedColumns = ['Ticket', 'Fecha', 'Incidencia', 'Lugar', 'Turno', 'accion' ];
 
  
   eliminarFila(element: Element) {
@@ -328,12 +328,12 @@ function getBase64ImageFromURL(url: string) {
       {text: 'DEPARTAMENTO DE ENFERMERÍA', style: 'header'},
       {text: 'CENTRAL DE EQUIPOS Y ESTERILIZACIÓN', style: 'header'},
       {text: 'Fecha de Impresión: '+dia +' de '+ mes2 +' del '+ año +', '+ hora + ':' + minutos + 'hrs', style: 'header3'},
-      {text: 'RECEPCIÓN DE INCIDENCIA', style: 'header2'},
+      {text: 'REPORTE DE INCIDENCIAS', style: 'header2'},
     ],
 
     content: [
       
-       table(fuenteDatos, ['Ticket', 'Fecha', 'Tipo', 'Modulo', 'Turno'], ),
+       table(fuenteDatos, ['Ticket', 'Fecha', 'Incidencia', 'Lugar', 'Turno'], ),
   ],
   
 images:{

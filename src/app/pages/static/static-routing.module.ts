@@ -139,6 +139,10 @@ const routes: Routes = [
     path: 'reporte-incidencia',
     loadComponent: () => import('./pages/reporteincidencia/reporteincidencia.component').then((m) => m.ReporteincidenciaComponent),
   },
+  {
+    path: 'construccion',
+    loadComponent: () => import('./pages/enconstruccion/enconstruccion.component').then((m) => m.EnconstruccionComponent),
+  },
 ];
 
 

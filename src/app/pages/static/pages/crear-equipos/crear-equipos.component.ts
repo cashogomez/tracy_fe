@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Ciclo, CicloRequest } from '@app/models/backend/ciclo';
 import { CiclosEquipo, CiclosEquipoRequest } from '@app/models/backend/ciclosequipo';
@@ -9,8 +9,11 @@ import { CiclosequipoService } from '@app/services/ciclosequipo/ciclosequipo.ser
 import { EquipoService } from '@app/services/equipo/equipo.service';
 import { NotificationService } from '@app/services/notification/notification.service';
 import { ActivatedRoute, Router} from '@angular/router';
-
-
+import { DialogService } from '@app/services/dialog/dialog.service';
+import { from } from 'rxjs';
+import { BowieRequest } from '@app/models/backend/bowie';
+import { BowieService } from '@app/services/bowie/bowie.service';
+const date = new Date();
 
 @Component({
   selector: 'app-crear-equipos',
@@ -18,15 +21,20 @@ import { ActivatedRoute, Router} from '@angular/router';
   templateUrl: './crear-equipos.component.html',
   styleUrl: './crear-equipos.component.scss'
 })
-export class CrearEquiposComponent {
+export class CrearEquiposComponent implements OnInit  {
   opciones: Opcion[]=[];
   ciclosEquipo: Ciclo[] = [];
+  respuesta:string='';
 
   constructor(
     private router: Router,
     private notificationService: NotificationService,
     private equipoService: EquipoService,
     private cicloServicio: CicloService,
+    private dialogService: DialogService,
+    private dataService: DialogService,
+    private notification: NotificationService,
+    private bowie:BowieService,
     private ciclosequipoServicio: CiclosequipoService) {
     this.cicloServicio.traerciclos().subscribe(ciclos => {
       this.ciclosReales = ciclos;
@@ -34,6 +42,53 @@ export class CrearEquiposComponent {
         this.opciones.push({nombre: cicloRe.id.toString() +' '+cicloRe.nombre })
       })
     })
+
+
+    this.dataService.data$.subscribe(data => {
+      var cortado = data
+      var cortado2 = cortado.split(':', 3)
+      this.respuesta = cortado2[0]
+  
+
+
+
+      if (this.respuesta=='true') {
+        console.log ('////////////////////////////////')
+        console.log (this.tipoOperacion)
+        console.log ('////////////////////////////////')
+        switch(this.tipoOperacion) { 
+          
+          case 1: { 
+            let reporte = this.TiempoDeActivacion();
+            this.bowie.altaBowie(reporte).subscribe(data =>{
+              console.log(data)
+            })
+            this.tipoOperacion=0;
+            this.notification.success("Clave de activación Generada!");        
+              
+             break; 
+          } 
+      
+          default: { 
+             //statements; 
+             break; 
+          } 
+       }
+        
+      }
+      else {
+        this.notification.error("¡Se canceló la operación");
+      } 
+    });
+
+
+
+  }
+  ngOnInit(): void {
+    this.today = date.getFullYear() + '-'
+    + ('0' + (date.getMonth() + 1)).slice(-2) + '-'
+    + ('0' + date.getDate()).slice(-2)+ 'T' +date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
+   
   }
   selectedValue: string = '';
   varCiclo: boolean = false;
@@ -104,7 +159,6 @@ export class CrearEquiposComponent {
   }
   submitted() {
     
-    window.alert(JSON.stringify(this.Esterilizador.value, null, 2));
   }
 
   agregarCiclo() {
@@ -144,6 +198,32 @@ export class CrearEquiposComponent {
   }
   yaVamonos () {
     this.router.navigate(['/']);
+}
+
+
+tipoOperacion : number = 0;
+private lazyLoadBeta$ = from(
+  import('@app/services/dialog/components/esterilizadorclave/esterilizadorclave.component').then(
+    (component) => component.EsterilizadorclaveComponent
+  )
+);
+Bowie(){
+  this.dialogService.showDialog2(this.lazyLoadBeta$)
+  this.tipoOperacion = 1
+  
+}
+today:any;
+
+TiempoDeActivacion(): BowieRequest {
+  const tickerCapturado: BowieRequest = {
+    idesterilizador: 0,
+    fecha: this.today,
+    clave: '',
+    verificador: false,
+  };
+  console.log(tickerCapturado)
+  return tickerCapturado;
+  // ***********************************************************
 }
 }
 

@@ -188,7 +188,7 @@ nombreEmer:string='';
           case 3: { 
           this.tipoOperacion=0;
           this.router.navigate(['/static/welcome']);
-          this.notification.success("Guardado!");
+          this.notification.success("Materiales Recibidos!");
           //statements; 
           let tickerCapturado = this.Finzalizado();
           this.ticketServicio.editarticket(tickerCapturado, tickerCapturado.id).subscribe((ticket) => {})
@@ -264,19 +264,15 @@ this.ticketServicio.traerUNticket(ticket).subscribe(data => {
         setRecibidos.forEach((set)=>{
             this.noSets.push(set)
             this.cantidadset = set.cantidad
-
-        
-        })
-
-        
-      
-      }) 
+            this.cantidades = [set.cantidad]
+           })
+          }) 
 
   }
 
   nuevarecibida=0;
 enviar:any=[]
-
+cantidades:number[]=[]
 comentario=''
 today:any;
 ReporteIncidencias(): ReporteIncidenciaRequest {
@@ -349,7 +345,7 @@ ReporteIncidencias(): ReporteIncidenciaRequest {
 
   }
 
-  actualizarInstrumento(setADesplegar: SetEnviado) {
+  actualizarInstrumento(setADesplegar: SetEnviado, setADesplegar2: TicketSetOA ) {
     this.Instrumental_quirugico=[]
 
     this.TraerInstSet.traercantidadinstrumento(setADesplegar.id).subscribe(InstrumentalSet=>{
@@ -357,7 +353,7 @@ ReporteIncidencias(): ReporteIncidenciaRequest {
         let instrumental ={
           Id: inst.instrumento.id, 
           Instrumental: inst.instrumento.nombre, 
-          Cantidad: inst.cantidad , 
+          Cantidad: inst.cantidad * setADesplegar2.cantidad, 
           Cantidad_Recibida: inst.cantidad_recibida, 
           Marca_Comercial:inst.instrumento.marca, 
           Prelavado:'', 

@@ -126,7 +126,7 @@
 
   <div style="display: flex; width: 90%; margin-left: 5%; margin-right: 5%;" *ngFor="let setactual of noSets; let i = index " >
           <mat-accordion style="width: 100%;">
-            <mat-expansion-panel  style="width: 90%; margin-left: 5%; margin-right: 5px;"[expanded]="step === i" (opened)="setStep(i); actualizarInstrumento(setactual.set); " hideToggle>
+            <mat-expansion-panel  style="width: 90%; margin-left: 5%; margin-right: 5px;"[expanded]="step === i" (opened)="setStep(i); actualizarInstrumento(setactual.set, setactual); " hideToggle>
               <mat-expansion-panel-header>
                   <mat-panel-title>
                       {{setactual.set.nombre}} &nbsp;&nbsp;&nbsp;    Cantidad:{{setactual.cantidad}}

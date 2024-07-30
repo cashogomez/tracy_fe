@@ -128,37 +128,24 @@ export class DetalledistribucionotrasComponent implements OnInit {
         switch(this.tipoOperacion) { 
           case 2: { 
             this.tipoOperacion =0;
-            this.dataSource.data=[]
-            this.Tabla2=[]
             this.notification.success("Préstamo Generado!");
             this.router.navigate(['/static/distribucionotrasareas']);
              //statements;
               // ***********************************************************************************
               let tickerCapturado = this.subirTicketOtras ();
               this.TicketOtras.altaticketoa(tickerCapturado).subscribe((ticket: TicketOA) => {
-                console.log(ticket)
-
                 this.Tabla2.forEach((elemento) => {
-                  
-                  
-                    
-                       //statements; 
-                       let setSeleccionado = this.noSets.filter(setseleccionado => setseleccionado.id == elemento.id)
-                       console.log(setSeleccionado)
-                       let ticketset: TicketSetOARequest = {
-                         set: setSeleccionado[0],
-                         ticket: ticket,
-                         cantidad: elemento.Entregados
-                       }
-                       this.ticketsetServicio.altaticketsetOA(ticketset).subscribe((ticketset) => {
-                         console.log(ticketset)
-                       })
-                     
-                 
-                })
-                 
-
-
+                  let setSeleccionado = this.noSets.filter(setseleccionado => setseleccionado.id == elemento.id)
+                  console.log(setSeleccionado)
+                  let ticketset: TicketSetOARequest = {
+                    set: setSeleccionado[0],
+                    ticket: ticket,
+                    cantidad: elemento.Entregados
+                  }
+                  this.ticketsetServicio.altaticketsetOA(ticketset).subscribe((ticketset) => {
+                    console.log(ticketset)
+                  })
+                 })
               })
 
             
